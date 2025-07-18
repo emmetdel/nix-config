@@ -1,17 +1,26 @@
-# NixOS Modules
+# Modules
 
-This directory contains reusable NixOS modules that can be used across different hosts in your configuration.
+This directory contains reusable NixOS, Darwin, and Home Manager modules that can be shared across different host configurations.
 
-## Available Modules
+## Structure
 
-### NixOS Modules (`modules/nixos/`)
+```
+modules/
+├── nixos/           # NixOS system modules
+├── darwin/          # macOS system modules (nix-darwin)
+└── home-manager/    # User environment modules
+```
 
-#### `basic-system.nix`
-Provides basic system configuration including:
-- Hostname and timezone settings
-- Bootloader configuration
+## NixOS Modules
+
+### basic-system.nix
+
+Essential system configuration including:
+- Bootloader (systemd-boot)
 - SSH server configuration
+- Time and locale settings
 - Basic system packages
+- Nix configuration with flakes
 
 **Usage:**
 ```nix
@@ -21,61 +30,90 @@ basic-system = {
   timezone = "Europe/Dublin";
   ssh = {
     enable = true;
-    authorizedKeys = ["ssh-key-here"];
+    port = 22;
+    authorizedKeys = [ "ssh-ed25519 ..." ];
   };
-  packages = with pkgs; [ htop ];
+  packages = with pkgs; [ vim git ];
 };
 ```
 
-#### `desktop.nix`
-Provides desktop environment configuration including:
-- Hyprland setup
+### desktop.nix
+
+Desktop environment configuration with Hyprland:
+- Hyprland wayland compositor
 - Audio with PipeWire
 - Bluetooth support
-- Printing services
-- Desktop packages and fonts
+- Printing configuration
+- Font management
+- Essential desktop applications
 
 **Usage:**
 ```nix
 desktop = {
   enable = true;
-  hyprland.enable = true;
-  audio.enable = true;
+  hyprland = {
+    enable = true;
+    enableXWayland = true;
+  };
+  audio = {
+    enable = true;
+    lowLatency = false;
+  };
   bluetooth.enable = true;
   printing.enable = true;
+  autoLogin = {
+    enable = true;
+    user = "username";
+  };
 };
 ```
 
-#### `development.nix`
-Provides development environment configuration including:
-- Programming language tools (Node.js, Python, Rust, C++)
-- Development tools (VS Code, Neovim, Git)
-- Common development utilities
+### development.nix
+
+Development environment setup:
+- Programming languages (Python, Node.js, Rust, C++)
+- Development tools
+- IDE configurations
 
 **Usage:**
 ```nix
 development = {
   enable = true;
   languages = {
-    nodejs.enable = true;
     python.enable = true;
+    nodejs.enable = true;
     rust.enable = true;
-    cpp.enable = true;
   };
-  tools = {
-    vscode.enable = true;
-    neovim.enable = true;
-    git.enable = true;
-  };
+  tools.vscode.enable = true;
 };
 ```
 
-#### `amd-optimization.nix`
-Provides AMD-specific optimizations including:
+### users.nix
+
+User management and SSH configuration:
+- Admin user creation
+- Deploy user for automation
+- SSH key management
+- Sudo configuration
+
+**Usage:**
+```nix
+users = {
+  enable = true;
+  adminUser = "emmet";
+  deployUser = "nixos-deploy";
+  adminKeys = [ "ssh-ed25519 ..." ];
+  deployKeys = [ "ssh-ed25519 ..." ];
+  wheelNeedsPassword = false;
+};
+```
+
+### amd-optimization.nix
+
+AMD-specific optimizations:
 - CPU microcode updates
-- Kernel module optimizations
-- GPU optimizations
-- Power management settings
+- GPU driver configuration
+- Performance tuning
 
 **Usage:**
 ```nix
@@ -83,144 +121,134 @@ amd-optimization = {
   enable = true;
   cpu = {
     updateMicrocode = true;
-    coreCount = 32; # Adjust based on your CPU
+    coreCount = 16;
   };
   gpu.enable = true;
 };
 ```
 
-### Home Manager Modules (`modules/home-manager/`)
+### gc.nix
 
-#### `hyprland.nix`
-Provides Hyprland configuration including:
-- Hyprland configuration file
-- Waybar configuration and styling
-- Default keybindings and settings
+Garbage collection configuration:
+- Automatic cleanup
+- Storage optimization
+- Retention policies
 
 **Usage:**
 ```nix
-# In home-manager configuration
+gc.enable = true;
+```
+
+## Home Manager Modules
+
+### hyprland.nix
+
+Hyprland window manager configuration:
+- Keybindings
+- Window rules
+- Startup applications
+- Theme configuration
+
+**Usage:**
+```nix
 hyprland = {
   enable = true;
   terminal = "kitty";
   menu = "wofi --show drun";
+  fileManager = "dolphin";
+  browser = "firefox";
+  editor = "code";
 };
 ```
 
-## Example Configurations
+## Creating New Modules
 
-### Development Workstation
+### Module Template
+
 ```nix
-{
-  # Basic system
-  basic-system = {
-    enable = true;
-    hostname = "dev-workstation";
-    ssh.enable = true;
-  };
-
-  # Desktop environment
-  desktop = {
-    enable = true;
-    hyprland.enable = true;
-    audio.enable = true;
-  };
-
-  # Development tools
-  development = {
-    enable = true;
-    languages = {
-      nodejs.enable = true;
-      python.enable = true;
-      rust.enable = true;
-    };
-    tools = {
-      vscode.enable = true;
-      neovim.enable = true;
-    };
-  };
-
-  # Hardware optimizations
-  amd-optimization = {
-    enable = true;
-    cpu.coreCount = 32;
-    gpu.enable = true;
-  };
-}
-```
-
-### Server
-```nix
-{
-  # Basic system
-  basic-system = {
-    enable = true;
-    hostname = "server";
-    ssh.enable = true;
-  };
-
-  # Minimal development tools
-  development = {
-    enable = true;
-    languages = {
-      python.enable = true;
-    };
-    tools = {
-      git.enable = true;
-      neovim.enable = true;
-    };
-  };
-
-  # CPU optimizations only
-  amd-optimization = {
-    enable = true;
-    cpu.coreCount = 16;
-    gpu.enable = false;
-  };
-}
-```
-
-## Adding New Modules
-
-To add a new module:
-
-1. Create a new `.nix` file in the appropriate directory
-2. Follow the module pattern with `options` and `config` sections
-3. Add the module to the `default.nix` file in the directory
-4. For home-manager modules, also add to `flake.nix` if needed
-
-### Module Pattern
-```nix
+# modules/nixos/my-module.nix
 { config, lib, pkgs, ... }:
 
 with lib;
-
 let
   cfg = config.my-module;
 in {
   options.my-module = {
-    enable = mkEnableOption "Enable my module";
-    # Add other options here
+    enable = mkEnableOption "my custom module";
+    
+    option1 = mkOption {
+      type = types.str;
+      default = "default-value";
+      description = "Description of option1";
+      example = "example-value";
+    };
+    
+    option2 = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Description of option2";
+    };
   };
 
   config = mkIf cfg.enable {
-    # Add configuration here
+    # Module implementation
+    environment.systemPackages = with pkgs; [
+      # packages
+    ];
+    
+    services.my-service = {
+      enable = true;
+      # service configuration
+    };
   };
 }
 ```
 
-## Benefits of Modular Approach
+### Best Practices
 
-1. **Reusability**: Modules can be used across different hosts
-2. **Maintainability**: Changes to common functionality only need to be made in one place
-3. **Flexibility**: Each host can enable only the modules it needs
-4. **Consistency**: Ensures consistent configuration across hosts
-5. **Documentation**: Each module is self-documenting with clear options
+1. **Use descriptive option names** - Make it clear what each option does
+2. **Provide good defaults** - Modules should work out of the box
+3. **Add examples** - Help users understand how to use options
+4. **Use mkIf conditionals** - Only apply configuration when module is enabled
+5. **Group related options** - Use attribute sets for logical grouping
+6. **Document everything** - Add descriptions to all options
 
-## Tips
+### Adding to default.nix
 
-- Use `mkIf` to conditionally enable features based on module options
-- Keep modules focused on a single responsibility
-- Use descriptive option names and descriptions
-- Consider creating modules for common patterns in your infrastructure
-- Test modules individually before combining them 
+After creating a new module, add it to the appropriate `default.nix`:
+
+```nix
+# modules/nixos/default.nix
+{
+  my-module = import ./my-module.nix;
+  # ... other modules
+}
+```
+
+## Testing Modules
+
+Test your modules by:
+
+1. **Building the configuration:**
+   ```bash
+   nixos-rebuild build --flake .#hostname
+   ```
+
+2. **Checking for errors:**
+   ```bash
+   nix flake check
+   ```
+
+3. **Testing in a VM:**
+   ```bash
+   nixos-rebuild build-vm --flake .#hostname
+   ```
+
+## Module Dependencies
+
+Some modules depend on others:
+- `desktop` requires `basic-system` for proper operation
+- `development` works best with `desktop` for GUI applications
+- `users` is typically required by most other modules
+
+Ensure dependencies are imported in your host configuration.

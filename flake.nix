@@ -51,174 +51,135 @@
     # pass to it, with each system as an argument
     forAllSystems = nixpkgs.lib.genAttrs systems;
   in {
-    # Your custom packages
-    # Accessible through 'nix build', 'nix shell', etc
+    # Development shell and packages
+    devShells = forAllSystems (system: {
+      default = import ./shell.nix {pkgs = nixpkgs.legacyPackages.${system};};
+    });
+
+    # Custom packages accessible through 'nix build', 'nix shell', etc
     packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
-    # Formatter for your nix files, available through 'nix fmt'
-    # Other options beside 'alejandra' include 'nixpkgs-fmt'
+
+    # Code formatter for nix files, available through 'nix fmt'
     formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
 
-    # Your custom packages and modifications, exported as overlays
+    # Custom overlays for package modifications and additions
     overlays = import ./overlays {inherit inputs;};
-    # Reusable nixos modules you might want to export
-    # These are usually stuff you would upstream into nixpkgs
+
+    # Import custom library functions
+    lib = import ./lib {inherit inputs outputs;};
+
+    # Reusable modules for different platforms
     nixosModules = import ./modules/nixos;
-    # Reusable home-manager modules you might want to export
-    # These are usually stuff you would upstream into home-manager
     homeManagerModules = import ./modules/home-manager;
-
-    # nix darwin
     darwinModules = import ./modules/darwin;
+    commonModules = import ./modules/common;
 
-    # NixOS configuration entrypoint
-    nixosConfigurations = {
-      # Apollo Desktop running on Beelink Ser8
-      apollo = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs user;};
-        system = "x86_64-linux";
-        modules = [
-          inputs.disko.nixosModules.disko
-          inputs.sops-nix.nixosModules.sops
-          ./hosts/nixos/apollo/default.nix
-        ];
+    # Reusable profiles
+    profiles = import ./profiles;
+
+    # NixOS system configurations
+    nixosConfigurations = lib.genNixosConfigs {
+      inherit inputs outputs;
+      hosts = {
+        # Desktop workstation running on Beelink SER8
+        apollo = {
+          system = "x86_64-linux";
+          hostPath = "hosts/nixos/desktop/apollo";
+          modules = [
+            disko.nixosModules.disko
+            sops-nix.nixosModules.sops
+          ];
+        };
+
+        # Server system
+        theia = {
+          system = "x86_64-linux";
+          hostPath = "hosts/nixos/server/theia";
+          modules = [
+            disko.nixosModules.disko
+            sops-nix.nixosModules.sops
+          ];
+        };
+
+        # TODO: Add more servers as needed
+        # aurora = {
+        #   system = "x86_64-linux";
+        #   hostPath = "hosts/nixos/server/aurora";
+        #   modules = [
+        #     disko.nixosModules.disko
+        #     sops-nix.nixosModules.sops
+        #   ];
+        # };
+
+        # Monitoring server (Raspberry Pi)
+        # eos = {
+        #   system = "aarch64-linux";
+        #   hostPath = "hosts/nixos/server/eos";
+        #   modules = [
+        #     sops-nix.nixosModules.sops
+        #   ];
+        # };
       };
-
-      # hydra = nixpkgs.lib.nixosSystem {
-      #   # Hydra Desktop
-      #   specialArgs = {inherit inputs outputs user;};
-      #   system = "aarch64-linux";
-      #   modules = [
-      #     ./hosts/hydra/configuration.nix
-      #   ];
-      # };
-      # Theia Router/Firewall
-      # theia = nixpkgs.lib.nixosSystem {
-      #   specialArgs = {inherit inputs outputs user;};
-      #   system = "x86_64-linux";
-      #   modules = [
-      #     inputs.disko.nixosModules.disko
-      #     ./hosts/theia/configuration.nix
-      #   ];
-      # };
-
-      # Main Server
-      # aurora = nixpkgs.lib.nixosSystem {
-      #   specialArgs = {inherit inputs outputs user;};
-      #   system = "x86_64-linux";
-      #   modules = [
-      #     inputs.disko.nixosModules.disko
-      #     ./hosts/aurora/configuration.nix
-      #   ];
-      # };
-
-      # Monitoring (Raspberry Pi)
-      # eos = nixpkgs.lib.nixosSystem {
-      #   specialArgs = {inherit inputs outputs user;};
-      #   system = "aarch64-linux";
-      #   modules = [
-      #     ./hosts/eos/configuration.nix
-      #   ];
-      # };
+      user = user;
     };
 
-    # Home-manager configurations for deploy-rs
-    homeManagerConfigurations = {
-      apollo = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        extraSpecialArgs = {inherit inputs outputs user;};
-        modules = [
-          inputs.self.homeManagerModules.hyprland
-          {
-            home = {
-              username = "emmet";
-              homeDirectory = "/home/emmet";
-              stateVersion = "25.05";
-            };
-            programs.home-manager.enable = true;
-
-            # Enable Hyprland configuration
-            hyprland = {
-              enable = true;
-              terminal = "kitty";
-              menu = "wofi --show drun";
-              fileManager = "dolphin";
-              browser = "firefox";
-              editor = "code";
-            };
-          }
-        ];
+    # Standalone Home Manager configurations
+    homeConfigurations = lib.genHomeConfigs {
+      inherit inputs outputs;
+      hosts = {
+        apollo = {
+          system = "x86_64-linux";
+          username = user;
+          homeDirectory = "/home/${user}";
+          hostPath = "hosts/home-manager/apollo";
+        };
+        # TODO: Add other home configurations as needed
       };
     };
 
-    # nixDarwinConfigurations = {
-    #   "Emmet-Work-Macbook" = inputs.nix-darwin.lib.darwinSystem {
-    #     system = "aarch64-darwin";
-    #     modules = [
-    #       ./hosts/Emmet-Work-Macbook/darwin-configuration.nix
-    #     ];
-    #     specialArgs = {inherit inputs outputs user;};
-    #     pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-    #   };
-    #   "Emmet-Personal-Macbook" = inputs.nix-darwin.lib.darwinSystem {
-    #     system = "aarch64-darwin";
-    #     modules = [
-    #       ./hosts/Emmet-Personal-Macbook/darwin-configuration.nix
-    #     ];
-    #     specialArgs = {inherit inputs outputs user;};
-    #   };
-    # };
-
-    # Remove colmena configuration and add deploy-rs
-    deploy.nodes = {
-      # theia = {
-      #   hostname = "192.168.1.1";
-      #   profiles.system = {
-      #     sshUser = "nixos-deploy";
-      #     user = "root";
-      #     sudo = "sudo -u";
-      #     sshOpts = [
-      #       "-o StrictHostKeyChecking=accept-new"
-      #     ];
-      #     path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.theia;
-      #     remoteBuild = true;
-      #     magicRollback = true;
-      #   };
-      # };
-
-      apollo = {
-        hostname = "192.168.1.103";
-        profiles = {
-          system = {
-            user = "root";
-            path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.apollo;
-            sshUser = "nixos-deploy";
-            sudo = "sudo -u";
-            sshOpts = [
-              "-o StrictHostKeyChecking=accept-new"
-            ];
-            remoteBuild = true;
-            magicRollback = true;
-          };
+    # macOS system configurations
+    darwinConfigurations = lib.genDarwinConfigs {
+      inherit inputs outputs;
+      hosts = {
+        macbook-pro = {
+          system = "aarch64-darwin";
+          username = user;
+          hostPath = "hosts/darwin/macbook-pro";
+        };
+        macbook-air = {
+          system = "aarch64-darwin";
+          username = user;
+          hostPath = "hosts/darwin/macbook-air";
         };
       };
-
-      # aurora = {
-      #   hostname = "192.168.1.132";
-      #   profiles.system = {
-      #     sshUser = "nixos-deploy";
-      #     user = "root";
-      #     sudo = "sudo -u";
-      #     sshOpts = [
-      #       "-o StrictHostKeyChecking=accept-new"
-      #     ];
-      #     path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.aurora;
-      #     remoteBuild = true;
-      #     magicRollback = true;
-      #   };
-      # };
+      user = user;
     };
 
-    # This is highly recommended, to help you catch configuration errors
-    checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+    # Deployment configuration using deploy-rs
+    deploy = lib.genDeployConfig {
+      inherit inputs outputs;
+      nodes = {
+        apollo = {
+          hostname = "192.168.1.103";
+          system = "x86_64-linux";
+        };
+        theia = {
+          hostname = "192.168.1.1";
+          system = "x86_64-linux";
+        };
+        # TODO: Add more deployment targets as needed
+        # aurora = {
+        #   hostname = "192.168.1.132";
+        #   system = "x86_64-linux";
+        # };
+      };
+    };
+
+    # Deployment checks to catch configuration errors
+    checks =
+      builtins.mapAttrs (
+        system: deployLib: deployLib.deployChecks self.deploy
+      )
+      deploy-rs.lib;
   };
 }

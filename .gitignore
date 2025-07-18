@@ -9,4 +9,4 @@
 config.xml
 
 
-hosts/theia
+hosts/nixos/server/theia

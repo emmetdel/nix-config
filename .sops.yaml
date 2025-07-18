@@ -1,0 +1,57 @@
+# SOPS Configuration
+# Defines encryption rules for secrets management
+keys:
+  # Age keys for encryption
+  # TODO: Replace with your actual age public keys
+  - &admin_key age1hl8xzrk6j8q9j8q9j8q9j8q9j8q9j8q9j8q9j8q9j8q9j8q9j8q9j8q9j8
+  - &deploy_key age1hl8xzrk6j8q9j8q9j8q9j8q9j8q9j8q9j8q9j8q9j8q9j8q9j8q9j8q9j9
+
+creation_rules:
+  # Global secrets (accessible by all systems)
+  - path_regex: secrets/global/.*\.yaml$
+    key_groups:
+      - age:
+          - *admin_key
+          - *deploy_key
+
+  # User-specific secrets
+  - path_regex: secrets/users/.*\.yaml$
+    key_groups:
+      - age:
+          - *admin_key
+
+  # Host-specific secrets
+  - path_regex: secrets/hosts/apollo/.*\.yaml$
+    key_groups:
+      - age:
+          - *admin_key
+          - *deploy_key
+
+  - path_regex: secrets/hosts/theia/.*\.yaml$
+    key_groups:
+      - age:
+          - *admin_key
+          - *deploy_key
+
+  - path_regex: secrets/hosts/macbook-pro/.*\.yaml$
+    key_groups:
+      - age:
+          - *admin_key
+
+  - path_regex: secrets/hosts/macbook-air/.*\.yaml$
+    key_groups:
+      - age:
+          - *admin_key
+
+  # Service-specific secrets
+  - path_regex: secrets/services/.*\.yaml$
+    key_groups:
+      - age:
+          - *admin_key
+          - *deploy_key
+
+  # Development secrets (less restrictive)
+  - path_regex: secrets/development/.*\.yaml$
+    key_groups:
+      - age:
+          - *admin_key

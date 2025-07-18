@@ -8,34 +8,32 @@
   ...
 }: {
   imports = [
-    # Import hardware configuration
+    # Hardware configuration
     ./hardware-configuration.nix
-    # Import the disko configuration for disk setup
     ./hardware/disko.nix
-    # Import home-manager module
-    inputs.home-manager.nixosModules.home-manager
-    # Import the gc module for garbage collection
+
+    # Desktop profile (includes common modules)
+    inputs.self.profiles.desktop
+
+    # NixOS-specific modules
     inputs.self.nixosModules.gc
-    # Import specific nixos modules
-    inputs.self.nixosModules.users
     inputs.self.nixosModules.basic-system
     inputs.self.nixosModules.desktop
-    inputs.self.nixosModules.development
     inputs.self.nixosModules.amd-optimization
   ];
 
   # Enable garbage collection
   gc.enable = true;
 
-  # Enable users module
-  users = {
-    enable = true;
-    adminUser = "emmet";
-    deployUser = "nixos-deploy"; # Match what deploy-rs expects
-    deployKeys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHblA3QwMwsej6rfGbueXE3X8C3i22Q+3hGZ9MgRVk49" # nixos-deploy key
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA8FgRH4auak56a+6sqKbIt7EfFUBScSmWptqZbRF4W5" # admin key
-    ];
+  # Override common user configuration with host-specific settings
+  common.users = {
+    deployUser = {
+      enable = true;
+      keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHblA3QwMwsej6rfGbueXE3X8C3i22Q+3hGZ9MgRVk49" # nixos-deploy key
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA8FgRH4auak56a+6sqKbIt7EfFUBScSmWptqZbRF4W5" # admin key
+      ];
+    };
     wheelNeedsPassword = false;
     initialPassword = "password"; # Simple password for initial login
   };
@@ -60,30 +58,18 @@
       btop
       lm_sensors
       nvtopPackages.full
+
       # Filesystem tools
       btrfs-progs
 
-      # programs - should these be in home-manager?
-      kitty
-      firefox
-      neovim
-      kdePackages.dolphin
+      # Essential system tools
+      wget
+      curl
+      unzip
+      zip
 
-      # Communication and productivity apps
-      slack
-      teams-for-linux
-      thunderbird # Alternative to Outlook as Outlook isn't available in nixpkgs
-
-      # Development tools
-      code-cursor
-      beekeeper-studio
-
-      # Note-taking and file sync
-      obsidian
-      onedrive
-
-      # Security
-      _1password-gui
+      # TODO: Move user applications to home-manager configuration
+      # User applications should be managed in hosts/home-manager/apollo/default.nix
     ];
   };
 
@@ -100,17 +86,22 @@
     };
   };
 
-  # Development environment
-  development = {
-    enable = true;
+  # Override common development configuration with additional tools
+  common.development = {
     languages = {
-      python.enable = true;
-      nodejs.enable = true;
-      rust.enable = true;
-      cpp.enable = true;
+      # Additional languages for desktop development
+      java.enable = true;
+      web.enable = true;
     };
     tools = {
-      vscode.enable = true;
+      # Additional development tools
+      cloud = {
+        aws = true;
+        terraform = true;
+      };
+      monitoring = {
+        grafana = true;
+      };
     };
   };
 
@@ -184,29 +175,9 @@
     dates = "weekly";
   };
 
-  # Enable home-manager module
-  home-manager = {
-    useGlobalPkgs = true;
-    useUserPackages = true;
-    backupFileExtension = "backup";
-    users.${user} = {
-      imports = [
-        inputs.self.homeManagerModules.hyprland
-      ];
-      home.stateVersion = "25.05";
-      programs.home-manager.enable = true;
-
-      # Enable Hyprland configuration
-      hyprland = {
-        enable = true;
-        terminal = "kitty";
-        menu = "wofi --show drun";
-        fileManager = "dolphin";
-        browser = "firefox";
-        editor = "code";
-      };
-    };
-  };
+  # TODO: Home-manager configuration is now managed separately
+  # Use: home-manager switch --flake .#apollo
+  # Or deploy with: deploy .#apollo.home-manager
 
   # Systemd service to reload Hyprland config on changes
   systemd.user.services.hyprland-reload = {

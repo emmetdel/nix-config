@@ -1,0 +1,12 @@
+*.qcow2
+*.iso
+*.vdi
+*.vmdk
+*.vdi
+*.vmdk
+
+.DS_Store
+config.xml
+
+
+hosts/theia

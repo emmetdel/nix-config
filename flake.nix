@@ -36,6 +36,7 @@
     home-manager,
     disko,
     deploy-rs,
+    sops-nix,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -50,6 +51,9 @@
     # This is a function that generates an attribute by calling a function you
     # pass to it, with each system as an argument
     forAllSystems = nixpkgs.lib.genAttrs systems;
+  in let
+    # Import custom library functions
+    lib = import ./lib {inherit inputs outputs;};
   in {
     # Development shell and packages
     devShells = forAllSystems (system: {
@@ -64,9 +68,6 @@
 
     # Custom overlays for package modifications and additions
     overlays = import ./overlays {inherit inputs;};
-
-    # Import custom library functions
-    lib = import ./lib {inherit inputs outputs;};
 
     # Reusable modules for different platforms
     nixosModules = import ./modules/nixos;

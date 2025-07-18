@@ -1,9 +1,9 @@
 # Custom library functions for the dotfiles flake
 {
   inputs,
-  nixpkgs,
+  outputs,
 }: let
-  inherit (nixpkgs) lib;
+  inherit (inputs.nixpkgs) lib;
 in {
   # Generate NixOS configurations from a hosts attribute set
   genNixosConfigs = {
@@ -14,7 +14,7 @@ in {
   }:
     lib.mapAttrs (
       hostname: hostConfig:
-        nixpkgs.lib.nixosSystem {
+        inputs.nixpkgs.lib.nixosSystem {
           system = hostConfig.system;
           specialArgs = {inherit inputs outputs user;};
           modules =
@@ -36,7 +36,7 @@ in {
     lib.mapAttrs (
       hostname: hostConfig:
         inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${hostConfig.system};
+          pkgs = inputs.nixpkgs.legacyPackages.${hostConfig.system};
           extraSpecialArgs = {inherit inputs outputs;};
           modules = [
             # Include host-specific home configuration if it exists
@@ -111,7 +111,7 @@ in {
     modules ? [],
     extraSpecialArgs ? {},
   }:
-    nixpkgs.lib.nixosSystem {
+    inputs.nixpkgs.lib.nixosSystem {
       inherit system;
       specialArgs = {inherit inputs outputs;} // extraSpecialArgs;
       modules =
@@ -130,7 +130,7 @@ in {
     extraSpecialArgs ? {},
   }:
     inputs.home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages.${system};
+      pkgs = inputs.nixpkgs.legacyPackages.${system};
       extraSpecialArgs = {inherit inputs outputs;} // extraSpecialArgs;
       modules =
         [

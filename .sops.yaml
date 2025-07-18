@@ -2,9 +2,7 @@
 # Defines encryption rules for secrets management
 keys:
   # Age keys for encryption
-  # TODO: Replace with your actual age public keys
-  - &admin_key age1hl8xzrk6j8q9j8q9j8q9j8q9j8q9j8q9j8q9j8q9j8q9j8q9j8q9j8q9j8
-  - &deploy_key age1hl8xzrk6j8q9j8q9j8q9j8q9j8q9j8q9j8q9j8q9j8q9j8q9j8q9j8q9j9
+  - &admin_key age106yg6v2r2wal77evhkthsft2x4uducdxj4ds9ax7x6tvngtyas7skgy8km
 
 creation_rules:
   # Global secrets (accessible by all systems)
@@ -12,7 +10,6 @@ creation_rules:
     key_groups:
       - age:
           - *admin_key
-          - *deploy_key
 
   # User-specific secrets
   - path_regex: secrets/users/.*\.yaml$
@@ -25,13 +22,11 @@ creation_rules:
     key_groups:
       - age:
           - *admin_key
-          - *deploy_key
 
   - path_regex: secrets/hosts/theia/.*\.yaml$
     key_groups:
       - age:
           - *admin_key
-          - *deploy_key
 
   - path_regex: secrets/hosts/macbook-pro/.*\.yaml$
     key_groups:
@@ -48,7 +43,6 @@ creation_rules:
     key_groups:
       - age:
           - *admin_key
-          - *deploy_key
 
   # Development secrets (less restrictive)
   - path_regex: secrets/development/.*\.yaml$

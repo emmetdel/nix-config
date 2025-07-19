@@ -1,3 +1,0 @@
-# Apollo Server
-
-Personal workstation.

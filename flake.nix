@@ -1,11 +1,6 @@
 {
   description = "NixOS Development Desktop Configuration for Beelink SER8";
 
-  # User configuration - change these values
-  username = "emmetdelaney";
-  userEmail = "emmetdel@gmail.com";
-  userName = "Emmet Delaney";
-
   inputs = {
     # Use the latest stable NixOS
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
@@ -139,7 +134,7 @@
             };
 
             # User Configuration
-            users.users.${self.username} = {
+            users.users.emmetdelaney = {
               # Change "developer" to your username
               isNormalUser = true;
               description = "Development User";
@@ -262,7 +257,7 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              users.${self.username} = {
+              users.emmetdelaney = {
                 # Change to your username
                 home.stateVersion = "25.05";
 
@@ -282,8 +277,8 @@
                 # Git configuration
                 programs.git = {
                   enable = true;
-                  userName = self.userName; # Change this
-                  userEmail = self.userEmail; # Change this
+                  userName = "Emmet Delaney"; # Change this
+                  userEmail = "emmetdel@gmail.com"; # Change this
                   extraConfig = {
                     init.defaultBranch = "main";
                     pull.rebase = true;

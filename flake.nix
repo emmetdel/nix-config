@@ -197,8 +197,8 @@
               pamixer # Audio control
 
               # File management and utilities
-              thunar # File manager
-              thunar-volman
+              xfce.thunar # File manager
+              xfce.thunar-volman
               gvfs # Trash and mount support
 
               # Network and system tray

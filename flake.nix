@@ -176,7 +176,8 @@
               bitwarden
 
               # Database and development tools
-              beekeeper-studio
+              # beekeeper-studio - not working
+              pgadmin4
 
               # Additional useful development tools
               docker-compose

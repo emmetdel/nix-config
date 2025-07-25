@@ -18,7 +18,7 @@
 
         modules-left = ["hyprland/workspaces" "hyprland/submap"];
         modules-center = ["hyprland/window"];
-        modules-right = ["idle_inhibitor" "pulseaudio" "network" "cpu" "memory" "temperature" "battery" "clock" "tray"];
+        modules-right = ["idle_inhibitor" "pulseaudio" "network" "cpu" "memory" "temperature" "battery" "clock" "tray" "custom/powermenu"];
 
         "hyprland/workspaces" = {
           disable-scroll = true;
@@ -164,6 +164,12 @@
         tray = {
           icon-size = 21;
           spacing = 10;
+        };
+
+        "custom/powermenu" = {
+          format = "⏻";
+          tooltip = false;
+          on-click = "wlogout";
         };
       };
     };
@@ -376,6 +382,21 @@
         -gtk-icon-effect: highlight;
         background-color: #f38ba8;
         border-radius: 6px;
+      }
+
+      #custom-powermenu {
+        background: linear-gradient(135deg, #f38ba8, #eba0ac);
+        color: #181825;
+        padding: 4px 12px;
+        margin: 2px;
+        border-radius: 10px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+      }
+
+      #custom-powermenu:hover {
+        background: linear-gradient(135deg, #eba0ac, #f38ba8);
+        transform: scale(1.05);
       }
 
       tooltip {

@@ -251,6 +251,7 @@
         ../../../home/nixos/nebula/mako.nix
         ../../../home/nixos/nebula/gtk.nix
         ../../../home/nixos/nebula/firefox.nix
+        ../../../home/nixos/nebula/wlogout.nix
       ];
     };
   };

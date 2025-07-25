@@ -103,6 +103,7 @@
         "$mainMod, F, fullscreen," # Toggle fullscreen
         "$mainMod, H, movetoworkspace, -1" # Hide window (move to previous workspace)
         "$mainMod, L, exec, swaylock-effects --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color 00ff00 --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --fade-in 0.1" # Lock screen
+        "$mainMod SHIFT, L, exec, wlogout" # Power menu
 
         # Window management (macOS-style)
         "$mainMod, left, movefocus, l"

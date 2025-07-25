@@ -139,6 +139,8 @@
               description = "Development User";
               extraGroups = ["networkmanager" "wheel" "docker" "libvirtd"];
               shell = pkgs.zsh;
+              # Add your password hash here (replace with your own)
+              hashedPassword = "$6$DQ33iq.40kbw39V.$ScAQ52zZyqIf7X211/uZ2IJjzcsnxMZZkCfBMLASqgMQtziRZeVxMUz4S04vTZuLc66Vc1OXjwU4/6mclKoml.";
             };
 
             # Enable ZSH system-wide

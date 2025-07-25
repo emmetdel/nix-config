@@ -2,8 +2,11 @@ name: Test NixOS Configuration
 on: [push, pull_request]
 
 jobs:
-  test:
+  test-flake:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        config: [nebula]
     steps:
     - uses: actions/checkout@v4
     - uses: cachix/install-nix-action@v22
@@ -13,4 +16,5 @@ jobs:
     - name: Test flake
       run: |
         nix flake check
-        nix build .#nixosConfigurations.beelink-ser8.config.system.build.toplevel
+        echo "Building configuration: ${{ matrix.config }}"
+        nix build .#nixosConfigurations.${{ matrix.config }}.config.system.build.toplevel

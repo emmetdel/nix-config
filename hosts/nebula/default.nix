@@ -195,7 +195,7 @@
     waybar # Status bar
     wofi # Application launcher
     mako # Notification daemon
-    swaylock-effects # Screen locker
+    swaylock-effects # Enhanced screen locker with effects
     swayidle # Idle management
     wlogout # Logout menu
     grim # Screenshot functionality
@@ -826,6 +826,7 @@
             drop_shadow = true;
             shadow_range = 4;
             shadow_render_power = 3;
+            shadow_offset = "0 2";
             "col.shadow" = "rgba(1a1a1aee)";
           };
 
@@ -873,7 +874,7 @@
             "$mainMod, V, togglefloating," # Toggle floating
             "$mainMod, F, fullscreen," # Toggle fullscreen
             "$mainMod, H, movetoworkspace, -1" # Hide window (move to previous workspace)
-            "$mainMod, L, exec, swaylock" # Lock screen
+            "$mainMod, L, exec, swaylock-effects --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color 00ff00 --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --fade-in 0.1" # Lock screen
 
             # Window management (macOS-style)
             "$mainMod, left, movefocus, l"
@@ -984,8 +985,8 @@
             "nm-applet --indicator"
             "blueman-applet"
             "1password --silent"
-            # Improved idle and sleep handling
-            "swayidle -w timeout 300 'swaylock -f -c 000000' timeout 600 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on' before-sleep 'swaylock -f -c 000000' after-resume 'hyprctl dispatch dpms on'"
+            # Improved idle and sleep handling with better lock screen
+            "swayidle -w timeout 300 'swaylock-effects --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color 00ff00 --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --fade-in 0.1' timeout 600 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on' before-sleep 'swaylock-effects --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color 00ff00 --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --fade-in 0.1' after-resume 'hyprctl dispatch dpms on'"
             # Ensure proper display handling
             "hyprctl dispatch dpms on"
             # Start wl-clipboard daemon

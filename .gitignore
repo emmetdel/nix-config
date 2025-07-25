@@ -1,0 +1,65 @@
+# Nix / NixOS / Nix Flakes
+/result
+/result-*
+/.nix-gc-*
+/.nix-channels
+/nix
+*.drv
+*.log
+*.out
+*.tmp
+*.swp
+*.lock
+
+# Nix build artifacts
+/result
+/result-*
+/build
+/build-*
+/.nix-*
+/.cache
+/.direnv
+/.envrc
+/.env
+/.devenv
+/.devenv.*
+
+# VSCode and Editor settings
+.vscode/
+*.code-workspace
+
+# OS and Editor junk
+.DS_Store
+Thumbs.db
+*.sublime-workspace
+*.sublime-project
+
+# Logs
+*.log
+
+# Secrets (if any)
+secrets.*
+*.key
+*.pem
+
+# Home Manager and Nix-Darwin
+/home-manager-generation
+/home-manager-build
+/darwin-configuration.nix
+
+# Systemd and state
+/state-version
+/systemd
+
+# Backup files
+*~
+*.bak
+
+# Node (if any JS tooling)
+/node_modules
+
+# Python (if any Python tooling)
+__pycache__/
+*.pyc
+
+.DS_Store

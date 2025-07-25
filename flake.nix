@@ -1,5 +1,5 @@
 {
-  description = "NixOS Development Desktop Configuration for Beelink SER8";
+  description = "NixOS Development Desktop Configuration for Nebula";
 
   inputs = {
     # Use the latest stable NixOS
@@ -27,8 +27,7 @@
     ...
   } @ inputs: {
     nixosConfigurations = {
-      # Replace "beelink-ser8" with your desired hostname
-      beelink-ser8 = nixpkgs.lib.nixosSystem {
+      nebula = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {inherit inputs;};
         modules = [
@@ -66,7 +65,7 @@
 
             # Networking
             networking = {
-              hostName = "beelink-ser8";
+              hostName = "nebula";
               networkmanager.enable = true;
               # Enable firewall but allow common development ports
               firewall = {

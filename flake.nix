@@ -428,6 +428,11 @@
                           "8" = "8";
                           "9" = "9";
                           "10" = "10";
+                          "11" = "11";
+                          "12" = "12";
+                          "13" = "13";
+                          "14" = "14";
+                          "15" = "15";
                           urgent = "";
                           focused = "";
                           default = "";
@@ -921,6 +926,18 @@
                       "$mainMod SHIFT, up, movewindow, u"
                       "$mainMod SHIFT, down, movewindow, d"
 
+                      # Window resizing with arrow keys
+                      "$mainMod CTRL, left, resizeactive, -20 0"
+                      "$mainMod CTRL, right, resizeactive, 20 0"
+                      "$mainMod CTRL, up, resizeactive, 0 -20"
+                      "$mainMod CTRL, down, resizeactive, 0 20"
+
+                      # Fine-tune resizing (smaller increments)
+                      "$mainMod ALT, left, resizeactive, -10 0"
+                      "$mainMod ALT, right, resizeactive, 10 0"
+                      "$mainMod ALT, up, resizeactive, 0 -10"
+                      "$mainMod ALT, down, resizeactive, 0 10"
+
                       # Workspace management (macOS-style)
                       "$mainMod, 1, workspace, 1"
                       "$mainMod, 2, workspace, 2"
@@ -932,6 +949,12 @@
                       "$mainMod, 8, workspace, 8"
                       "$mainMod, 9, workspace, 9"
                       "$mainMod, 0, workspace, 10"
+                      # Additional workspaces (11-20)
+                      "$mainMod, F1, workspace, 11"
+                      "$mainMod, F2, workspace, 12"
+                      "$mainMod, F3, workspace, 13"
+                      "$mainMod, F4, workspace, 14"
+                      "$mainMod, F5, workspace, 15"
 
                       # Move windows to workspaces (macOS-style)
                       "$mainMod SHIFT, 1, movetoworkspace, 1"
@@ -944,6 +967,12 @@
                       "$mainMod SHIFT, 8, movetoworkspace, 8"
                       "$mainMod SHIFT, 9, movetoworkspace, 9"
                       "$mainMod SHIFT, 0, movetoworkspace, 10"
+                      # Move windows to additional workspaces (11-15)
+                      "$mainMod SHIFT, F1, movetoworkspace, 11"
+                      "$mainMod SHIFT, F2, movetoworkspace, 12"
+                      "$mainMod SHIFT, F3, movetoworkspace, 13"
+                      "$mainMod SHIFT, F4, movetoworkspace, 14"
+                      "$mainMod SHIFT, F5, movetoworkspace, 15"
 
                       # Mission Control equivalent (workspace overview)
                       "$mainMod, D, togglespecialworkspace, magic"

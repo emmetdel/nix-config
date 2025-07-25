@@ -26,19 +26,19 @@
           warp-on-scroll = false;
           format = "{icon}";
           format-icons = {
-            "1" = ""; # Terminal
-            "2" = ""; # Browser
-            "3" = ""; # Files
-            "4" = ""; # Video
-            "5" = ""; # Chat
-            "6" = ""; # Games
-            "7" = ""; # Documents
-            "8" = ""; # Music
-            "9" = ""; # Settings
-            "10" = ""; # Misc
-            urgent = "";
-            focused = "";
-            default = "";
+            "1" = "●"; # Terminal
+            "2" = "●"; # Browser
+            "3" = "●"; # Files
+            "4" = "●"; # Video
+            "5" = "●"; # Chat
+            "6" = "●"; # Games
+            "7" = "●"; # Documents
+            "8" = "●"; # Music
+            "9" = "●"; # Settings
+            "10" = "●"; # Misc
+            urgent = "!";
+            focused = "◉";
+            default = "○";
           };
           persistent-workspaces = {
             "*" = 5; # 5 workspaces by default on every monitor
@@ -46,13 +46,13 @@
         };
 
         "hyprland/submap" = {
-          format = " {}";
+          format = "⌨️ {}";
           max-length = 8;
           tooltip = false;
         };
 
         "hyprland/window" = {
-          format = " {}";
+          format = "🪟 {}";
           separate-outputs = true;
           max-length = 60;
         };
@@ -60,15 +60,15 @@
         "idle_inhibitor" = {
           format = "{icon}";
           format-icons = {
-            activated = "";
-            deactivated = "";
+            activated = "☕";
+            deactivated = "💤";
           };
         };
 
         clock = {
           timezone = "Europe/Dublin";
-          format = " {:%H:%M}";
-          format-alt = " {:%Y-%m-%d %H:%M:%S}";
+          format = "🕐 {:%H:%M}";
+          format-alt = "📅 {:%Y-%m-%d %H:%M:%S}";
           tooltip-format = "<tt><small>{calendar}</small></tt>";
           calendar = {
             mode = "year";
@@ -93,14 +93,14 @@
         };
 
         cpu = {
-          format = " {usage}%";
+          format = "💻 {usage}%";
           tooltip = false;
           interval = 1;
           on-click = "kitty -e htop";
         };
 
         memory = {
-          format = " {}%";
+          format = "🧠 {}%";
           tooltip-format = "Memory: {used:0.1f}G/{total:0.1f}G";
           interval = 1;
           on-click = "kitty -e htop";
@@ -110,16 +110,16 @@
           thermal-zone = 2;
           hwmon-path = "/sys/class/hwmon/hwmon2/temp1_input";
           critical-threshold = 80;
-          format-critical = " {temperatureC}°C";
-          format = " {temperatureC}°C";
+          format-critical = "🔥 {temperatureC}°C";
+          format = "🌡️ {temperatureC}°C";
         };
 
         network = {
-          format-wifi = " {signalStrength}%";
-          format-ethernet = " {bandwidthDownBits}";
-          tooltip-format = " {ifname} via {gwaddr}";
-          format-linked = " {ifname} (No IP)";
-          format-disconnected = " Disconnected";
+          format-wifi = "📶 {signalStrength}%";
+          format-ethernet = "🌐 {bandwidthDownBits}";
+          tooltip-format = "🌐 {ifname} via {gwaddr}";
+          format-linked = "🔗 {ifname} (No IP)";
+          format-disconnected = "❌ Disconnected";
           format-alt = "{ifname}: {ipaddr}/{cidr}";
           interval = 5;
           on-click-right = "nm-connection-editor";
@@ -127,17 +127,17 @@
 
         pulseaudio = {
           format = "{icon} {volume}%";
-          format-bluetooth = " {volume}% {icon}";
-          format-bluetooth-muted = " {icon}";
-          format-muted = " ";
+          format-bluetooth = "🎧 {volume}% {icon}";
+          format-bluetooth-muted = "🔇 {icon}";
+          format-muted = "🔇";
           format-icons = {
-            headphone = "";
-            hands-free = "";
-            headset = "";
-            phone = "";
-            portable = "";
-            car = "";
-            default = ["" "" ""];
+            headphone = "🎧";
+            hands-free = "🎤";
+            headset = "🎧";
+            phone = "📱";
+            portable = "📻";
+            car = "🚗";
+            default = ["🔈" "🔉" "🔊"];
           };
           tooltip-format = "{desc}, {volume}%";
           on-click = "pavucontrol";
@@ -154,10 +154,10 @@
             critical = 15;
           };
           format = "{icon} {capacity}%";
-          format-charging = " {capacity}%";
-          format-plugged = " {capacity}%";
+          format-charging = "🔌 {capacity}%";
+          format-plugged = "🔌 {capacity}%";
           format-alt = "{time} {icon}";
-          format-icons = ["" "" "" "" ""];
+          format-icons = ["🪫" "🔋" "🔋" "🔋" "🔋"];
           tooltip-format = "{timeTo}, {capacity}%";
         };
 
@@ -172,7 +172,7 @@
       * {
         border: none;
         border-radius: 0;
-        font-family: "Font Awesome 6 Free", "JetBrains Mono", monospace;
+        font-family: "JetBrains Mono", monospace;
         font-size: 14px;
         font-weight: bold;
         min-height: 0;

@@ -32,7 +32,7 @@
         specialArgs = {inherit inputs;};
         modules = [
           home-manager.nixosModules.home-manager
-          ./hosts/nebula
+          ./hosts/nixos/nebula
         ];
       };
     };

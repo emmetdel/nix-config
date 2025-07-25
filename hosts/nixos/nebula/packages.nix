@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   environment.systemPackages = with pkgs; [
     # Essential tools
     wget
@@ -72,3 +74,4 @@
     qogir-icon-theme
     adwaita-icon-theme
   ];
+}

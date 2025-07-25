@@ -237,15 +237,15 @@
       home.stateVersion = "25.05";
 
       imports = [
-        ./home/nebula/session-variables.nix
-        ./home/nebula/git.nix
-        ./home/nebula/kitty.nix
-        ./home/nebula/zsh.nix
-        ./home/nebula/direnv.nix
-        ./home/nebula/waybar.nix
-        ./home/nebula/hyprland.nix
-        ./home/nebula/mako.nix
-        ./home/nebula/gtk.nix
+        ../../../home/nixos/nebula/session-variables.nix
+        ../../../home/nixos/nebula/git.nix
+        ../../../home/nixos/nebula/kitty.nix
+        ../../../home/nixos/nebula/zsh.nix
+        ../../../home/nixos/nebula/direnv.nix
+        ../../../home/nixos/nebula/waybar.nix
+        ../../../home/nixos/nebula/hyprland.nix
+        ../../../home/nixos/nebula/mako.nix
+        ../../../home/nixos/nebula/gtk.nix
       ];
     };
   };

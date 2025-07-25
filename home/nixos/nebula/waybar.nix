@@ -396,7 +396,6 @@
 
       #custom-powermenu:hover {
         background: linear-gradient(135deg, #eba0ac, #f38ba8);
-        transform: scale(1.05);
       }
 
       tooltip {

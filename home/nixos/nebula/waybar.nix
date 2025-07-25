@@ -9,47 +9,60 @@
       mainBar = {
         layer = "top";
         position = "top";
-        height = 34;
+        height = 40;
         spacing = 4;
-        margin-top = 6;
+        margin-top = 8;
         margin-bottom = 0;
-        margin-left = 10;
-        margin-right = 10;
+        margin-left = 12;
+        margin-right = 12;
 
-        modules-left = ["hyprland/workspaces"];
+        modules-left = ["hyprland/workspaces" "hyprland/submap"];
         modules-center = ["hyprland/window"];
-        modules-right = ["pulseaudio" "network" "cpu" "memory" "battery" "clock" "tray"];
+        modules-right = ["idle_inhibitor" "pulseaudio" "network" "cpu" "memory" "temperature" "battery" "clock" "tray"];
 
         "hyprland/workspaces" = {
           disable-scroll = true;
           all-outputs = true;
+          warp-on-scroll = false;
           format = "{icon}";
           format-icons = {
-            "1" = "1";
-            "2" = "2";
-            "3" = "3";
-            "4" = "4";
-            "5" = "5";
-            "6" = "6";
-            "7" = "7";
-            "8" = "8";
-            "9" = "9";
-            "10" = "10";
-            "11" = "11";
-            "12" = "12";
-            "13" = "13";
-            "14" = "14";
-            "15" = "15";
+            "1" = "󰆍"; # Terminal/Development
+            "2" = "󰖟"; # Web Browser
+            "3" = "󰉋"; # File Manager
+            "4" = "󰕧"; # Media/Video
+            "5" = "󰭹"; # Communication/Chat
+            "6" = "󰊴"; # Gaming
+            "7" = "󰈙"; # Documents/Office
+            "8" = "󰎆"; # Music/Audio
+            "9" = "󰒓"; # Settings/System
+            "10" = "󰐕"; # Miscellaneous
             urgent = "";
             focused = "";
             default = "";
           };
+          persistent-workspaces = {
+            "*" = 5; # 5 workspaces by default on every monitor
+          };
+        };
+
+        "hyprland/submap" = {
+          format = "✌️ {}";
+          max-length = 8;
+          tooltip = false;
         };
 
         "hyprland/window" = {
-          format = "{}";
+          format = "👉 {}";
           separate-outputs = true;
-          max-length = 50;
+          max-length = 60;
+        };
+
+        "idle_inhibitor" = {
+          format = "{icon}";
+          format-icons = {
+            activated = "";
+            deactivated = "";
+          };
         };
 
         clock = {
@@ -82,28 +95,40 @@
         cpu = {
           format = " {usage}%";
           tooltip = false;
+          interval = 1;
           on-click = "kitty -e htop";
         };
 
         memory = {
           format = " {}%";
+          tooltip-format = "Memory: {used:0.1f}G/{total:0.1f}G";
+          interval = 1;
           on-click = "kitty -e htop";
+        };
+
+        temperature = {
+          thermal-zone = 2;
+          hwmon-path = "/sys/class/hwmon/hwmon2/temp1_input";
+          critical-threshold = 80;
+          format-critical = " {temperatureC}°C";
+          format = " {temperatureC}°C";
         };
 
         network = {
           format-wifi = " {signalStrength}%";
-          format-ethernet = " wired";
+          format-ethernet = " {bandwidthDownBits}";
           tooltip-format = " {ifname} via {gwaddr}";
           format-linked = " {ifname} (No IP)";
           format-disconnected = "⚠ Disconnected";
           format-alt = "{ifname}: {ipaddr}/{cidr}";
+          interval = 5;
           on-click-right = "nm-connection-editor";
         };
 
         pulseaudio = {
           format = "{icon} {volume}%";
-          format-bluetooth = "{volume}% {icon}";
-          format-bluetooth-muted = " {icon}";
+          format-bluetooth = " {volume}% {icon}";
+          format-bluetooth-muted = "  {icon}";
           format-muted = " ";
           format-icons = {
             headphone = "";
@@ -114,12 +139,17 @@
             car = "";
             default = ["" "" ""];
           };
+          tooltip-format = "{desc}, {volume}%";
           on-click = "pavucontrol";
           on-click-right = "pamixer -t";
+          on-scroll-up = "pamixer -i 1";
+          on-scroll-down = "pamixer -d 1";
+          scroll-step = 1;
         };
 
         battery = {
           states = {
+            good = 95;
             warning = 30;
             critical = 15;
           };
@@ -127,7 +157,8 @@
           format-charging = " {capacity}%";
           format-plugged = " {capacity}%";
           format-alt = "{time} {icon}";
-          format-icons = ["" "" "" "" ""];
+          format-icons = ["󰂎" "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
+          tooltip-format = "{timeTo}, {capacity}%";
         };
 
         tray = {
@@ -141,186 +172,202 @@
       * {
         border: none;
         border-radius: 0;
-        font-family: "JetBrains Mono", monospace;
-        font-size: 13px;
+        font-family: "JetBrains Mono Nerd Font", "JetBrains Mono", monospace;
+        font-size: 14px;
+        font-weight: bold;
         min-height: 0;
       }
 
       window#waybar {
-        background-color: rgba(43, 48, 59, 0.8);
-        border-bottom: 3px solid rgba(100, 114, 125, 0.5);
-        color: #ffffff;
+        background: rgba(30, 30, 46, 0.85);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(137, 180, 250, 0.3);
+        color: #cdd6f4;
         transition-property: background-color;
-        transition-duration: .5s;
-        border-radius: 10px;
+        transition-duration: 0.5s;
+        border-radius: 15px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
       }
 
       button {
         box-shadow: inset 0 -3px transparent;
         border: none;
-        border-radius: 0;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+
+      button:hover {
+        background: rgba(137, 180, 250, 0.2);
+        box-shadow: inset 0 -3px rgba(137, 180, 250, 0.5);
+        transform: translateY(-1px);
+      }
+
+      #workspaces {
+        background: rgba(49, 50, 68, 0.8);
+        border-radius: 10px;
+        margin: 4px;
+        padding: 2px 6px;
       }
 
       #workspaces button {
-        padding: 0 5px;
+        padding: 4px 8px;
+        margin: 0 2px;
         background-color: transparent;
-        color: #ffffff;
+        color: #7f849c;
+        border-radius: 6px;
+        transition: all 0.3s ease;
       }
 
       #workspaces button:hover {
-        background: rgba(0, 0, 0, 0.2);
+        background: rgba(137, 180, 250, 0.15);
+        color: #cdd6f4;
       }
 
-      #workspaces button.focused {
-        background-color: #64727D;
-        box-shadow: inset 0 -3px #ffffff;
+      #workspaces button.active {
+        background: linear-gradient(135deg, #89b4fa, #74c7ec);
+        color: #181825;
+        font-weight: bold;
+        box-shadow: 0 2px 8px rgba(137, 180, 250, 0.4);
       }
 
       #workspaces button.urgent {
-        background-color: #eb4d4b;
+        background: linear-gradient(135deg, #f38ba8, #fab387);
+        color: #181825;
+        animation: blink 1s ease-in-out infinite alternate;
       }
 
-      #mode {
-        background-color: #64727D;
-        border-bottom: 3px solid #ffffff;
+      #submap {
+        background: linear-gradient(135deg, #a6e3a1, #94e2d5);
+        color: #181825;
+        padding: 4px 12px;
+        margin: 4px;
+        border-radius: 10px;
+        font-weight: bold;
       }
 
-      #clock,
-      #battery,
-      #cpu,
-      #memory,
-      #disk,
-      #temperature,
-      #backlight,
-      #network,
-      #pulseaudio,
-      #wireplumber,
-      #custom-media,
-      #tray,
-      #mode,
-      #idle_inhibitor,
-      #scratchpad,
-      #mpd {
-        padding: 0 10px;
-        color: #ffffff;
+      #window {
+        background: rgba(49, 50, 68, 0.8);
+        padding: 4px 16px;
+        margin: 4px;
+        border-radius: 10px;
+        color: #cdd6f4;
       }
 
-      #window,
-      #workspaces {
-        margin: 0 4px;
+      #idle_inhibitor {
+        background: rgba(49, 50, 68, 0.8);
+        padding: 4px 8px;
+        margin: 2px;
+        border-radius: 8px;
+        color: #f9e2af;
       }
 
-      .modules-left > widget:first-child > #workspaces {
-        margin-left: 0;
-      }
-
-      .modules-right > widget:last-child > #workspaces {
-        margin-right: 0;
+      #idle_inhibitor.activated {
+        background: linear-gradient(135deg, #f9e2af, #fab387);
+        color: #181825;
       }
 
       #clock {
-        background-color: #64727D;
+        background: linear-gradient(135deg, #89b4fa, #74c7ec);
+        color: #181825;
+        padding: 4px 12px;
+        margin: 2px;
+        border-radius: 10px;
+        font-weight: bold;
       }
 
       #battery {
-        background-color: #ffffff;
-        color: #000000;
+        background: linear-gradient(135deg, #a6e3a1, #94e2d5);
+        color: #181825;
+        padding: 4px 12px;
+        margin: 2px;
+        border-radius: 10px;
+        font-weight: bold;
       }
 
-      #battery.charging, #battery.plugged {
-        color: #ffffff;
-        background-color: #26A65B;
+      #battery.charging {
+        background: linear-gradient(135deg, #f9e2af, #fab387);
+      }
+
+      #battery.warning:not(.charging) {
+        background: linear-gradient(135deg, #fab387, #f38ba8);
+        animation: blink 0.5s linear infinite alternate;
+      }
+
+      #battery.critical:not(.charging) {
+        background: linear-gradient(135deg, #f38ba8, #eba0ac);
+        animation: blink 0.5s linear infinite alternate;
       }
 
       @keyframes blink {
         to {
-          background-color: #ffffff;
-          color: #000000;
+          background: rgba(243, 139, 168, 0.5);
         }
       }
 
-      #battery.critical:not(.charging) {
-        background-color: #f53c3c;
-        color: #ffffff;
-        animation-name: blink;
-        animation-duration: 0.5s;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-        animation-direction: alternate;
-      }
-
-      label:focus {
-        background-color: #000000;
-      }
-
       #cpu {
-        background-color: #2ecc71;
-        color: #000000;
+        background: linear-gradient(135deg, #a6e3a1, #94e2d5);
+        color: #181825;
+        padding: 4px 12px;
+        margin: 2px;
+        border-radius: 10px;
+        font-weight: bold;
       }
 
       #memory {
-        background-color: #9b59b6;
-      }
-
-      #disk {
-        background-color: #964B00;
-      }
-
-      #backlight {
-        background-color: #90b1b1;
-      }
-
-      #network {
-        background-color: #2980b9;
-      }
-
-      #network.disconnected {
-        background-color: #f53c3c;
-      }
-
-      #pulseaudio {
-        background-color: #f1c40f;
-        color: #000000;
-      }
-
-      #pulseaudio.muted {
-        background-color: #90b1b1;
-        color: #2a5c45;
-      }
-
-      #wireplumber {
-        background-color: #fff0f5;
-        color: #000000;
-      }
-
-      #wireplumber.muted {
-        background-color: #f53c3c;
-      }
-
-      #custom-media {
-        background-color: #66cc99;
-        color: #2a5c45;
-        min-width: 100px;
-      }
-
-      #custom-media.custom-spotify {
-        background-color: #66cc99;
-      }
-
-      #custom-media.custom-vlc {
-        background-color: #ffa000;
+        background: linear-gradient(135deg, #cba6f7, #b4befe);
+        color: #181825;
+        padding: 4px 12px;
+        margin: 2px;
+        border-radius: 10px;
+        font-weight: bold;
       }
 
       #temperature {
-        background-color: #f0932b;
+        background: linear-gradient(135deg, #fab387, #f9e2af);
+        color: #181825;
+        padding: 4px 12px;
+        margin: 2px;
+        border-radius: 10px;
+        font-weight: bold;
       }
 
       #temperature.critical {
-        background-color: #eb4d4b;
+        background: linear-gradient(135deg, #f38ba8, #eba0ac);
+        animation: blink 0.5s linear infinite alternate;
+      }
+
+      #network {
+        background: linear-gradient(135deg, #89b4fa, #74c7ec);
+        color: #181825;
+        padding: 4px 12px;
+        margin: 2px;
+        border-radius: 10px;
+        font-weight: bold;
+      }
+
+      #network.disconnected {
+        background: linear-gradient(135deg, #f38ba8, #eba0ac);
+      }
+
+      #pulseaudio {
+        background: linear-gradient(135deg, #f9e2af, #fab387);
+        color: #181825;
+        padding: 4px 12px;
+        margin: 2px;
+        border-radius: 10px;
+        font-weight: bold;
+      }
+
+      #pulseaudio.muted {
+        background: rgba(127, 132, 156, 0.8);
+        color: #cdd6f4;
       }
 
       #tray {
-        background-color: #2980b9;
+        background: rgba(49, 50, 68, 0.8);
+        padding: 4px 8px;
+        margin: 2px 4px;
+        border-radius: 10px;
       }
 
       #tray > .passive {
@@ -329,65 +376,19 @@
 
       #tray > .needs-attention {
         -gtk-icon-effect: highlight;
-        background-color: #eb4d4b;
+        background-color: #f38ba8;
+        border-radius: 6px;
       }
 
-      #idle_inhibitor {
-        background-color: #2d3748;
+      tooltip {
+        background: rgba(30, 30, 46, 0.95);
+        border: 1px solid rgba(137, 180, 250, 0.3);
+        border-radius: 8px;
+        color: #cdd6f4;
       }
 
-      #idle_inhibitor.activated {
-        background-color: #ecf0f1;
-        color: #2d3748;
-      }
-
-      #mpd {
-        background-color: #66cc99;
-        color: #2a5c45;
-      }
-
-      #mpd.disconnected {
-        background-color: #f53c3c;
-      }
-
-      #mpd.stopped {
-        background-color: #90b1b1;
-      }
-
-      #mpd.paused {
-        background-color: #51a37a;
-      }
-
-      #language {
-        background: #00b093;
-        color: #740864;
-        padding: 0 5px;
-        margin: 0 5px;
-        min-width: 16px;
-      }
-
-      #keyboard-state {
-        background: #97e1ad;
-        color: #000000;
-        padding: 0 0px;
-        margin: 0 5px;
-        min-width: 16px;
-      }
-
-      #keyboard-state > label {
-        padding: 0 5px;
-      }
-
-      #keyboard-state > label.locked {
-        background: rgba(0, 0, 0, 0.2);
-      }
-
-      #scratchpad {
-        background: rgba(0, 0, 0, 0.2);
-      }
-
-      #scratchpad.empty {
-      	background-color: transparent;
+      tooltip label {
+        color: #cdd6f4;
       }
     '';
   };

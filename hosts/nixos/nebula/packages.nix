@@ -25,7 +25,6 @@
 
     # Your requested applications
     slack
-    firefox
     obsidian
     kitty
     thunderbird # Email client - change if you prefer something else

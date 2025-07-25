@@ -235,6 +235,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
+    backupFileExtension = "backup"; # Customize backup file extension
     users.emmetdelaney = {
       # Change to your username
       home.stateVersion = "25.05";

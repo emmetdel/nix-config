@@ -47,7 +47,7 @@
             home-manager.useUserPackages = true;
 
             # Make NUR available via overlay
-            nixpkgs.overlays = [nur.overlay];
+            nixpkgs.overlays = [nur.overlays.default];
           }
         ];
       };

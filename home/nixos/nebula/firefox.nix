@@ -17,8 +17,8 @@
         name = "default";
         isDefault = true;
 
-        # Extensions (automatically installed)
-        extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+        # Extensions (automatically installed) - Updated to new syntax
+        extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
           ublock-origin # Ad blocker
           bitwarden # Password manager
           privacy-badger # Privacy protection
@@ -34,10 +34,10 @@
           # metamask
         ];
 
-        # Search engines
+        # Search engines - Updated to use IDs instead of names
         search = {
           force = true;
-          default = "DuckDuckGo";
+          default = "google";
           engines = {
             "Nix Packages" = {
               urls = [
@@ -61,60 +61,63 @@
 
             "NixOS Wiki" = {
               urls = [{template = "https://nixos.wiki/index.php?search={searchTerms}";}];
-              iconUpdateURL = "https://nixos.wiki/favicon.png";
+              icon = "https://nixos.wiki/favicon.png";
               updateInterval = 24 * 60 * 60 * 1000; # every day
               definedAliases = ["@nw"];
             };
 
             "GitHub" = {
               urls = [{template = "https://github.com/search?q={searchTerms}";}];
-              iconUpdateURL = "https://github.com/favicon.ico";
+              icon = "https://github.com/favicon.ico";
               definedAliases = ["@gh"];
             };
 
             "YouTube" = {
               urls = [{template = "https://www.youtube.com/results?search_query={searchTerms}";}];
-              iconUpdateURL = "https://www.youtube.com/favicon.ico";
+              icon = "https://www.youtube.com/favicon.ico";
               definedAliases = ["@yt"];
             };
           };
         };
 
-        # Bookmarks
-        bookmarks = [
-          {
-            name = "Development";
-            toolbar = true;
-            bookmarks = [
-              {
-                name = "NixOS Manual";
-                url = "https://nixos.org/manual/nixos/stable/";
-              }
-              {
-                name = "Home Manager Options";
-                url = "https://mipmip.github.io/home-manager-option-search/";
-              }
-              {
-                name = "GitHub";
-                url = "https://github.com/";
-              }
-            ];
-          }
-          {
-            name = "Tech News";
-            toolbar = true;
-            bookmarks = [
-              {
-                name = "Hacker News";
-                url = "https://news.ycombinator.com/";
-              }
-              {
-                name = "Reddit Programming";
-                url = "https://www.reddit.com/r/programming/";
-              }
-            ];
-          }
-        ];
+        # Bookmarks - Updated to new syntax with force option
+        bookmarks = {
+          force = true;
+          settings = [
+            {
+              name = "Development";
+              toolbar = true;
+              bookmarks = [
+                {
+                  name = "NixOS Manual";
+                  url = "https://nixos.org/manual/nixos/stable/";
+                }
+                {
+                  name = "Home Manager Options";
+                  url = "https://mipmip.github.io/home-manager-option-search/";
+                }
+                {
+                  name = "GitHub";
+                  url = "https://github.com/";
+                }
+              ];
+            }
+            {
+              name = "Tech News";
+              toolbar = true;
+              bookmarks = [
+                {
+                  name = "Hacker News";
+                  url = "https://news.ycombinator.com/";
+                }
+                {
+                  name = "Reddit Programming";
+                  url = "https://www.reddit.com/r/programming/";
+                }
+              ];
+            }
+          ];
+        };
 
         # Firefox settings/preferences
         settings = {
@@ -204,7 +207,7 @@
         name = "work";
         isDefault = false;
 
-        extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+        extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
           ublock-origin
           bitwarden
           multi-account-containers

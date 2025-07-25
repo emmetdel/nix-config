@@ -29,7 +29,6 @@
           tree-style-tab # Vertical tabs
           multi-account-containers # Container tabs
           tabliss # New tab page
-          bypass-paywalls-clean # News site access
           # reddit-enhancement-suite
           # ghostery
           # metamask

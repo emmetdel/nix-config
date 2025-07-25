@@ -99,7 +99,6 @@
                 };
               };
             };
-            services.bluetooth.enable = true;
             services.blueman.enable = true;
 
             # Hyprland Desktop Environment
@@ -118,19 +117,73 @@
               ];
             };
 
-            # Display Manager
+            # Display Manager - Improved with better styling and reliability
             services.greetd = {
               enable = true;
               settings = {
                 default_session = {
-                  command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
+                  command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland --remember --asterisks";
                   user = "greeter";
                 };
               };
             };
 
+            # Improve tuigreet appearance
+            environment.etc."greetd/environments".text = "Hyprland";
+            environment.etc."greetd/tuigreet".text = ''
+              [terminal]
+              vt = 1
+              font = "JetBrains Mono"
+              font_size = 12
+
+              [colors]
+              background = "#1a1a1a"
+              foreground = "#ffffff"
+              accent = "#7aa2f7"
+              error = "#f7768e"
+              success = "#9ece6a"
+              warning = "#e0af68"
+            '';
+
             # Required for Wayland
             security.polkit.enable = true;
+
+            # Power management and sleep handling
+            powerManagement = {
+              enable = true;
+              powertop.enable = true;
+            };
+
+            # Screen management and sleep handling
+            services = {
+              # ... existing services ...
+
+              # Improved power management
+              upower.enable = true;
+
+              # Better screen management
+              xserver = {
+                # ... existing xserver config ...
+                enable = true;
+                displayManager.startx.enable = false;
+              };
+            };
+
+            # Hardware-specific power management for AMD
+            hardware = {
+              # ... existing hardware config ...
+
+              # AMD power management
+              opengl.enable = true;
+            };
+
+            # Systemd sleep handling
+            systemd.sleep.extraConfig = ''
+              AllowSuspend=yes
+              AllowHibernation=no
+              AllowSuspendThenHibernate=no
+              AllowHybridSleep=no
+            '';
 
             # Keyboard layout (can be overridden in Hyprland config)
             services.xserver.xkb = {
@@ -212,6 +265,12 @@
               brightnessctl # Brightness control
               pamixer # Audio control
 
+              # Display and power management
+              greetd.tuigreet # Login manager
+              greetd.gtkgreet # Alternative login manager
+              libinput # Input device handling
+              seatd # Seat management for Wayland
+
               # File management and utilities
               xfce.thunar # File manager
               xfce.thunar-volman
@@ -284,6 +343,12 @@
                   QT_QPA_PLATFORM = "wayland";
                   SDL_VIDEODRIVER = "wayland";
                   XDG_SESSION_TYPE = "wayland";
+                  # Display and sleep handling
+                  WLR_NO_HARDWARE_CURSORS = "1"; # Fix cursor issues
+                  WLR_RENDERER = "vulkan"; # Better rendering
+                  # Power management
+                  XDG_CURRENT_DESKTOP = "Hyprland";
+                  XDG_SESSION_DESKTOP = "hyprland";
                 };
 
                 # Git configuration
@@ -352,40 +417,60 @@
                   nix-direnv.enable = true;
                 };
 
-                # Waybar configuration
+                # Waybar configuration - Improved with inspiration from woioeow/hyprland-dotfiles
                 programs.waybar = {
                   enable = true;
                   settings = {
                     mainBar = {
                       layer = "top";
                       position = "top";
-                      height = 35;
+                      height = 30;
                       spacing = 4;
+                      margin = "6px 6px 0px 6px";
+                      radius = 8;
+                      fixed-center = true;
 
-                      modules-left = ["hyprland/workspaces" "hyprland/mode" "hyprland/window"];
-                      modules-center = ["clock"];
-                      modules-right = ["idle_inhibitor" "pulseaudio" "network" "cpu" "memory" "temperature" "battery" "tray"];
+                      modules-left = ["hyprland/workspaces" "hyprland/mode"];
+                      modules-center = ["hyprland/window"];
+                      modules-right = ["pulseaudio" "network" "cpu" "memory" "battery" "clock" "tray"];
 
                       "hyprland/workspaces" = {
                         disable-scroll = true;
                         all-outputs = true;
-                        format = "{name}: {icon}";
+                        format = "{icon}";
+                        on-click = "activate";
+                        sort-by-number = true;
                         format-icons = {
-                          "1" = "";
-                          "2" = "";
-                          "3" = "";
-                          "4" = "";
-                          "5" = "";
-                          urgent = "";
-                          focused = "";
-                          default = "";
+                          "1" = "1";
+                          "2" = "2";
+                          "3" = "3";
+                          "4" = "4";
+                          "5" = "5";
+                          "6" = "6";
+                          "7" = "7";
+                          "8" = "8";
+                          "9" = "9";
+                          "10" = "10";
+                          urgent = "!";
+                          focused = "●";
+                          default = "○";
                         };
+                      };
+
+                      "hyprland/mode" = {
+                        format = "<span style=\"italic\">{}</span>";
+                      };
+
+                      "hyprland/window" = {
+                        format = "{}";
+                        separate-outputs = true;
+                        max-length = 50;
                       };
 
                       clock = {
                         timezone = "Europe/Dublin";
-                        format = "{:%Y-%m-%d %H:%M}";
-                        format-alt = "{:%A, %B %d, %Y (%R)}";
+                        format = "{:%H:%M}";
+                        format-alt = "{:%Y-%m-%d %H:%M}";
                         tooltip-format = "<tt><small>{calendar}</small></tt>";
                         calendar = {
                           mode = "year";
@@ -403,30 +488,37 @@
                       };
 
                       cpu = {
-                        format = " {usage}%";
+                        interval = 1;
+                        format = "CPU {usage}%";
+                        format-alt = "CPU {avg_frequency} GHz";
                         tooltip = false;
+                        on-click = "kitty -e htop";
                       };
 
                       memory = {
-                        format = " {}%";
+                        interval = 1;
+                        format = "RAM {}%";
+                        format-alt = "RAM {used:0.1f}G/{total:0.1f}G";
+                        on-click = "kitty -e htop";
                       };
 
                       network = {
-                        format-wifi = "  {signalStrength}%";
-                        format-ethernet = " {ipaddr}/{cidr}";
-                        tooltip-format = "{ifname} via {gwaddr}";
-                        format-linked = " {ifname} (No IP)";
-                        format-disconnected = "⚠ Disconnected";
+                        interval = 1;
+                        format-wifi = "WiFi {signalStrength}%";
+                        format-ethernet = "Ethernet";
+                        format-linked = "{ifname}";
+                        format-disconnected = "Disconnected";
                         format-alt = "{ifname}: {ipaddr}/{cidr}";
+                        tooltip-format = "{ifname} via {gwaddr}";
+                        max-length = 50;
+                        on-click = "nm-connection-editor";
                       };
 
                       pulseaudio = {
-                        format = "{volume}% {icon} {format_source}";
-                        format-bluetooth = "{volume}% {icon} {format_source}";
-                        format-bluetooth-muted = " {icon} {format_source}";
-                        format-muted = " {format_source}";
-                        format-source = " {volume}%";
-                        format-source-muted = "";
+                        format = "{volume}% {icon}";
+                        format-bluetooth = "{volume}% {icon}";
+                        format-bluetooth-muted = " {icon}";
+                        format-muted = " {icon}";
                         format-icons = {
                           headphone = "";
                           hands-free = "";
@@ -437,6 +529,26 @@
                           default = ["" "" ""];
                         };
                         on-click = "pavucontrol";
+                        on-click-right = "pamixer -t";
+                        scroll-step = 1;
+                      };
+
+                      battery = {
+                        states = {
+                          warning = 30;
+                          critical = 15;
+                        };
+                        format = "{capacity}% {icon}";
+                        format-charging = "{capacity}% ";
+                        format-plugged = "{capacity}% ";
+                        format-alt = "{time} {icon}";
+                        format-icons = ["" "" "" "" "" ""];
+                        on-click = "kitty -e htop";
+                      };
+
+                      tray = {
+                        icon-size = 21;
+                        spacing = 10;
                       };
                     };
                   };
@@ -445,75 +557,156 @@
                     * {
                       border: none;
                       border-radius: 0;
-                      font-family: JetBrains Mono, Helvetica, Arial, sans-serif;
-                      font-size: 14px;
+                      font-family: "JetBrains Mono", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+                      font-size: 13px;
+                      font-weight: 500;
                       min-height: 0;
                     }
 
                     window#waybar {
-                      background: rgba(43, 48, 59, 0.5);
-                      border-bottom: 3px solid rgba(100, 114, 125, 0.5);
+                      background: rgba(30, 30, 30, 0.95);
                       color: #ffffff;
+                      border-radius: 8px;
+                      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
                       transition-property: background-color;
-                      transition-duration: .5s;
+                      transition-duration: 0.3s;
+                    }
+
+                    #workspaces {
+                      background: rgba(0, 0, 0, 0.2);
+                      border-radius: 6px;
+                      margin: 4px 8px;
+                      padding: 0 4px;
                     }
 
                     #workspaces button {
-                      padding: 0 5px;
-                      background-color: transparent;
-                      color: #ffffff;
-                      border-bottom: 3px solid transparent;
+                      padding: 4px 8px;
+                      margin: 2px 1px;
+                      background: transparent;
+                      color: #888888;
+                      border-radius: 4px;
+                      transition: all 0.2s ease;
                     }
 
                     #workspaces button:hover {
-                      background: rgba(0, 0, 0, 0.2);
-                      box-shadow: inset 0 -3px #ffffff;
-                      border-bottom: 3px solid #ffffff;
+                      background: rgba(255, 255, 255, 0.1);
+                      color: #ffffff;
                     }
 
-                    #workspaces button.focused {
-                      background-color: #64727D;
-                      border-bottom: 3px solid #ffffff;
+                    #workspaces button.active {
+                      background: rgba(255, 255, 255, 0.2);
+                      color: #ffffff;
+                    }
+
+                    #workspaces button.urgent {
+                      background: rgba(255, 100, 100, 0.8);
+                      color: #ffffff;
                     }
 
                     #mode {
-                      background-color: #64727D;
-                      border-bottom: 3px solid #ffffff;
+                      background: rgba(255, 100, 100, 0.8);
+                      color: #ffffff;
+                      padding: 4px 8px;
+                      border-radius: 4px;
+                      margin: 4px 8px;
                     }
 
-                    #clock,
-                    #battery,
+                    #window {
+                      padding: 0 12px;
+                      color: #ffffff;
+                      font-weight: 400;
+                    }
+
+                    #clock {
+                      background: rgba(0, 0, 0, 0.2);
+                      color: #ffffff;
+                      padding: 4px 12px;
+                      border-radius: 6px;
+                      margin: 4px 8px;
+                      font-weight: 600;
+                    }
+
                     #cpu,
                     #memory,
                     #network,
                     #pulseaudio,
-                    #tray,
-                    #mode,
-                    #idle_inhibitor {
-                      padding: 0 10px;
+                    #battery {
+                      background: rgba(0, 0, 0, 0.2);
                       color: #ffffff;
+                      padding: 4px 12px;
+                      border-radius: 6px;
+                      margin: 4px 4px;
+                      transition: all 0.2s ease;
                     }
 
-                    #battery.charging, #battery.plugged {
-                      color: #ffffff;
-                      background-color: #26A65B;
+                    #cpu:hover,
+                    #memory:hover,
+                    #network:hover,
+                    #pulseaudio:hover,
+                    #battery:hover {
+                      background: rgba(255, 255, 255, 0.1);
+                    }
+
+                    #cpu {
+                      color: #7aa2f7;
+                    }
+
+                    #memory {
+                      color: #bb9af7;
+                    }
+
+                    #network {
+                      color: #7dcfff;
+                    }
+
+                    #pulseaudio {
+                      color: #f7768e;
+                    }
+
+                    #battery {
+                      color: #9ece6a;
+                    }
+
+                    #battery.charging {
+                      color: #9ece6a;
+                    }
+
+                    #battery.warning {
+                      color: #e0af68;
+                    }
+
+                    #battery.critical {
+                      color: #f7768e;
+                      animation: blink 1s infinite;
+                    }
+
+                    #tray {
+                      background: rgba(0, 0, 0, 0.2);
+                      border-radius: 6px;
+                      margin: 4px 8px;
+                      padding: 0 8px;
+                    }
+
+                    #tray > * {
+                      padding: 0 4px;
                     }
 
                     @keyframes blink {
-                      to {
-                        background-color: #ffffff;
-                        color: #000000;
-                      }
+                      0%, 50% { opacity: 1; }
+                      51%, 100% { opacity: 0.3; }
                     }
 
-                    #battery.critical:not(.charging) {
-                      background-color: #f53c3c;
+                    /* Tooltip styling */
+                    tooltip {
+                      background: rgba(30, 30, 30, 0.95);
+                      border: 1px solid rgba(255, 255, 255, 0.1);
+                      border-radius: 6px;
                       color: #ffffff;
-                      animation-name: blink;
-                      animation-duration: 0.5s;
-                      animation-timing-function: linear;
-                      animation-iteration-count: infinite;
-                      animation-direction: alternate;
+                      padding: 8px;
+                    }
+
+                    tooltip label {
+                      color: #ffffff;
                     }
                   '';
                 };
@@ -632,26 +825,36 @@
                       "float,title:^(1Password)$"
                     ];
 
-                    # Keybindings
+                    # Keybindings - macOS-style
                     "$mainMod" = "SUPER";
+                    "$altMod" = "ALT";
                     bind = [
-                      # Basic bindings
-                      "$mainMod, Q, exec, kitty"
-                      "$mainMod, C, killactive,"
-                      "$mainMod, M, exit,"
-                      "$mainMod, E, exec, thunar"
-                      "$mainMod, V, togglefloating,"
-                      "$mainMod, R, exec, wofi --show drun"
-                      "$mainMod, P, pseudo, # dwindle"
-                      "$mainMod, J, togglesplit, # dwindle"
+                      # Basic bindings (macOS-style)
+                      "$mainMod, Q, killactive," # Close window (like Cmd+W)
+                      "$mainMod, M, exit," # Quit Hyprland
+                      "$mainMod, SPACE, exec, wofi --show drun" # Spotlight equivalent
+                      "$mainMod, TAB, cyclenext," # Switch between windows
+                      "$mainMod SHIFT, TAB, cyclenext, prev" # Switch between windows (reverse)
+                      "$mainMod, RETURN, exec, kitty" # Open terminal
+                      "$mainMod, E, exec, thunar" # Open file manager
+                      "$mainMod, V, togglefloating," # Toggle floating
+                      "$mainMod, F, fullscreen," # Toggle fullscreen
+                      "$mainMod, H, movetoworkspace, -1" # Hide window (move to previous workspace)
+                      "$mainMod, L, exec, swaylock" # Lock screen
 
-                      # Move focus with mainMod + arrow keys
+                      # Window management (macOS-style)
                       "$mainMod, left, movefocus, l"
                       "$mainMod, right, movefocus, r"
                       "$mainMod, up, movefocus, u"
                       "$mainMod, down, movefocus, d"
 
-                      # Switch workspaces with mainMod + [0-9]
+                      # Window resizing (macOS-style)
+                      "$mainMod SHIFT, left, movewindow, l"
+                      "$mainMod SHIFT, right, movewindow, r"
+                      "$mainMod SHIFT, up, movewindow, u"
+                      "$mainMod SHIFT, down, movewindow, d"
+
+                      # Workspace management (macOS-style)
                       "$mainMod, 1, workspace, 1"
                       "$mainMod, 2, workspace, 2"
                       "$mainMod, 3, workspace, 3"
@@ -663,7 +866,7 @@
                       "$mainMod, 9, workspace, 9"
                       "$mainMod, 0, workspace, 10"
 
-                      # Move active window to a workspace with mainMod + SHIFT + [0-9]
+                      # Move windows to workspaces (macOS-style)
                       "$mainMod SHIFT, 1, movetoworkspace, 1"
                       "$mainMod SHIFT, 2, movetoworkspace, 2"
                       "$mainMod SHIFT, 3, movetoworkspace, 3"
@@ -675,28 +878,35 @@
                       "$mainMod SHIFT, 9, movetoworkspace, 9"
                       "$mainMod SHIFT, 0, movetoworkspace, 10"
 
-                      # Scroll through existing workspaces with mainMod + scroll
-                      "$mainMod, mouse_down, workspace, e+1"
-                      "$mainMod, mouse_up, workspace, e-1"
+                      # Mission Control equivalent (workspace overview)
+                      "$mainMod, D, togglespecialworkspace, magic"
+                      "$mainMod SHIFT, D, movetoworkspace, special:magic"
 
-                      # Screenshot bindings
-                      ", Print, exec, grim ~/Pictures/screenshot-$(date +%Y%m%d_%H%M%S).png"
-                      "$mainMod, Print, exec, grim -g \"$(slurp)\" ~/Pictures/screenshot-$(date +%Y%m%d_%H%M%S).png"
+                      # Screenshot bindings (macOS-style)
+                      "$mainMod SHIFT, 3, exec, grim ~/Pictures/screenshot-$(date +%Y%m%d_%H%M%S).png" # Full screen
+                      "$mainMod SHIFT, 4, exec, grim -g \"$(slurp)\" ~/Pictures/screenshot-$(date +%Y%m%d_%H%M%S).png" # Selection
+                      "$mainMod SHIFT, 5, exec, grim -g \"$(slurp -o)\" ~/Pictures/screenshot-$(date +%Y%m%d_%H%M%S).png" # Window
 
-                      # Application shortcuts
-                      "$mainMod, B, exec, firefox"
-                      "$mainMod, S, exec, slack"
-                      "$mainMod, O, exec, obsidian"
-                      "$mainMod, L, exec, swaylock"
+                      # Application shortcuts (macOS-style)
+                      "$mainMod, B, exec, firefox" # Browser
+                      "$mainMod, S, exec, slack" # Slack
+                      "$mainMod, O, exec, obsidian" # Obsidian
+
+                      # Window layout (macOS-style)
+                      "$mainMod, P, pseudo," # Toggle pseudo-tiling
+                      "$mainMod, J, togglesplit," # Toggle split direction
+
+                      # Quick look equivalent
+                      "$mainMod, Y, exec, thunar --daemon" # Quick file manager
                     ];
 
-                    # Mouse bindings
+                    # Mouse bindings (macOS-style)
                     bindm = [
-                      "$mainMod, mouse:272, movewindow"
-                      "$mainMod, mouse:273, resizewindow"
+                      "$mainMod, mouse:272, movewindow" # Move window with Super + left mouse
+                      "$mainMod, mouse:273, resizewindow" # Resize window with Super + right mouse
                     ];
 
-                    # Media keys
+                    # Media keys (macOS-style)
                     bindel = [
                       ", XF86AudioRaiseVolume, exec, pamixer -i 5"
                       ", XF86AudioLowerVolume, exec, pamixer -d 5"
@@ -704,16 +914,25 @@
                       ", XF86AudioMicMute, exec, pamixer --default-source -t"
                       ", XF86MonBrightnessUp, exec, brightnessctl s 10%+"
                       ", XF86MonBrightnessDown, exec, brightnessctl s 10%-"
+                      # macOS-style media controls
+                      ", XF86AudioPlay, exec, playerctl play-pause"
+                      ", XF86AudioNext, exec, playerctl next"
+                      ", XF86AudioPrev, exec, playerctl previous"
                     ];
 
-                    # Auto-start applications
+                    # Auto-start applications with improved sleep handling
                     exec-once = [
                       "waybar"
                       "mako"
                       "nm-applet --indicator"
                       "blueman-applet"
                       "1password --silent"
-                      "swayidle -w timeout 300 'swaylock -f -c 000000' timeout 600 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on' before-sleep 'swaylock -f -c 000000'"
+                      # Improved idle and sleep handling
+                      "swayidle -w timeout 300 'swaylock -f -c 000000' timeout 600 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on' before-sleep 'swaylock -f -c 000000' after-resume 'hyprctl dispatch dpms on'"
+                      # Ensure proper display handling
+                      "hyprctl dispatch dpms on"
+                      # Start wl-pasteboard for clipboard
+                      "wl-pasteboard"
                     ];
                   };
                 };

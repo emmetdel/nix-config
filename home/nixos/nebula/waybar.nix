@@ -46,13 +46,13 @@
         };
 
         "hyprland/submap" = {
-          format = "✌️ {}";
+          format = " {}";
           max-length = 8;
           tooltip = false;
         };
 
         "hyprland/window" = {
-          format = "👉 {}";
+          format = " {}";
           separate-outputs = true;
           max-length = 60;
         };
@@ -119,7 +119,7 @@
           format-ethernet = " {bandwidthDownBits}";
           tooltip-format = " {ifname} via {gwaddr}";
           format-linked = " {ifname} (No IP)";
-          format-disconnected = "⚠ Disconnected";
+          format-disconnected = " Disconnected";
           format-alt = "{ifname}: {ipaddr}/{cidr}";
           interval = 5;
           on-click-right = "nm-connection-editor";
@@ -128,7 +128,7 @@
         pulseaudio = {
           format = "{icon} {volume}%";
           format-bluetooth = " {volume}% {icon}";
-          format-bluetooth-muted = "  {icon}";
+          format-bluetooth-muted = " {icon}";
           format-muted = " ";
           format-icons = {
             headphone = "";
@@ -172,15 +172,14 @@
       * {
         border: none;
         border-radius: 0;
-        font-family: "Font Awesome 6 Free", "JetBrains Mono", "Symbols Nerd Font", monospace;
+        font-family: "FontAwesome", "JetBrains Mono", monospace;
         font-size: 14px;
         font-weight: bold;
         min-height: 0;
       }
 
       window#waybar {
-        background: rgba(30, 30, 46, 0.75);
-        opacity: 0.95;
+        background: rgba(30, 30, 46, 0.85);
         border: 2px solid rgba(137, 180, 250, 0.3);
         color: #cdd6f4;
         transition-property: background-color;

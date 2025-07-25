@@ -179,8 +179,8 @@
       }
 
       window#waybar {
-        background: rgba(30, 30, 46, 0.85);
-        backdrop-filter: blur(10px);
+        background: rgba(30, 30, 46, 0.75);
+        opacity: 0.95;
         border: 2px solid rgba(137, 180, 250, 0.3);
         color: #cdd6f4;
         transition-property: background-color;

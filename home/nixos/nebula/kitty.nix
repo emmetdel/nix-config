@@ -7,7 +7,7 @@
     enable = true;
     settings = {
       font_family = "JetBrains Mono";
-      font_size = 12;
+      font_size = 16;
       cursor_shape = "beam";
       cursor_blink_interval = 0;
       mouse_hide_wait = 2;

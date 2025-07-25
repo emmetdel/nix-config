@@ -26,16 +26,16 @@
           warp-on-scroll = false;
           format = "{icon}";
           format-icons = {
-            "1" = "󰆍"; # Terminal/Development
-            "2" = "󰖟"; # Web Browser
-            "3" = "󰉋"; # File Manager
-            "4" = "󰕧"; # Media/Video
-            "5" = "󰭹"; # Communication/Chat
-            "6" = "󰊴"; # Gaming
-            "7" = "󰈙"; # Documents/Office
-            "8" = "󰎆"; # Music/Audio
-            "9" = "󰒓"; # Settings/System
-            "10" = "󰐕"; # Miscellaneous
+            "1" = ""; # Terminal
+            "2" = ""; # Browser
+            "3" = ""; # Files
+            "4" = ""; # Video
+            "5" = ""; # Chat
+            "6" = ""; # Games
+            "7" = ""; # Documents
+            "8" = ""; # Music
+            "9" = ""; # Settings
+            "10" = ""; # Misc
             urgent = "";
             focused = "";
             default = "";
@@ -157,7 +157,7 @@
           format-charging = " {capacity}%";
           format-plugged = " {capacity}%";
           format-alt = "{time} {icon}";
-          format-icons = ["󰂎" "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
+          format-icons = ["" "" "" "" ""];
           tooltip-format = "{timeTo}, {capacity}%";
         };
 
@@ -172,7 +172,7 @@
       * {
         border: none;
         border-radius: 0;
-        font-family: "JetBrains Mono Nerd Font", "JetBrains Mono", monospace;
+        font-family: "Font Awesome 6 Free", "JetBrains Mono", "Symbols Nerd Font", monospace;
         font-size: 14px;
         font-weight: bold;
         min-height: 0;

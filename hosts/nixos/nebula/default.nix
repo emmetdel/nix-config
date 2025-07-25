@@ -192,6 +192,9 @@
     noto-fonts-emoji
     liberation_ttf
     jetbrains-mono
+    font-awesome
+    material-design-icons
+    nerd-fonts.jetbrains-mono
   ];
 
   # ============================================================================

@@ -229,13 +229,9 @@
             # Fonts for development
             fonts.packages = with pkgs; [
               noto-fonts
-              noto-fonts-cjk
+              noto-fonts-cjk-sans
               noto-fonts-emoji
               liberation_ttf
-              fira-code
-              fira-code-symbols
-              jetbrains-mono
-              (nerdfonts.override {fonts = ["FiraCode" "DroidSansMono" "JetBrainsMono"];})
             ];
 
             # Enable nix flakes and new command-line tool
@@ -510,14 +506,16 @@
                 # Mako notification service
                 services.mako = {
                   enable = true;
-                  backgroundColor = "#2b303b";
-                  borderColor = "#65737e";
-                  borderRadius = 5;
-                  borderSize = 2;
-                  textColor = "#c0c5ce";
-                  font = "JetBrains Mono 12";
-                  defaultTimeout = 5000;
-                  groupBy = "summary";
+                  settings = {
+                    background-color = "#2b303b";
+                    border-color = "#65737e";
+                    border-radius = 5;
+                    border-size = 2;
+                    text-color = "#c0c5ce";
+                    font = "JetBrains Mono 12";
+                    default-timeout = 5000;
+                    group-by = "summary";
+                  };
                 };
 
                 # GTK theming

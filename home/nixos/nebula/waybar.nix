@@ -199,7 +199,6 @@
       button:hover {
         background: rgba(137, 180, 250, 0.2);
         box-shadow: inset 0 -3px rgba(137, 180, 250, 0.5);
-        transform: translateY(-1px);
       }
 
       #workspaces {

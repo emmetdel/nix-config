@@ -172,7 +172,7 @@
       * {
         border: none;
         border-radius: 0;
-        font-family: "FontAwesome", "JetBrains Mono", monospace;
+        font-family: "Font Awesome 6 Free", "JetBrains Mono", monospace;
         font-size: 14px;
         font-weight: bold;
         min-height: 0;

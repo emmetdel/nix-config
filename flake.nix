@@ -88,6 +88,20 @@
               jack.enable = true;
             };
 
+            # Bluetooth
+            hardware.bluetooth = {
+              enable = true;
+              powerOnBoot = true;
+              settings = {
+                General = {
+                  Enable = "Source,Sink,Media,Socket";
+                  Experimental = true;
+                };
+              };
+            };
+            services.bluetooth.enable = true;
+            services.blueman.enable = true;
+
             # Hyprland Desktop Environment
             programs.hyprland = {
               enable = true;

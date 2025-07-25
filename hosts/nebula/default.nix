@@ -823,11 +823,13 @@
               passes = 1;
               vibrancy = 0.1696;
             };
-            drop_shadow = true;
-            shadow_range = 4;
-            shadow_render_power = 3;
-            shadow_offset = "0 2";
-            "col.shadow" = "rgba(1a1a1aee)";
+            shadow = {
+              enabled = true;
+              color = "rgba(1a1a1aee)";
+              range = 4;
+              render_power = 3;
+              offset = "0 2";
+            };
           };
 
           # Animations

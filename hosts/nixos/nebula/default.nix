@@ -253,6 +253,7 @@
         ../../../home/nixos/nebula/firefox.nix
         ../../../home/nixos/nebula/wlogout.nix
         ../../../home/nixos/nebula/hyprlock.nix
+        ../../../home/nixos/nebula/hyprpaper.nix
       ];
     };
   };

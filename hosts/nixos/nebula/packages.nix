@@ -44,6 +44,7 @@
     wofi # Application launcher
     mako # Notification daemon
     hyprlock # Screen locker for Hyprland
+    hyprpaper # Wallpaper manager for Hyprland
     swayidle # Idle management
     wlogout # Logout menu
     grim # Screenshot functionality

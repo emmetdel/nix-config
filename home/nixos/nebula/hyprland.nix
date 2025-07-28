@@ -6,8 +6,10 @@
   wayland.windowManager.hyprland = {
     enable = true;
     settings = {
-      # Monitor configuration (adjust as needed)
-      monitor = ",preferred,auto,auto";
+      # Monitor configuration - Optimized for Huawei MateView GT 34" (ZQE-CAA)
+      # Use DisplayPort for full 165Hz, HDMI limited to 100Hz
+      monitor = "DP-1,3440x1440@165,0x0,1";
+      # Fallback for HDMI: "HDMI-A-1,3440x1440@100,0x0,1"
 
       # Environment variables
       env = [
@@ -29,65 +31,120 @@
         sensitivity = 0;
       };
 
-      # General settings
+      # General settings - Optimized for ultrawide
       general = {
-        gaps_in = 5;
-        gaps_out = 10;
+        gaps_in = 8;
+        gaps_out = 16;
         border_size = 2;
         "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
         "col.inactive_border" = "rgba(595959aa)";
         layout = "dwindle";
         allow_tearing = false;
+        resize_on_border = true;
       };
 
-      # Decoration
+      # Decoration - Optimized for high refresh rate and ultrawide
       decoration = {
-        rounding = 10;
+        rounding = 8;
         blur = {
           enabled = true;
-          size = 3;
-          passes = 1;
+          size = 6;
+          passes = 2;
           vibrancy = 0.1696;
+          new_optimizations = true;
         };
         shadow = {
           enabled = true;
           color = "rgba(1a1a1aee)";
-          range = 4;
+          range = 12;
           render_power = 3;
           offset = "0 2";
         };
       };
 
-      # Animations
+      # Animations - Tuned for 165Hz performance
       animations = {
         enabled = true;
         bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
         animation = [
-          "windows, 1, 7, myBezier"
-          "windowsOut, 1, 7, default, popin 80%"
-          "border, 1, 10, default"
-          "borderangle, 1, 8, default"
-          "fade, 1, 7, default"
-          "workspaces, 1, 6, default"
+          "windows, 1, 5, myBezier"
+          "windowsOut, 1, 5, default, popin 80%"
+          "border, 1, 8, default"
+          "borderangle, 1, 6, default"
+          "fade, 1, 5, default"
+          "workspaces, 1, 4, default"
         ];
       };
 
-      # Layout
+      # Layout - Optimized for ultrawide aspect ratio
       dwindle = {
         pseudotile = true;
         preserve_split = true;
+        force_split = 2; # Always split to the right on ultrawide
+        smart_split = true;
+        smart_resizing = true;
       };
 
-      # Window rules
+      # Master layout alternative (great for ultrawide)
+      master = {
+        new_status = "master";
+        mfact = 0.65; # Adjusted for 21:9 aspect ratio
+        orientation = "left";
+        always_center_master = true;
+        smart_resizing = true;
+      };
+
+      # Miscellaneous settings for gaming and performance
+      misc = {
+        vrr = 1; # Variable refresh rate for gaming
+        vfr = true; # Variable frame rate
+        force_default_wallpaper = 0;
+        disable_hyprland_logo = true;
+        disable_splash_rendering = true;
+        mouse_move_enables_dpms = true;
+        key_press_enables_dpms = true;
+      };
+
+      # Window rules - Enhanced for ultrawide productivity
       windowrulev2 = [
         "float,class:^(pavucontrol)$"
         "float,class:^(blueman-manager)$"
         "float,class:^(nm-applet)$"
         "float,class:^(nm-connection-editor)$"
         "float,title:^(1Password)$"
+
+        # Ultrawide-specific rules
+        "size 1147 1440,class:^(thunar)$,floating:1" # 1/3 width for file manager
+        "center,class:^(thunar)$,floating:1"
+
+        # Gaming optimizations
+        "immediate,class:^(steam_app_).*" # Immediate mode for Steam games
+        "fullscreen,class:^(steam_app_).*"
+
+        # Browser optimizations for ultrawide
+        "maxsize 2580 1440,class:^(firefox)$" # Prevent browser from being too wide
+        "center,class:^(firefox)$"
+
+        # IDE/Editor optimizations
+        "maxsize 2860 1440,class:^(code)$" # VS Code optimal width
+        "maxsize 2860 1440,class:^(obsidian)$"
       ];
 
-      # Keybindings - macOS-style
+      # Workspace rules for ultrawide organization
+      workspace = [
+        "1,monitor:DP-1,default:true"
+        "2,monitor:DP-1"
+        "3,monitor:DP-1"
+        "4,monitor:DP-1"
+        "5,monitor:DP-1"
+        "6,monitor:DP-1"
+        "7,monitor:DP-1"
+        "8,monitor:DP-1"
+        "9,monitor:DP-1"
+        "10,monitor:DP-1"
+      ];
+
+      # Keybindings - macOS-style (kept as requested)
       "$mainMod" = "SUPER";
       "$altMod" = "ALT";
       bind = [
@@ -207,7 +264,7 @@
         ", XF86AudioPrev, exec, playerctl previous"
       ];
 
-      # Auto-start applications with improved sleep handling
+      # Auto-start applications - Enhanced for ultrawide setup
       exec-once = [
         "waybar"
         "mako"
@@ -220,6 +277,8 @@
         "hyprctl dispatch dpms on"
         # Start wl-clipboard daemon
         "wl-paste --watch cliphist store"
+        # Gaming performance daemon (optional)
+        # "gamemode"
       ];
     };
   };

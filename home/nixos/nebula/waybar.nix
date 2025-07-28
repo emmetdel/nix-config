@@ -57,13 +57,13 @@
           max-length = 60;
         };
 
-        "idle_inhibitor" = {
-          format = "{icon}";
-          format-icons = {
-            activated = "☕";
-            deactivated = "💤";
-          };
-        };
+        # "idle_inhibitor" = {
+        #   format = "{icon}";
+        #   format-icons = {
+        #     activated = "☕";
+        #     deactivated = "💤";
+        #   };
+        # };
 
         clock = {
           timezone = "Europe/Dublin";
@@ -96,14 +96,14 @@
           format = "💻 {usage}%";
           tooltip = false;
           interval = 1;
-          on-click = "kitty -e htop";
+          # on-click = "kitty -e htop";
         };
 
         memory = {
           format = "🧠 {}%";
           tooltip-format = "Memory: {used:0.1f}G/{total:0.1f}G";
           interval = 1;
-          on-click = "kitty -e htop";
+          # on-click = "kitty -e htop";
         };
 
         temperature = {

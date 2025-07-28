@@ -252,6 +252,7 @@
         ../../../home/nixos/nebula/gtk.nix
         ../../../home/nixos/nebula/firefox.nix
         ../../../home/nixos/nebula/wlogout.nix
+        ../../../home/nixos/nebula/hyprlock.nix
       ];
     };
   };

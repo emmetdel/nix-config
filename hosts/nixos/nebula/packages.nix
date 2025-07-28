@@ -43,7 +43,7 @@
     waybar # Status bar
     wofi # Application launcher
     mako # Notification daemon
-    swaylock-effects # Enhanced screen locker with effects
+    hyprlock # Screen locker for Hyprland
     swayidle # Idle management
     wlogout # Logout menu
     grim # Screenshot functionality

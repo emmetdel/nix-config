@@ -102,7 +102,7 @@
         "$mainMod, V, togglefloating," # Toggle floating
         "$mainMod, F, fullscreen," # Toggle fullscreen
         "$mainMod, H, movetoworkspace, -1" # Hide window (move to previous workspace)
-        "$mainMod, L, exec, swaylock-effects --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color 00ff00 --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --fade-in 0.1" # Lock screen
+        "$mainMod, L, exec, hyprlock" # Lock screen
         "$mainMod SHIFT, L, exec, wlogout" # Power menu
 
         # Window management (macOS-style)
@@ -215,7 +215,7 @@
         "blueman-applet"
         "1password --silent"
         # Improved idle and sleep handling with better lock screen
-        "swayidle -w timeout 300 'swaylock-effects --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color 00ff00 --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --fade-in 0.1' timeout 600 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on' before-sleep 'swaylock-effects --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color 00ff00 --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --fade-in 0.1' after-resume 'hyprctl dispatch dpms on'"
+        "swayidle -w timeout 300 'hyprlock' timeout 600 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on' before-sleep 'hyprlock' after-resume 'hyprctl dispatch dpms on'"
         # Ensure proper display handling
         "hyprctl dispatch dpms on"
         # Start wl-clipboard daemon

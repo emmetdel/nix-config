@@ -90,7 +90,6 @@
         new_status = "master";
         mfact = 0.65; # Adjusted for 21:9 aspect ratio
         orientation = "left";
-        always_center_master = true;
         smart_resizing = true;
       };
 

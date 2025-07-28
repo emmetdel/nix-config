@@ -76,13 +76,14 @@
         ];
       };
 
-      # Layout - Optimized for ultrawide aspect ratio
+      # Layout - Optimized for ultrawide aspect ratio (vertical tiling)
       dwindle = {
         pseudotile = true;
         preserve_split = true;
-        force_split = 2; # Always split to the right on ultrawide
+        force_split = 1; # Always split down (vertical stacking)
         smart_split = true;
         smart_resizing = true;
+        split_width_multiplier = 1.2; # Wider windows when they do split horizontally
       };
 
       # Master layout alternative (great for ultrawide)

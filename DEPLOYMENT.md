@@ -16,9 +16,30 @@ Your NixOS flake migration is **complete and tested**! All files have been creat
 ✅ Backed up original configuration  
 ✅ Validated flake configuration (no errors!)
 
+## ⚠️ Important: VSCode Terminal Limitation
+
+If you're running commands from VSCode's integrated terminal, you may encounter permission errors with `sudo`. **This is normal!**
+
+**Solution**: Open a real terminal application (outside VSCode) to run the deployment commands.
+
 ## 📋 Deployment Steps
 
-### Step 1: Review Your Configuration
+### Step 1: Open a Real Terminal
+
+**Don't use VSCode's integrated terminal for these commands.**
+
+Options:
+- Press `Ctrl + Alt + T` to open GNOME Terminal
+- Or search for "Terminal" in your application menu
+- Or switch to a TTY with `Ctrl + Alt + F2` (switch back with `Ctrl + Alt + F1`)
+
+### Step 2: Navigate to Your Config Directory
+
+```bash
+cd ~/code/personal/nix-config
+```
+
+### Step 3: Review Your Configuration
 
 Before deploying, take a moment to review key files:
 
@@ -35,7 +56,7 @@ cat home/emmetdelaney/packages.nix
 
 **Important**: Update your git email in [`home/emmetdelaney/default.nix`](home/emmetdelaney/default.nix:27) if needed (currently set to `emmetdel@gmail.com`).
 
-### Step 2: Commit Your Changes
+### Step 4: Commit Your Changes
 
 Since flakes require files to be tracked by git:
 
@@ -47,43 +68,42 @@ git add .
 git commit -m "Migrate to modular flake-based config with Hyprland and omarchy-nix"
 ```
 
-### Step 3: Test Build (Recommended)
+### Step 5: Deploy Options
 
-Build the new system without activating it:
+You have two deployment options:
 
-```bash
-sudo nixos-rebuild build --flake .#helios
-```
+#### Option A: Direct Switch (Recommended for NixOS)
 
-This creates the system closure but doesn't activate it. If successful, you'll see the build output without errors.
-
-### Step 4: Test Activation (Optional but Recommended)
-
-Temporarily activate the new configuration without making it permanent:
-
-```bash
-sudo nixos-rebuild test --flake .#helios
-```
-
-**What happens**: The new configuration is activated but won't persist after reboot. This is perfect for testing.
-
-**Important**: After running `test`, you'll still be in your current GNOME session. The changes will take effect on next login/reboot.
-
-### Step 5: Deploy the New Configuration
-
-When you're ready to make it permanent:
+Since the build already succeeded, you can directly switch:
 
 ```bash
 sudo nixos-rebuild switch --flake .#helios
 ```
 
-**What happens**: 
-- New system configuration is built
-- New generation is added to boot menu
-- System services are restarted as needed
-- Changes take effect immediately
+This will:
+- Build the new system (should be instant since it's cached)
+- Activate the new configuration
+- Add it to your boot menu
+- Restart necessary services
+
+#### Option B: Boot Method (Safest)
+
+If you want maximum safety, use the boot option:
+
+```bash
+sudo nixos-rebuild boot --flake .#helios
+```
+
+Then reboot:
+```bash
+sudo reboot
+```
+
+This way, the new config only takes effect after reboot, and you can always select the previous generation from the boot menu if needed.
 
 ### Step 6: Reboot
+
+After running switch or boot:
 
 ```bash
 sudo reboot
@@ -230,6 +250,17 @@ The current setup uses a blue/cyan accent theme. To change colors:
 3. Edit Mako notification colors in [`home/emmetdelaney/hyprland.nix`](home/emmetdelaney/hyprland.nix:243)
 
 ## 🚨 Troubleshooting
+
+### Permission Errors When Running sudo
+
+**Symptoms**: "no new privileges flag is set" or "Interactive authentication required"
+
+**Cause**: Running from VSCode integrated terminal or similar environment
+
+**Solution**: 
+1. Open a real terminal application (GNOME Terminal, Konsole, etc.)
+2. Navigate to your config directory
+3. Run the commands from there
 
 ### Hyprland Won't Start
 
@@ -383,8 +414,10 @@ Your NixOS system is configured and ready to deploy. The new setup provides:
 - 🔄 Reproducible builds with flakes
 - 🏠 User configuration with home-manager
 
-**When ready, run**:
+**When ready, open a real terminal (not VSCode) and run**:
 ```bash
+cd ~/code/personal/nix-config
+git add . && git commit -m "Migrate to Hyprland with omarchy"
 sudo nixos-rebuild switch --flake .#helios
 sudo reboot
 ```

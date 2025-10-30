@@ -1,129 +1,203 @@
-# Dotfiles
+# NixOS Flake Configuration with Hyprland & Omarchy
 
-A modular NixOS and nix-darwin configuration with space-themed naming.
+This repository contains a modular, flake-based NixOS configuration for the "helios" system, featuring Hyprland window manager with omarchy-nix theming.
 
-## Overview
+## 📋 Documentation
 
-This repository contains a modular Nix configuration for managing both NixOS and macOS (via nix-darwin) systems. It uses the Nix Flakes feature for reproducible builds and easy deployment.
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Detailed architecture design and rationale
+- **[STRUCTURE.md](STRUCTURE.md)** - Project structure and component relationships
+- **[MIGRATION.md](MIGRATION.md)** - Step-by-step migration guide with troubleshooting
+- **[IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md)** - Implementation checklist and timeline
 
-The configuration is organized into modules that can be composed to create different system configurations. Each module is designed to be configurable and reusable.
+## 🎯 Overview
 
-## Repository Structure
+### Current Setup
+- **Desktop**: GNOME with GDM
+- **Packages**: vim, wget, code-cursor, git, zed-editor, vscode-fhs, firefox
+- **Configuration**: Single `configuration.nix` file
+
+### Target Setup
+- **Desktop**: Hyprland (tiling Wayland compositor) with SDDM
+- **Theme**: omarchy-nix aesthetic
+- **Packages**: All current packages preserved + Hyprland essentials
+- **Configuration**: Modular flake-based structure
+
+## 📁 Project Structure
 
 ```
-.
-├── flake.nix                # Main entry point for the flake
-├── home/                    # Home Manager configurations
-│   ├── common/              # Shared home-manager configurations
-│   ├── darwin/              # macOS-specific home-manager configurations
-│   └── nixos/               # NixOS-specific home-manager configurations
-├── hosts/                   # Host-specific configurations
-│   ├── darwin/              # macOS host configurations
-│   │   ├── meteor/          # Configuration for 'meteor' macOS machine
-│   │   └── quasar/          # Configuration for 'quasar' macOS machine
-│   └── nixos/               # NixOS host configurations
-│       ├── comet/           # Configuration for 'comet' NixOS machine (laptop)
-│       ├── nebula/          # Configuration for 'nebula' NixOS machine (desktop)
-│       └── pulsar/          # Configuration for 'pulsar' NixOS machine (server)
-└── modules/                 # Reusable modules
-    ├── darwin/              # macOS-specific modules
-    │   └── system/          # macOS system configuration
-    ├── nixos/               # NixOS-specific modules
-    │   ├── packages/        # Package management
-    │   ├── security/        # Security settings
-    │   ├── services/        # Service configuration
-    │   └── system/          # System configuration
-    └── packages.nix         # Centralized package definitions
+nix-config/
+├── flake.nix                    # Main flake entry point
+├── flake.lock                   # Flake dependencies
+├── hardware-configuration.nix   # Hardware config (preserved)
+│
+├── hosts/helios/                # Host-specific configuration
+│   ├── default.nix
+│   └── hardware.nix
+│
+├── modules/                     # Reusable modules
+│   ├── system/                  # System configuration
+│   │   ├── boot.nix
+│   │   ├── networking.nix
+│   │   ├── locale.nix
+│   │   └── sound.nix
+│   └── desktop/                 # Desktop environment
+│       ├── hyprland.nix
+│       └── display-manager.nix
+│
+└── home/emmetdelaney/          # User configuration
+    ├── default.nix
+    ├── packages.nix
+    └── hyprland.nix
 ```
 
-## Features
+## 🚀 Quick Start (After Implementation)
 
-- **Modular Design**: Each aspect of the configuration is separated into modules that can be composed.
-- **Multi-Platform Support**: Works with both NixOS and macOS (via nix-darwin).
-- **Home Manager Integration**: User-specific configurations are managed with Home Manager.
-- **Configurable**: Most settings can be configured per-host without modifying the modules.
-- **Space-Themed Naming**: Hosts are named after celestial objects.
-
-## Hosts
-
-### NixOS
-
-- **nebula**: Desktop workstation
-- **comet**: Laptop
-- **pulsar**: Server
-
-### macOS
-
-- **quasar**: Primary macOS machine
-- **meteor**: Secondary macOS machine
-
-## Usage
-
-### Installation
-
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/yourusername/dotfiles.git ~/.dotfiles
-   cd ~/.dotfiles
-   ```
-
-2. Install Nix with flakes support:
-   ```bash
-   sh <(curl -L https://nixos.org/nix/install) --daemon
-   ```
-
-3. Enable flakes:
-   ```bash
-   mkdir -p ~/.config/nix
-   echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
-   ```
-
-### Deploying to a NixOS System
-
+### Rebuild System
 ```bash
-sudo nixos-rebuild switch --flake .#nebula
+sudo nixos-rebuild switch --flake .#helios
 ```
 
-Replace `nebula` with the name of your host.
-
-### Deploying to a macOS System
-
+### Update Flake Inputs
 ```bash
-darwin-rebuild switch --flake .#quasar
+nix flake update
+sudo nixos-rebuild switch --flake .#helios
 ```
 
-Replace `quasar` with the name of your host.
-
-### Deploying Home Manager Configuration
-
+### Test Without Switching
 ```bash
-home-manager switch --flake .#nebula
+sudo nixos-rebuild test --flake .#helios
 ```
 
-Replace `nebula` with the name of your host.
+### Rollback to Previous Generation
+```bash
+sudo nixos-rebuild --rollback switch
+```
 
-## Customization
+## 🔑 Key Features
 
-### Adding a New Host
+### Modular Design
+- Clear separation between system, desktop, and user configurations
+- Easy to add new hosts or users
+- Reusable modules across different machines
 
-1. Create a new directory under `hosts/nixos/` or `hosts/darwin/` with the name of your host.
-2. Create a `configuration.nix` file in that directory.
-3. Add the host to the `nixosConfigurations` or `darwinConfigurations` in `flake.nix`.
+### Preserved Settings
+- ✅ All current packages
+- ✅ Locale and timezone settings (en_GB.UTF-8, Europe/Dublin)
+- ✅ Network configuration (NetworkManager)
+- ✅ Audio setup (PipeWire)
+- ✅ User account and groups
+- ✅ Hardware configuration
 
-### Modifying Module Options
+### New Features
+- ✨ Hyprland tiling window manager
+- ✨ Omarchy-nix aesthetic theme
+- ✨ Flake-based reproducible builds
+- ✨ Home-manager for user configuration
+- ✨ SDDM display manager
 
-Each module exposes options that can be configured in the host configuration. For example:
+## 📦 Flake Inputs
 
+- **nixpkgs**: NixOS unstable channel
+- **home-manager**: User environment management
+- **hyprland**: Hyprland window manager
+- **omarchy-nix**: Omarchy theme and configurations
+
+## ⚙️ System Specifications
+
+- **Hostname**: helios
+- **User**: emmetdelaney
+- **Hardware**: AMD CPU, NVMe storage
+- **Locale**: en_GB.UTF-8 with Irish regional settings
+- **Timezone**: Europe/Dublin
+- **Keyboard**: GB layout
+- **Audio**: PipeWire with PulseAudio compatibility
+
+## 🎨 Hyprland Basics
+
+### Essential Keybindings (Default)
+- `SUPER + Q` - Close window
+- `SUPER + Return` - Open terminal
+- `SUPER + D` - Application launcher
+- `SUPER + M` - Exit Hyprland
+- `SUPER + 1-9` - Switch workspace
+- `SUPER + Shift + 1-9` - Move window to workspace
+
+*Note: Omarchy-nix may customize these keybindings.*
+
+## 🛠️ Customization
+
+### Add Packages
+Edit `home/emmetdelaney/packages.nix`:
 ```nix
-dotfiles.system = {
-  timeZone = "America/New_York";
-  defaultLocale = "en_US.UTF-8";
-  enableDocker = true;
-};
+home.packages = with pkgs; [
+  vim
+  wget
+  # Add your packages here
+];
 ```
 
-See the module files for available options.
+### Modify Hyprland Settings
+Edit `home/emmetdelaney/hyprland.nix` for user-specific settings or `modules/desktop/hyprland.nix` for system-wide settings.
 
-## License
+### Change System Settings
+Edit appropriate modules in `modules/system/` or `modules/desktop/`.
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+## 🔄 Migration Status
+
+### ✅ Planning Complete
+- [x] Architecture designed
+- [x] Structure documented
+- [x] Migration guide created
+- [x] Implementation plan ready
+
+### ⏳ Pending Implementation
+- [ ] Create directory structure
+- [ ] Write all module files
+- [ ] Update flake.nix
+- [ ] Test build
+- [ ] Deploy configuration
+
+## 📚 Resources
+
+- [NixOS Manual](https://nixos.org/manual/nixos/stable/)
+- [Home-Manager Manual](https://nix-community.github.io/home-manager/)
+- [Hyprland Wiki](https://wiki.hyprland.org/)
+- [Omarchy-nix Repository](https://github.com/henrysipp/omarchy-nix)
+- [NixOS Wiki](https://nixos.wiki/)
+
+## ⚠️ Important Notes
+
+### Before Migration
+1. Read [MIGRATION.md](MIGRATION.md) completely
+2. Backup your current configuration
+3. Ensure you can access TTY (Ctrl+Alt+F2)
+4. Have root password available
+
+### After Migration
+1. Learn basic Hyprland keybindings
+2. Customize settings to your preference
+3. Update flake regularly for security patches
+4. Keep at least one old generation for rollback
+
+## 🆘 Troubleshooting
+
+### Build Fails
+Check syntax of all .nix files and review error messages in build output.
+
+### Hyprland Won't Start
+Access TTY (Ctrl+Alt+F2) and check logs: `journalctl -xe | grep hyprland`
+
+### Need to Rollback
+At boot menu, select previous generation, or run: `sudo nixos-rebuild --rollback switch`
+
+For detailed troubleshooting, see [MIGRATION.md](MIGRATION.md).
+
+## 📝 License
+
+This configuration is for personal use. Feel free to adapt it for your own systems.
+
+## 🙏 Acknowledgments
+
+- [Hyprland](https://github.com/hyprwm/Hyprland) - Amazing Wayland compositor
+- [Omarchy-nix](https://github.com/henrysipp/omarchy-nix) - Beautiful theme
+- NixOS Community - For excellent documentation and support

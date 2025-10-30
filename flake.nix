@@ -1,53 +1,43 @@
 {
-  description = "Emmet's Nix Configurations";
+  description = "Emmet's NixOS configuration with Hyprland and Omarchy";
 
   inputs = {
-    # Use the latest stable NixOS
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
-
-    # Hardware optimization
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-
-    # Home Manager for user-specific configurations
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # Flake utils for multi-system support
-    flake-utils.url = "github:numtide/flake-utils";
-
-    # Add NUR
-    nur.url = "github:nix-community/NUR";
+    
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    
+    omarchy-nix = {
+      url = "github:henrysipp/omarchy-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    nixos-hardware,
-    home-manager,
-    flake-utils,
-    nur,
-    ...
-  } @ inputs: {
+  outputs = { self, nixpkgs, home-manager, hyprland, omarchy-nix, ... }@inputs: {
     nixosConfigurations = {
-      nebula = nixpkgs.lib.nixosSystem {
+      helios = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = {inherit inputs;};
+        specialArgs = { inherit inputs; };
         modules = [
-          ./hosts/nixos/nebula
-
+          # Host configuration
+          ./hosts/helios/default.nix
+          
           # Home Manager
           home-manager.nixosModules.home-manager
-
-          # Updated NUR module path
-          nur.modules.nixos.default
           {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-
-            # Make NUR available via overlay
-            nixpkgs.overlays = [nur.overlays.default];
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              extraSpecialArgs = { inherit inputs; };
+              users.emmetdelaney = import ./home/emmetdelaney/default.nix;
+            };
           }
         ];
       };

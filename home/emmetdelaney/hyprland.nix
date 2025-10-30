@@ -99,7 +99,7 @@
         "$mod, M, exit,"
         "$mod, E, exec, thunar"
         "$mod, V, togglefloating,"
-        "$mod, D, exec, rofi -show drun"
+        "$mod, D, exec, rofi -show drun -show-icons"
         "$mod, P, pseudo,"
         "$mod, J, togglesplit,"
         "$mod, F, fullscreen,"
@@ -239,11 +239,13 @@
   # Mako notification daemon configuration
   services.mako = {
     enable = true;
-    defaultTimeout = 5000;
-    backgroundColor = "#1a1b26";
-    textColor = "#c0caf5";
-    borderColor = "#33ccff";
-    borderSize = 2;
-    borderRadius = 10;
+    settings = {
+      default-timeout = 5000;
+      background-color = "#1a1b26";
+      text-color = "#c0caf5";
+      border-color = "#33ccff";
+      border-size = 2;
+      border-radius = 10;
+    };
   };
 }

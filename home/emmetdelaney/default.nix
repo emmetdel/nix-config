@@ -21,7 +21,11 @@
   # Git configuration
   programs.git = {
     enable = true;
-    userName = "Emmet Delaney";
-    userEmail = "emmetdel@gmail.com"; # Update this with your email
+    settings = {
+      user = {
+        name = "Emmet Delaney";
+        email = "emmetdel@gmail.com";
+      };
+    };
   };
 }

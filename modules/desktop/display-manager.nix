@@ -2,8 +2,8 @@
 
 {
   # Disable GNOME and GDM
-  services.xserver.displayManager.gdm.enable = lib.mkForce false;
-  services.xserver.desktopManager.gnome.enable = lib.mkForce false;
+  services.displayManager.gdm.enable = lib.mkForce false;
+  services.desktopManager.gnome.enable = lib.mkForce false;
 
   # Enable SDDM for Hyprland
   services.displayManager.sddm = {

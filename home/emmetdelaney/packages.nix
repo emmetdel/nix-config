@@ -12,12 +12,12 @@
     kitty
     
     # File manager
-    thunar
+    xfce.thunar
     xfce.thunar-volman
     xfce.thunar-archive-plugin
     
     # Application launcher
-    rofi-wayland
+    rofi
     
     # Status bar
     waybar
@@ -55,7 +55,7 @@
   # Kitty terminal configuration
   programs.kitty = {
     enable = true;
-    theme = "Tokyo Night";
+    themeFile = "tokyo_night_night";
     font = {
       name = "JetBrainsMono Nerd Font";
       size = 12;

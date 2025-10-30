@@ -3,11 +3,8 @@
 {
   imports = [
     ./packages.nix
-    ./hyprland.nix
-    ./shell.nix
-    ./dev-tools.nix
-    ./themes.nix
-    ./utilities.nix
+    # ./hyprland.nix  # Disabled in favor of omarchy-nix's hyprland configuration
+    inputs.omarchy-nix.homeManagerModules.default
   ];
 
   # Home Manager needs a bit of information about you and the paths it should manage

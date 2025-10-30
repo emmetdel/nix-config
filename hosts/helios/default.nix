@@ -10,17 +10,18 @@
     ../../modules/system/networking.nix
     ../../modules/system/locale.nix
     ../../modules/system/sound.nix
+    ../../modules/system/users.nix
+    ../../modules/system/virtualization.nix
     
     # Desktop modules
     ../../modules/desktop/hyprland.nix
     ../../modules/desktop/display-manager.nix
   ];
 
-  # User account
+  # User account (shell and groups configured in modules/system/users.nix)
   users.users.emmetdelaney = {
     isNormalUser = true;
     description = "Emmet Delaney";
-    extraGroups = [ "wheel" ];
     packages = with pkgs; [];
   };
 

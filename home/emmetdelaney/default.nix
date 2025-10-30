@@ -4,6 +4,10 @@
   imports = [
     ./packages.nix
     ./hyprland.nix
+    ./shell.nix
+    ./dev-tools.nix
+    ./themes.nix
+    ./utilities.nix
   ];
 
   # Home Manager needs a bit of information about you and the paths it should manage
@@ -17,15 +21,4 @@
 
   # Let Home Manager install and manage itself
   programs.home-manager.enable = true;
-
-  # Git configuration
-  programs.git = {
-    enable = true;
-    settings = {
-      user = {
-        name = "Emmet Delaney";
-        email = "emmetdel@gmail.com";
-      };
-    };
-  };
 }

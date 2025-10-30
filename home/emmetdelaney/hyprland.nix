@@ -12,6 +12,8 @@
         "waybar"
         "mako"
         "nm-applet --indicator"
+        "swaybg -i ~/.config/wallpaper.jpg -m fill"
+        # Note: cliphist and swayidle are managed as systemd services in utilities.nix
       ];
 
       # Environment variables
@@ -22,7 +24,7 @@
 
       # Input configuration
       input = {
-        kb_layout = "gb";
+        kb_layout = "us";
         follow_mouse = 1;
         touchpad = {
           natural_scroll = true;
@@ -35,8 +37,8 @@
         gaps_in = 5;
         gaps_out = 10;
         border_size = 2;
-        "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
-        "col.inactive_border" = "rgba(595959aa)";
+        "col.active_border" = "rgb(7aa2f7) rgb(7dcfff) 45deg";
+        "col.inactive_border" = "rgb(565f89)";
         layout = "dwindle";
         allow_tearing = false;
       };
@@ -52,7 +54,7 @@
         drop_shadow = true;
         shadow_range = 4;
         shadow_render_power = 3;
-        "col.shadow" = "rgba(1a1a1aee)";
+        "col.shadow" = "rgba(1a1b26ee)";
       };
 
       # Animations
@@ -99,16 +101,36 @@
         "$mod, M, exit,"
         "$mod, E, exec, thunar"
         "$mod, V, togglefloating,"
-        "$mod, D, exec, rofi -show drun -show-icons"
+        "$mod, D, exec, rofi -show drun"
+        "$mod, R, exec, rofi -show run"
         "$mod, P, pseudo,"
         "$mod, J, togglesplit,"
         "$mod, F, fullscreen,"
+        
+        # Additional productivity shortcuts
+        "$mod SHIFT, E, exec, kitty -e yazi"  # Terminal file manager
+        "$mod SHIFT, B, exec, firefox"  # Browser
+        "$mod SHIFT, C, exec, code"  # VSCode/Cursor
+        "$mod, L, exec, swaylock"  # Lock screen
+        "$mod, W, exec, web-apps"  # Web apps launcher
+        "$mod SHIFT, V, exec, clipboard-history"  # Clipboard history
+        "$mod, C, exec, color-picker"  # Color picker
+        
+        # Screenshots
+        ", Print, exec, screenshot area"
+        "SHIFT, Print, exec, screenshot screen"
 
-        # Move focus
+        # Move focus with arrow keys
         "$mod, left, movefocus, l"
         "$mod, right, movefocus, r"
         "$mod, up, movefocus, u"
         "$mod, down, movefocus, d"
+        
+        # Move focus with vim keys
+        "$mod, h, movefocus, l"
+        "$mod, l, movefocus, r"
+        "$mod, k, movefocus, u"
+        "$mod, j, movefocus, d"
 
         # Switch workspaces
         "$mod, 1, workspace, 1"
@@ -137,10 +159,10 @@
         # Scroll through workspaces
         "$mod, mouse_down, workspace, e+1"
         "$mod, mouse_up, workspace, e-1"
-
-        # Screenshot
-        ", Print, exec, grim -g \"$(slurp)\" - | wl-copy"
-        "SHIFT, Print, exec, grim - | wl-copy"
+        
+        # Special workspaces (scratchpad)
+        "$mod, S, togglespecialworkspace"
+        "$mod SHIFT, S, movetoworkspace, special"
       ];
 
       # Mouse bindings
@@ -157,7 +179,7 @@
     };
   };
 
-  # Waybar configuration
+  # Waybar configuration (styling moved to themes.nix)
   programs.waybar = {
     enable = true;
     settings = {
@@ -181,71 +203,30 @@
 
         "pulseaudio" = {
           format = "{icon} {volume}%";
-          format-muted = "🔇";
+          format-muted = "󰝟";
           format-icons = {
-            default = [ "🔈" "🔉" "🔊" ];
+            default = [ "󰕿" "󰖀" "󰕾" ];
           };
           on-click = "pavucontrol";
         };
 
         "network" = {
-          format-wifi = "📶 {essid}";
-          format-ethernet = "🌐 {ifname}";
-          format-disconnected = "⚠ Disconnected";
+          format-wifi = "󰤨 {essid}";
+          format-ethernet = "󰈀 {ifname}";
+          format-disconnected = "󰤭 Disconnected";
           tooltip-format = "{ifname}: {ipaddr}";
         };
 
         "battery" = {
           format = "{icon} {capacity}%";
-          format-icons = [ "🪫" "🔋" ];
-          format-charging = "⚡ {capacity}%";
+          format-icons = [ "󰂎" "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹" ];
+          format-charging = "󰂄 {capacity}%";
         };
 
         "tray" = {
           spacing = 10;
         };
       };
-    };
-    style = ''
-      * {
-        font-family: "JetBrainsMono Nerd Font";
-        font-size: 13px;
-      }
-
-      window#waybar {
-        background-color: rgba(26, 27, 38, 0.9);
-        color: #ffffff;
-      }
-
-      #workspaces button {
-        padding: 0 10px;
-        color: #ffffff;
-      }
-
-      #workspaces button.active {
-        background-color: rgba(51, 204, 255, 0.3);
-      }
-
-      #clock,
-      #battery,
-      #pulseaudio,
-      #network,
-      #tray {
-        padding: 0 10px;
-      }
-    '';
-  };
-
-  # Mako notification daemon configuration
-  services.mako = {
-    enable = true;
-    settings = {
-      default-timeout = 5000;
-      background-color = "#1a1b26";
-      text-color = "#c0caf5";
-      border-color = "#33ccff";
-      border-size = 2;
-      border-radius = 10;
     };
   };
 }

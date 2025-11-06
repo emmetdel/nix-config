@@ -317,14 +317,16 @@
   # Mako notification daemon with Tokyo Night theme
   services.mako = {
     enable = true;
-    backgroundColor = "#1a1b26";
-    textColor = "#c0caf5";
-    borderColor = "#7aa2f7";
-    borderSize = 2;
-    borderRadius = 10;
-    defaultTimeout = 5000;
-    font = "JetBrainsMono Nerd Font 11";
-    padding = "10";
+    settings = {
+      background-color = "#1a1b26";
+      text-color = "#c0caf5";
+      border-color = "#7aa2f7";
+      border-size = 2;
+      border-radius = 10;
+      default-timeout = 5000;
+      font = "JetBrainsMono Nerd Font 11";
+      padding = "10";
+    };
   };
 
   # Rofi configuration with Tokyo Night theme

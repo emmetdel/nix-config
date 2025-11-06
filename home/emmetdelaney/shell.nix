@@ -45,7 +45,7 @@
       vi = "nvim";
     };
     
-    initExtra = ''
+    initContent = ''
       # Enable vi mode
       bindkey -v
       
@@ -101,28 +101,31 @@
     enable = true;
     enableZshIntegration = true;
     git = true;
-    icons = true;
+    icons = "auto";
   };
   
   # Git configuration
   programs.git = {
     enable = true;
-    userName = "Emmet Delaney";
-    userEmail = "emmetdel@gmail.com";
     
-    extraConfig = {
+    settings = {
+      user = {
+        name = "Emmet Delaney";
+        email = "emmetdel@gmail.com";
+      };
+      
       init.defaultBranch = "main";
       pull.rebase = true;
       push.autoSetupRemote = true;
-    };
-    
-    aliases = {
-      st = "status";
-      co = "checkout";
-      br = "branch";
-      ci = "commit";
-      unstage = "reset HEAD --";
-      last = "log -1 HEAD";
+      
+      alias = {
+        st = "status";
+        co = "checkout";
+        br = "branch";
+        ci = "commit";
+        unstage = "reset HEAD --";
+        last = "log -1 HEAD";
+      };
     };
   };
 }

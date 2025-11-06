@@ -1,20 +1,54 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, ... }:
 
 {
   imports = [
-    ./packages.nix
-    ./hyprland.nix
+    ./packages.nix      # Minimal package list
+    ./hyprland.nix      # Hyprland with Tokyo Night theme
+    ./shell.nix         # Shell configuration
+    ./web-apps.nix      # PWA web apps support
   ];
 
-  # Home Manager needs a bit of information about you and the paths it should manage
+  # Home Manager settings
   home.username = "emmetdelaney";
   home.homeDirectory = "/home/emmetdelaney";
-
-  # This value determines the Home Manager release that your configuration is
-  # compatible with. This helps avoid breakage when a new Home Manager release
-  # introduces backwards incompatible changes.
   home.stateVersion = "25.05";
 
-  # Let Home Manager install and manage itself
+  # Let Home Manager manage itself
   programs.home-manager.enable = true;
+
+  # Basic neovim as minimal editor
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
+  };
+
+  # GTK theme (minimal)
+  gtk = {
+    enable = true;
+    theme = {
+      name = "Adwaita-dark";
+      package = pkgs.gnome-themes-extra;
+    };
+    iconTheme = {
+      name = "Papirus-Dark";
+      package = pkgs.papirus-icon-theme;
+    };
+  };
+
+  # Qt theme
+  qt = {
+    enable = true;
+    platformTheme.name = "gtk";
+    style.name = "adwaita-dark";
+  };
+
+  # Cursor theme
+  home.pointerCursor = {
+    name = "Adwaita";
+    package = pkgs.adwaita-icon-theme;
+    size = 24;
+    gtk.enable = true;
+  };
 }

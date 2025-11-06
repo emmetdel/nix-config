@@ -11,7 +11,6 @@
     ../../modules/system/locale.nix
     ../../modules/system/sound.nix
     ../../modules/system/users.nix
-    ../../modules/system/virtualization.nix
     
     # Desktop modules
     ../../modules/desktop/hyprland.nix

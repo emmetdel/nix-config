@@ -17,8 +17,8 @@
     
     shellAliases = {
       # System management
-      rebuild = "sudo nixos-rebuild switch --flake ~/personal-code/nix-config#helios";
-      update = "nix flake update ~/personal-code/nix-config";
+      rebuild = "sudo nixos-rebuild switch --flake ~/code/personal/nix-config#helios";
+      update = "nix flake update ~/code/personal/nix-config";
       cleanup = "sudo nix-collect-garbage -d";
       
       # Navigation
@@ -34,17 +34,13 @@
       gp = "git push";
       gl = "git pull";
       gd = "git diff";
-      gco = "git checkout";
       
       # Modern replacements
       ls = "eza --icons";
       ll = "eza -la --icons";
       tree = "eza --tree --icons";
-      cat = "bat";
-      find = "fd";
-      grep = "rg";
       
-      # Productivity
+      # Editor
       vim = "nvim";
       vi = "nvim";
     };
@@ -70,7 +66,7 @@
     settings = {
       add_newline = true;
       
-      format = "$username$hostname$directory$git_branch$git_status$character";
+      format = "$directory$git_branch$git_status$character";
       
       character = {
         success_symbol = "[➜](bold green)";
@@ -90,72 +86,13 @@
       
       git_status = {
         style = "bold yellow";
-        conflicted = "🏳";
         ahead = "⇡\${count}";
         behind = "⇣\${count}";
-        diverged = "⇕⇡\${ahead_count}⇣\${behind_count}";
-        untracked = "?";
-        stashed = "$";
+        diverged = "⇕";
         modified = "!";
         staged = "+";
-        renamed = "»";
         deleted = "✘";
       };
-      
-      nodejs = {
-        symbol = " ";
-        style = "bold green";
-      };
-      
-      python = {
-        symbol = " ";
-        style = "bold yellow";
-      };
-      
-      rust = {
-        symbol = " ";
-        style = "bold red";
-      };
-    };
-  };
-  
-  # Direnv for per-directory environments
-  programs.direnv = {
-    enable = true;
-    enableZshIntegration = true;
-    nix-direnv.enable = true;
-  };
-  
-  # Zoxide for smart directory jumping
-  programs.zoxide = {
-    enable = true;
-    enableZshIntegration = true;
-  };
-  
-  # FZF for fuzzy finding
-  programs.fzf = {
-    enable = true;
-    enableZshIntegration = true;
-    defaultCommand = "fd --type f";
-    defaultOptions = [
-      "--height 40%"
-      "--layout=reverse"
-      "--border"
-      "--inline-info"
-    ];
-    colors = {
-      bg = "#1a1b26";
-      "bg+" = "#292e42";
-      fg = "#c0caf5";
-      "fg+" = "#c0caf5";
-      hl = "#7aa2f7";
-      "hl+" = "#7dcfff";
-      info = "#7aa2f7";
-      prompt = "#7dcfff";
-      pointer = "#7dcfff";
-      marker = "#9ece6a";
-      spinner = "#9ece6a";
-      header = "#9ece6a";
     };
   };
   
@@ -167,18 +104,25 @@
     icons = true;
   };
   
-  # Bat (modern cat replacement)
-  programs.bat = {
+  # Git configuration
+  programs.git = {
     enable = true;
-    config = {
-      theme = "TwoDark";
-      style = "numbers,changes,header";
+    userName = "Emmet Delaney";
+    userEmail = "emmetdel@gmail.com";
+    
+    extraConfig = {
+      init.defaultBranch = "main";
+      pull.rebase = true;
+      push.autoSetupRemote = true;
+    };
+    
+    aliases = {
+      st = "status";
+      co = "checkout";
+      br = "branch";
+      ci = "commit";
+      unstage = "reset HEAD --";
+      last = "log -1 HEAD";
     };
   };
-  
-  # Ripgrep configuration
-  programs.ripgrep = {
-    enable = true;
-  };
 }
-

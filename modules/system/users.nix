@@ -7,14 +7,11 @@
   # Set Zsh as default shell for user
   users.users.emmetdelaney.shell = pkgs.zsh;
   
-  # Additional user groups for development
+  # User groups (minimal - removed docker/podman)
   users.users.emmetdelaney.extraGroups = [
-    "wheel"        # Sudo access
+    "wheel"           # Sudo access
     "networkmanager"  # Network management
-    "docker"       # Docker access
-    "podman"       # Podman access
-    "video"        # Video device access
-    "audio"        # Audio device access
+    "video"           # Video device access
+    "audio"           # Audio device access
   ];
 }
-

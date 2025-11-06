@@ -1,314 +1,219 @@
-# NixOS Omarchy Configuration
+# Minimal Omarchy-Inspired NixOS
 
-A modern, opinionated NixOS configuration inspired by DHH's Omarchy, featuring Hyprland, comprehensive theming, and developer-focused tools.
+A minimal, web-first NixOS configuration inspired by DHH's Omarchy. Features Progressive Web Apps as first-class citizens, keyboard-driven workflow, and Tokyo Night aesthetics.
 
-## 🌟 Features
+## Philosophy
 
-### Core Components
-- **Hyprland**: Modern Wayland compositor with beautiful animations
-- **Home Manager**: Declarative user environment management
-- **Nix Flakes**: Reproducible and portable configuration
-- **Multiple Themes**: Tokyo Night, Catppuccin, Nord, Gruvbox
+- **Web-First**: Web apps behave like native applications
+- **Minimal**: ~20 essential packages, single theme, focused tooling
+- **Keyboard-Driven**: Optimized shortcuts for productivity
+- **Beautiful**: Tokyo Night theme throughout
+
+## Features
+
+### Progressive Web Apps (PWAs)
+- Gmail, Calendar, Linear, Notion, and ChatGPT launch as dedicated app windows
+- Isolated storage per app (separate cookies/data)
+- Auto-organized into workspaces
+- Appear in app launcher like native apps
+- Launch via `Super+W` menu or direct shortcuts
 
 ### Desktop Environment
-- **Status Bar**: Waybar with system information
-- **Notifications**: Mako notification daemon
-- **Application Launcher**: Rofi with custom theming
-- **Screen Lock**: Swaylock with auto-lock via Swayidle
-- **Clipboard Manager**: Cliphist with history
-- **Color Picker**: Hyprpicker for color selection
+- **Hyprland**: Modern Wayland compositor
+- **Waybar**: Tokyo Night status bar
+- **Rofi**: Application launcher
+- **Mako**: Notifications
+- **Swaylock**: Screen locking
 
-### Developer Tools
-- **Shell**: Zsh with Starship prompt
-- **Editor**: Neovim with sensible defaults
-- **Terminal**: Kitty with transparency and theming
-- **Git**: Comprehensive configuration with Delta diffs
-- **GitHub CLI**: Integrated with SSH
-- **Tmux**: Terminal multiplexer with vim bindings
-- **Lazygit**: Beautiful terminal UI for Git
+### Tools
+- **Browsers**: Firefox (research), Chromium (PWA engine)
+- **Editor**: VSCode/Cursor
+- **Terminal**: Kitty with Tokyo Night
+- **Shell**: Zsh + Starship prompt
+- **Essential CLI**: fd, ripgrep, eza
 
-### Productivity Tools
-- **File Managers**: Thunar (GUI), Yazi (Terminal)
-- **System Monitor**: btop, htop
-- **Password Manager**: Bitwarden CLI
-- **Container Tools**: Docker, Podman, Docker Compose
-- **Web Apps Launcher**: Quick access to common web applications
-- **Screenshot Tools**: Grim, Slurp, Swappy
+## Quick Start
 
-### Modern CLI Tools
-- **fd**: Better find
-- **ripgrep**: Better grep
-- **eza**: Better ls with icons
-- **bat**: Better cat with syntax highlighting
-- **fzf**: Fuzzy finder
-- **zoxide**: Smart directory navigation
-- **direnv**: Per-directory environment management
+### Installation
 
-## 📦 Installation
+1. Clone this repository:
+```bash
+git clone <your-repo> ~/code/personal/nix-config
+cd ~/code/personal/nix-config
+```
 
-### Prerequisites
-- A machine running NixOS or ready for NixOS installation
-- Basic familiarity with Nix and NixOS
+2. Update hardware configuration:
+```bash
+# Generate your hardware config
+sudo nixos-generate-config --show-hardware-config > /tmp/hardware.nix
+# Copy relevant parts to hosts/helios/hardware.nix
+```
 
-### Steps
+3. Customize user settings in:
+- `home/emmetdelaney/default.nix` - Update username/home directory
+- `home/emmetdelaney/shell.nix` - Update git email
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/yourusername/nix-config.git ~/personal-code/nix-config
-   cd ~/personal-code/nix-config
-   ```
+4. Build and switch:
+```bash
+sudo nixos-rebuild switch --flake .#helios
+```
 
-2. **Customize for your system**:
-   - Edit `hosts/helios/hardware.nix` with your hardware configuration
-   - Update user information in `modules/system/users.nix`
-   - Adjust `home/emmetdelaney/default.nix` with your username/home directory
+5. Reboot and login to Hyprland
 
-3. **Build and activate**:
-   ```bash
-   sudo nixos-rebuild switch --flake .#helios
-   ```
-
-4. **Set up Git credentials**:
-   ```bash
-   gh auth login
-   ```
-
-5. **Optional: Set a wallpaper**:
-   ```bash
-   cp your-wallpaper.jpg ~/.config/wallpaper.jpg
-   ```
-
-## ⌨️ Keybindings
-
-### General
-| Keybinding | Action |
-|------------|--------|
-| `Super + Return` | Launch terminal (Kitty) |
-| `Super + D` | Application launcher (Rofi) |
-| `Super + R` | Run command |
-| `Super + Q` | Close active window |
-| `Super + M` | Exit Hyprland |
-| `Super + F` | Toggle fullscreen |
-| `Super + V` | Toggle floating |
-| `Super + L` | Lock screen |
+## Keybindings
 
 ### Applications
-| Keybinding | Action |
-|------------|--------|
-| `Super + E` | File manager (Thunar) |
-| `Super + Shift + E` | Terminal file manager (Yazi) |
-| `Super + Shift + B` | Browser (Firefox) |
-| `Super + Shift + C` | Code editor (VSCode/Cursor) |
-| `Super + W` | Web apps launcher |
-
-### Utilities
-| Keybinding | Action |
-|------------|--------|
-| `Super + Shift + V` | Clipboard history |
-| `Super + C` | Color picker |
-| `Print` | Screenshot area |
-| `Shift + Print` | Screenshot full screen |
+| Key | Action |
+|-----|--------|
+| `Super + Return` | Terminal |
+| `Super + F` | Firefox |
+| `Super + E` | Editor (VSCode) |
+| `Super + T` | File manager |
+| `Super + D` | App launcher |
+| `Super + W` | Web apps menu |
 
 ### Window Management
-| Keybinding | Action |
-|------------|--------|
-| `Super + H/J/K/L` | Move focus (Vim keys) |
-| `Super + Arrow Keys` | Move focus |
-| `Super + 1-9,0` | Switch to workspace |
-| `Super + Shift + 1-9,0` | Move window to workspace |
-| `Super + S` | Toggle scratchpad |
-| `Super + Shift + S` | Move to scratchpad |
-| `Super + Mouse Left` | Move window |
-| `Super + Mouse Right` | Resize window |
+| Key | Action |
+|-----|--------|
+| `Super + Q` | Close window |
+| `Super + H/J/K/L` | Focus window (vim keys) |
+| `Super + 1-9` | Switch workspace |
+| `Super + Shift + 1-9` | Move window to workspace |
+| `Super + Shift + F` | Toggle floating |
+| `Super + Shift + M` | Fullscreen |
 
-### Tmux (Terminal Multiplexer)
-| Keybinding | Action |
-|------------|--------|
-| `Ctrl + A` | Tmux prefix key |
-| `Prefix + \|` | Split vertical |
-| `Prefix + -` | Split horizontal |
-| `Prefix + H/J/K/L` | Navigate panes |
-| `Prefix + R` | Reload config |
+### Utilities
+| Key | Action |
+|-----|--------|
+| `Super + L` | Lock screen |
+| `Print` | Screenshot (area) |
+| `Shift + Print` | Screenshot (full) |
 
-## 🎨 Theming
+## Web Apps
 
-The configuration includes four built-in themes:
+Launch via `Super + W` then select:
+- **Gmail** - Email (auto-workspace 1)
+- **Calendar** - Calendar (auto-workspace 1)
+- **GitHub** - Code hosting (opens in Firefox)
+- **Linear** - Project management (auto-workspace 4)
+- **Notion** - Notes/wiki (auto-workspace 4)
+| **ChatGPT** - AI assistant (auto-workspace 4)
 
-1. **Tokyo Night** (default) - Dark blue with vibrant accents
-2. **Catppuccin Mocha** - Warm, pastel dark theme
-3. **Nord** - Cool, arctic-inspired palette
-4. **Gruvbox** - Retro, warm color scheme
-
-### Changing Themes
-
-Edit `home/emmetdelaney/themes.nix` and change the `activeTheme` variable:
-
-```nix
-# Select the active theme
-activeTheme = themes.catppuccin-mocha;  # or nord, gruvbox
-```
-
-Then rebuild:
-```bash
-rebuild
-```
-
-The theme will automatically apply to:
-- Terminal (Kitty)
-- Waybar
-- Rofi
-- Mako notifications
-- Hyprland borders and shadows
-- GTK/Qt applications
-
-## 🔧 Customization
-
-### Adding Packages
-
-Add user packages in `home/emmetdelaney/packages.nix`:
-```nix
-home.packages = with pkgs; [
-  your-package-here
-];
-```
-
-Add system packages in `hosts/helios/default.nix`:
-```nix
-environment.systemPackages = with pkgs; [
-  your-system-package
-];
-```
-
-### Modifying Hyprland
-
-Edit `home/emmetdelaney/hyprland.nix` to customize:
-- Keybindings
-- Window rules
-- Animations
-- Decorations
-- Monitor configuration
-
-### Shell Customization
-
-Edit `home/emmetdelaney/shell.nix` to modify:
-- Aliases
-- Prompt configuration
-- Shell integrations
-- Environment variables
+Each PWA launches as a dedicated window with isolated storage.
 
 ### Adding Web Apps
 
-Edit the web-apps script in `home/emmetdelaney/utilities.nix`:
+Edit `home/emmetdelaney/web-apps.nix`:
 ```nix
-apps=(
-  "YourApp:https://yourapp.com"
-  ...
-)
+webApps = {
+  your-app = {
+    name = "YourApp";
+    url = "https://your-app.com";
+    usePWA = true;  # or false for Firefox
+    key = "Y";
+  };
+};
 ```
 
-## 📁 Project Structure
+## Workspace Organization (Omarchy-Style)
+
+- **Workspace 1**: Communication (Gmail, Calendar)
+- **Workspace 2**: Development (VSCode, Terminal)
+- **Workspace 3**: Research (Firefox)
+- **Workspace 4**: Planning (Linear, Notion, ChatGPT)
+
+## Customization
+
+### Add Packages
+Edit `home/emmetdelaney/packages.nix`:
+```nix
+home.packages = with pkgs; [
+  your-package
+];
+```
+
+### Modify Keybindings
+Edit `home/emmetdelaney/hyprland.nix`:
+```nix
+bind = [
+  "$mod, YourKey, exec, your-command"
+];
+```
+
+### Change Colors
+Tokyo Night colors are inline in `hyprland.nix`. Search for `7aa2f7` (blue) to find and modify.
+
+## System Management
+
+```bash
+# Rebuild configuration
+rebuild
+
+# Update packages
+update
+
+# Clean old generations
+cleanup
+```
+
+## Project Structure
 
 ```
 .
 ├── flake.nix              # Main flake configuration
-├── hosts/
-│   └── helios/
-│       ├── default.nix    # Host-specific configuration
-│       └── hardware.nix   # Hardware configuration
+├── hosts/helios/          # Host-specific config
 ├── modules/
-│   ├── system/            # System-level modules
-│   │   ├── boot.nix
-│   │   ├── locale.nix
-│   │   ├── networking.nix
-│   │   ├── sound.nix
-│   │   ├── users.nix
-│   │   └── virtualization.nix
-│   └── desktop/           # Desktop environment modules
-│       ├── hyprland.nix
-│       └── display-manager.nix
-└── home/
-    └── emmetdelaney/      # User configuration
-        ├── default.nix    # Main home configuration
-        ├── packages.nix   # User packages
-        ├── hyprland.nix   # Hyprland user config
-        ├── shell.nix      # Shell configuration
-        ├── dev-tools.nix  # Developer tools
-        ├── themes.nix     # Theming system
-        └── utilities.nix  # Utility scripts and services
+│   ├── system/           # System modules (boot, network, sound, etc.)
+│   └── desktop/          # Desktop (Hyprland, display manager)
+└── home/emmetdelaney/    # User configuration
+    ├── default.nix       # Main home config
+    ├── packages.nix      # Minimal packages
+    ├── hyprland.nix      # Hyprland + Tokyo Night theme
+    ├── shell.nix         # Zsh configuration
+    └── web-apps.nix      # PWA definitions
 ```
 
-## 🚀 Quick Commands
+## What's Minimal About This?
 
-Added convenient aliases in your shell:
+| Aspect | This Config | Typical Setup |
+|--------|-------------|---------------|
+| Packages | ~20 | 100+ |
+| Config Files | 8 | 15+ |
+| Themes | 1 (Tokyo Night) | Multiple |
+| Dev Tools | Git, Editor | Docker, Tmux, Lazygit, etc. |
+| Focus | Web productivity | General purpose |
 
+## Backup & Rollback
+
+### Backup
+Your current state is tagged as `pre-minimal-backup`:
 ```bash
-rebuild      # Rebuild and switch NixOS configuration
-update       # Update flake inputs
-cleanup      # Clean up old generations
-g            # Git shorthand
-gs           # Git status
-ll           # List files with icons
-tree         # Show directory tree
-cat          # Syntax-highlighted cat (bat)
+git checkout pre-minimal-backup  # Return to pre-minimal state
 ```
 
-## 🔐 Password Management
-
-This configuration includes Bitwarden CLI for password management:
-
+### Rollback
 ```bash
-# Login to Bitwarden
-bw login
-
-# Unlock vault
-bw unlock
-
-# Get password
-bw get password github.com
+sudo nixos-rebuild --rollback switch  # Rollback to previous generation
 ```
 
-For GUI password management, consider installing:
-```bash
-# Add to packages.nix
-bitwarden
-```
+## Requirements
 
-## 🐳 Container Development
+- NixOS 25.05 or later
+- Understanding of Nix flakes
+- Comfort with keyboard-driven workflow
+- Willingness to embrace web-first computing
 
-Docker and Podman are pre-configured:
+## License
 
-```bash
-# Using Docker
-docker run hello-world
-docker-compose up
+This configuration is provided as-is for personal use.
 
-# Using Podman (Docker-compatible)
-podman run hello-world
-podman-compose up
-```
+## Acknowledgments
 
-## 📚 Additional Resources
-
-- [NixOS Manual](https://nixos.org/manual/nixos/stable/)
-- [Home Manager Manual](https://nix-community.github.io/home-manager/)
-- [Hyprland Wiki](https://wiki.hyprland.org/)
-- [Nix Flakes](https://nixos.wiki/wiki/Flakes)
-
-## 🤝 Contributing
-
-Feel free to fork this configuration and adapt it to your needs. Pull requests for improvements are welcome!
-
-## 📝 License
-
-This configuration is provided as-is for personal and educational use.
-
-## 🙏 Acknowledgments
-
-- Inspired by DHH's [Omarchy](https://github.com/basecamp/omarchy)
+- Inspired by [DHH's Omarchy](https://world.hey.com/dhh/introducing-omakub-354db366)
 - Built with [NixOS](https://nixos.org/)
 - Powered by [Hyprland](https://hyprland.org/)
-- Themed with inspiration from Tokyo Night, Catppuccin, Nord, and Gruvbox
+- Themed with Tokyo Night
 
 ---
 
-**Enjoy your beautiful, reproducible NixOS setup!** ✨
+**Enjoy your minimal, web-first NixOS setup!** 🚀

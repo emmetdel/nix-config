@@ -2,88 +2,36 @@
 
 {
   home.packages = with pkgs; [
-    # Original packages from configuration.nix
-    zed-editor
-    vscode-fhs
-    firefox
+    # Browsers
+    firefox          # Main browser for research
+    chromium         # PWA engine for web apps
     
-    # Terminal emulator
+    # Editor
+    vscode-fhs       # Code editor
+    
+    # Terminal
     kitty
     
-    # File managers
-    xfce.thunar
-    xfce.thunar-volman
-    xfce.thunar-archive-plugin
-    yazi  # Terminal file manager
+    # Wayland essentials
+    rofi             # Application launcher
+    waybar           # Status bar
+    mako             # Notifications
+    grim             # Screenshots
+    slurp            # Region select for screenshots
+    wl-clipboard     # Clipboard utilities
+    swaylock         # Screen lock
+    swaybg           # Wallpaper
     
-    # Application launcher
-    rofi
-    wofi  # Alternative Wayland launcher
+    # File manager
+    xfce.thunar      # GUI file manager
     
-    # Status bar
-    waybar
+    # Essential CLI tools
+    fd               # Better find
+    ripgrep          # Better grep
+    eza              # Better ls with icons
     
-    # Notifications
-    mako
-    
-    # Audio control
-    pavucontrol
-    
-    # Network management GUI
+    # Network
     networkmanagerapplet
-    
-    # Media viewers
-    imv        # Image viewer
-    zathura    # PDF viewer
-    mpv        # Video player
-    
-    # System utilities
-    btop       # System monitor
-    neofetch   # System info
-    htop       # Process viewer
-    
-    # Screenshot tools
-    grim
-    slurp
-    wl-clipboard
-    
-    # Shell and CLI tools
-    fd         # Better find
-    ripgrep    # Better grep
-    eza        # Better ls
-    bat        # Better cat
-    fzf        # Fuzzy finder
-    zoxide     # Smart cd
-    tmux       # Terminal multiplexer
-    
-    # Git and version control
-    gh         # GitHub CLI
-    git-lfs    # Git Large File Storage
-    lazygit    # Terminal UI for git
-    
-    # Development tools
-    gnumake
-    gcc
-    cmake
-    
-    # Clipboard manager
-    wl-clipboard
-    cliphist
-    
-    # Password management
-    bitwarden-desktop  # Desktop app (renamed from bitwarden)
-    bitwarden-cli      # CLI tool
-    
-    # Container tools
-    docker-compose
-    podman-compose
-    
-    # Productivity
-    jq         # JSON processor
-    yq-go      # YAML processor
-    tree       # Directory tree
-    unzip
-    zip
     
     # Fonts
     jetbrains-mono
@@ -95,7 +43,7 @@
     enable = true;
   };
 
-  # Kitty terminal configuration (colors set in themes.nix)
+  # Kitty terminal configuration
   programs.kitty = {
     enable = true;
     font = {
@@ -103,7 +51,50 @@
       size = 12;
     };
     settings = {
-      background_opacity = "0.9";
+      # Tokyo Night theme colors (inline)
+      foreground = "#c0caf5";
+      background = "#1a1b26";
+      selection_foreground = "#1a1b26";
+      selection_background = "#7dcfff";
+      
+      # Black
+      color0 = "#15161e";
+      color8 = "#414868";
+      
+      # Red
+      color1 = "#f7768e";
+      color9 = "#f7768e";
+      
+      # Green
+      color2 = "#9ece6a";
+      color10 = "#9ece6a";
+      
+      # Yellow
+      color3 = "#e0af68";
+      color11 = "#e0af68";
+      
+      # Blue
+      color4 = "#7aa2f7";
+      color12 = "#7aa2f7";
+      
+      # Magenta
+      color5 = "#bb9af7";
+      color13 = "#bb9af7";
+      
+      # Cyan
+      color6 = "#7dcfff";
+      color14 = "#7dcfff";
+      
+      # White
+      color7 = "#c0caf5";
+      color15 = "#c0caf5";
+      
+      # Cursor
+      cursor = "#7dcfff";
+      cursor_text_color = "#1a1b26";
+      
+      # Window
+      background_opacity = "0.95";
       confirm_os_window_close = 0;
     };
   };

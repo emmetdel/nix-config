@@ -13,7 +13,6 @@
         "mako"
         "nm-applet --indicator"
         "swaybg -i ~/.config/wallpaper.jpg -m fill"
-        # Note: cliphist and swayidle are managed as systemd services in utilities.nix
       ];
 
       # Environment variables
@@ -24,7 +23,7 @@
 
       # Input configuration
       input = {
-        kb_layout = "us";
+        kb_layout = "gb";
         follow_mouse = 1;
         touchpad = {
           natural_scroll = true;
@@ -32,18 +31,18 @@
         sensitivity = 0;
       };
 
-      # General settings
+      # General settings with Tokyo Night colors
       general = {
         gaps_in = 5;
         gaps_out = 10;
         border_size = 2;
-        "col.active_border" = "rgb(7aa2f7) rgb(7dcfff) 45deg";
-        "col.inactive_border" = "rgb(565f89)";
+        "col.active_border" = "rgb(7aa2f7) rgb(7dcfff) 45deg";  # Tokyo Night blue/cyan
+        "col.inactive_border" = "rgb(565f89)";  # Tokyo Night dim
         layout = "dwindle";
         allow_tearing = false;
       };
 
-      # Decoration
+      # Decoration with Tokyo Night shadow
       decoration = {
         rounding = 10;
         blur = {
@@ -54,18 +53,17 @@
         drop_shadow = true;
         shadow_range = 4;
         shadow_render_power = 3;
-        "col.shadow" = "rgba(1a1b26ee)";
+        "col.shadow" = "rgba(1a1b26ee)";  # Tokyo Night background
       };
 
-      # Animations
+      # Smooth animations
       animations = {
         enabled = true;
-        bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
+        bezier = "smooth, 0.05, 0.9, 0.1, 1.05";
         animation = [
-          "windows, 1, 7, myBezier"
+          "windows, 1, 7, smooth"
           "windowsOut, 1, 7, default, popin 80%"
           "border, 1, 10, default"
-          "borderangle, 1, 8, default"
           "fade, 1, 7, default"
           "workspaces, 1, 6, default"
         ];
@@ -77,61 +75,56 @@
         preserve_split = true;
       };
 
-      master = {
-        new_status = "master";
-      };
-
       # Misc settings
       misc = {
         force_default_wallpaper = 0;
       };
 
-      # Keybindings
+      # Keybindings - Web-First Philosophy
       "$mod" = "SUPER";
 
       bind = [
-        # Application shortcuts
+        # Core applications (Super + Letter)
         "$mod, Return, exec, kitty"
+        "$mod, F, exec, firefox"
+        "$mod, E, exec, code"  # Editor (VSCode/Cursor)
+        "$mod, T, exec, thunar"  # File manager
+        
+        # Web Apps Launcher (Super + W)
+        "$mod, W, exec, web-apps"
+        
+        # Window management
         "$mod, Q, killactive,"
         "$mod, M, exit,"
-        "$mod, E, exec, thunar"
-        "$mod, V, togglefloating,"
+        "$mod SHIFT, F, togglefloating,"
+        "$mod SHIFT, M, fullscreen,"
+        
+        # Application launcher
         "$mod, D, exec, rofi -show drun"
         "$mod, R, exec, rofi -show run"
-        "$mod, P, pseudo,"
-        "$mod, J, togglesplit,"
-        "$mod, F, fullscreen,"
         
-        # Additional productivity shortcuts
-        "$mod SHIFT, E, exec, kitty -e yazi"  # Terminal file manager
-        "$mod SHIFT, B, exec, firefox"  # Browser
-        "$mod SHIFT, C, exec, code"  # VSCode/Cursor
+        # Utilities
         "$mod, L, exec, swaylock"  # Lock screen
-        "$mod, W, exec, web-apps"  # Web apps launcher
-        "$mod SHIFT, V, exec, clipboard-history"  # Clipboard history
-        "$mod, C, exec, color-picker"  # Color picker
-        
-        # Screenshots
-        ", Print, exec, screenshot area"
-        "SHIFT, Print, exec, screenshot screen"
+        ", Print, exec, grim -g \"$(slurp)\" - | wl-copy"  # Screenshot area
+        "SHIFT, Print, exec, grim - | wl-copy"  # Screenshot full screen
 
-        # Move focus with arrow keys
-        "$mod, left, movefocus, l"
-        "$mod, right, movefocus, r"
-        "$mod, up, movefocus, u"
-        "$mod, down, movefocus, d"
-        
         # Move focus with vim keys
         "$mod, h, movefocus, l"
         "$mod, l, movefocus, r"
         "$mod, k, movefocus, u"
         "$mod, j, movefocus, d"
 
-        # Switch workspaces
-        "$mod, 1, workspace, 1"
-        "$mod, 2, workspace, 2"
-        "$mod, 3, workspace, 3"
-        "$mod, 4, workspace, 4"
+        # Move focus with arrow keys
+        "$mod, left, movefocus, l"
+        "$mod, right, movefocus, r"
+        "$mod, up, movefocus, u"
+        "$mod, down, movefocus, d"
+
+        # Switch workspaces (Omarchy-style organization)
+        "$mod, 1, workspace, 1"  # Communication (Gmail, Calendar)
+        "$mod, 2, workspace, 2"  # Development (Code, Terminal)
+        "$mod, 3, workspace, 3"  # Research (Firefox)
+        "$mod, 4, workspace, 4"  # Planning (Linear, Notion)
         "$mod, 5, workspace, 5"
         "$mod, 6, workspace, 6"
         "$mod, 7, workspace, 7"
@@ -155,7 +148,7 @@
         "$mod, mouse_down, workspace, e+1"
         "$mod, mouse_up, workspace, e-1"
         
-        # Special workspaces (scratchpad)
+        # Special workspace (scratchpad)
         "$mod, S, togglespecialworkspace"
         "$mod SHIFT, S, movetoworkspace, special"
       ];
@@ -166,15 +159,40 @@
         "$mod, mouse:273, resizewindow"
       ];
 
-      # Window rules
-      windowrule = [
-        "float, ^(pavucontrol)$"
-        "float, ^(nm-connection-editor)$"
+      # Window rules for PWA auto-organization
+      windowrulev2 = [
+        # Communication workspace (1)
+        "workspace 1, class:^(Gmail)$"
+        "workspace 1, class:^(Calendar)$"
+        
+        # Development workspace (2)
+        "workspace 2, class:^(code)$"
+        "workspace 2, class:^(Code)$"
+        "workspace 2, title:^(Visual Studio Code)$"
+        
+        # Research workspace (3)
+        "workspace 3, class:^(firefox)$"
+        
+        # Planning workspace (4)
+        "workspace 4, class:^(Linear)$"
+        "workspace 4, class:^(Notion)$"
+        "workspace 4, class:^(ChatGPT)$"
+        
+        # Float certain windows
+        "float, class:^(pavucontrol)$"
+        "float, class:^(nm-connection-editor)$"
+        
+        # PWA window styling
+        "size 1400 900, class:^(Gmail)$"
+        "size 1400 900, class:^(Calendar)$"
+        "size 1200 800, class:^(Linear)$"
+        "size 1200 800, class:^(Notion)$"
+        "size 1000 700, class:^(ChatGPT)$"
       ];
     };
   };
 
-  # Waybar configuration
+  # Waybar configuration with Tokyo Night theme
   programs.waybar = {
     enable = true;
     settings = {
@@ -189,6 +207,11 @@
   
         "hyprland/workspaces" = {
           format = "{name}";
+          on-click = "activate";
+        };
+
+        "hyprland/window" = {
+          max-length = 50;
         };
   
         "clock" = {
@@ -223,46 +246,209 @@
         };
       };
     };
+    
+    # Tokyo Night styling for Waybar
     style = ''
       * {
         font-family: "JetBrainsMono Nerd Font";
         font-size: 13px;
       }
-  
+
       window#waybar {
-        background-color: rgba(26, 27, 38, 0.9);
-        color: #ffffff;
+        background-color: #1a1b26;
+        color: #c0caf5;
+        border-bottom: 2px solid #7aa2f7;
       }
-  
+
       #workspaces button {
         padding: 0 10px;
-        color: #ffffff;
+        color: #a9b1d6;
+        background-color: transparent;
+        border: none;
       }
-  
+
       #workspaces button.active {
-        background-color: rgba(51, 204, 255, 0.3);
+        background-color: #292e42;
+        color: #7aa2f7;
+        border-bottom: 2px solid #7aa2f7;
       }
-  
+
+      #workspaces button:hover {
+        background-color: #292e42;
+      }
+
+      #window {
+        color: #a9b1d6;
+        font-weight: normal;
+      }
+
       #clock,
       #battery,
       #pulseaudio,
       #network,
       #tray {
         padding: 0 10px;
+        background-color: transparent;
+        color: #c0caf5;
+      }
+
+      #battery.charging {
+        color: #9ece6a;
+      }
+
+      #battery.warning {
+        color: #e0af68;
+      }
+
+      #battery.critical {
+        color: #f7768e;
+      }
+
+      #pulseaudio.muted {
+        color: #565f89;
+      }
+
+      #network.disconnected {
+        color: #f7768e;
       }
     '';
   };
 
-  # Mako notification daemon configuration
+  # Mako notification daemon with Tokyo Night theme
   services.mako = {
     enable = true;
+    backgroundColor = "#1a1b26";
+    textColor = "#c0caf5";
+    borderColor = "#7aa2f7";
+    borderSize = 2;
+    borderRadius = 10;
+    defaultTimeout = 5000;
+    font = "JetBrainsMono Nerd Font 11";
+    padding = "10";
+  };
+
+  # Rofi configuration with Tokyo Night theme
+  programs.rofi = {
+    enable = true;
+    theme = "~/.config/rofi/theme.rasi";
+    extraConfig = {
+      modi = "drun,run,window";
+      show-icons = true;
+      terminal = "kitty";
+      drun-display-format = "{icon} {name}";
+      location = 0;
+      disable-history = false;
+      hide-scrollbar = true;
+      display-drun = "  Apps ";
+      display-run = "  Run ";
+      display-window = " 﩯 Window";
+      sidebar-mode = true;
+    };
+  };
+
+  # Rofi theme file with Tokyo Night colors
+  home.file.".config/rofi/theme.rasi".text = ''
+    * {
+      bg: #1a1b26;
+      bg-alt: #16161e;
+      bg-selected: #292e42;
+      
+      fg: #c0caf5;
+      fg-alt: #a9b1d6;
+      
+      border: #7aa2f7;
+      
+      background-color: @bg;
+      text-color: @fg;
+    }
+
+    window {
+      transparency: "real";
+      background-color: @bg;
+      border: 2px;
+      border-color: @border;
+      border-radius: 10px;
+      width: 600px;
+      padding: 20px;
+    }
+
+    mainbox {
+      background-color: transparent;
+      children: [inputbar, listview];
+      spacing: 20px;
+    }
+
+    inputbar {
+      background-color: @bg-alt;
+      border-radius: 8px;
+      padding: 10px;
+      children: [prompt, entry];
+    }
+
+    prompt {
+      background-color: transparent;
+      text-color: @border;
+      padding: 0 10px 0 0;
+    }
+
+    entry {
+      background-color: transparent;
+      placeholder: "Search...";
+      placeholder-color: @fg-alt;
+    }
+
+    listview {
+      background-color: transparent;
+      lines: 8;
+      scrollbar: false;
+    }
+
+    element {
+      background-color: transparent;
+      padding: 8px;
+      border-radius: 6px;
+    }
+
+    element selected {
+      background-color: @bg-selected;
+      text-color: @border;
+    }
+
+    element-icon {
+      size: 24px;
+      padding: 0 10px 0 0;
+    }
+
+    element-text {
+      background-color: transparent;
+      text-color: inherit;
+    }
+  '';
+
+  # Swaylock configuration with Tokyo Night theme
+  programs.swaylock = {
+    enable = true;
     settings = {
-      default-timeout = 5000;
-      background-color = "#1a1b26";
-      text-color = "#c0caf5";
-      border-color = "#33ccff";
-      border-size = 2;
-      border-radius = 10;
+      color = "1a1b26";
+      font-size = 24;
+      indicator-radius = 100;
+      line-color = "1a1b26";
+      show-failed-attempts = true;
+      
+      # Ring colors (Tokyo Night)
+      ring-color = "565f89";
+      ring-ver-color = "7aa2f7";
+      ring-wrong-color = "f7768e";
+      
+      # Inside colors
+      inside-color = "1a1b26";
+      inside-ver-color = "1a1b26";
+      inside-wrong-color = "1a1b26";
+      
+      # Text colors
+      text-color = "c0caf5";
+      text-ver-color = "7aa2f7";
+      text-wrong-color = "f7768e";
     };
   };
 }

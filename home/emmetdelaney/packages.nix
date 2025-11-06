@@ -72,8 +72,8 @@
     cliphist
     
     # Password management
-    bitwarden        # Desktop app
-    bitwarden-cli    # CLI tool
+    bitwarden-desktop  # Desktop app (renamed from bitwarden)
+    bitwarden-cli      # CLI tool
     
     # Container tools
     docker-compose
@@ -88,7 +88,7 @@
     
     # Fonts
     jetbrains-mono
-    nerdfonts
+    nerd-fonts.jetbrains-mono
   ];
 
   # Firefox configuration for Wayland

@@ -1,21 +1,21 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
-  # Enable Docker
-  virtualisation.docker = {
+  # Explicitly disable Docker (omarchy-nix enables it by default)
+  # Use lib.mkForce to override the omarchy-nix setting
+  virtualisation.docker.enable = lib.mkForce false;
+  
+  # Use Podman with Docker compatibility instead of Docker
+  # This provides docker CLI compatibility while using Podman
+  virtualisation.podman = {
     enable = true;
-    enableOnBoot = true;
+    dockerCompat = true;  # Provides docker CLI compatibility
+    defaultNetwork.settings.dns_enabled = true;
+    # Auto-prune settings
     autoPrune = {
       enable = true;
       dates = "weekly";
     };
-  };
-  
-  # Enable Podman as Docker alternative
-  virtualisation.podman = {
-    enable = true;
-    dockerCompat = true;  # Alias docker to podman
-    defaultNetwork.settings.dns_enabled = true;
   };
   
   # Enable libvirtd for VMs

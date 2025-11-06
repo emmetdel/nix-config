@@ -1,9 +1,6 @@
 { config, pkgs, lib, ... }:
 
 {
-  # Explicitly disable Docker (omarchy-nix enables it by default)
-  # Use lib.mkForce to override the omarchy-nix setting
-  virtualisation.docker.enable = lib.mkForce false;
   
   # Use Podman with Docker compatibility instead of Docker
   # This provides docker CLI compatibility while using Podman

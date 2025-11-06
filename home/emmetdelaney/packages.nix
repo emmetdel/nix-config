@@ -3,9 +3,8 @@
 {
   home.packages = with pkgs; [
     # Original packages from configuration.nix
-    # code-cursor  # Conflicts with omarchy-nix VSCode setup
     zed-editor
-    # vscode-fhs  # Conflicts with omarchy-nix VSCode setup
+    vscode-fhs
     firefox
     
     # Terminal emulator

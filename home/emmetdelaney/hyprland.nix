@@ -174,84 +174,84 @@
     };
   };
 
-  # Waybar configuration - disabled in favor of omarchy-nix's themed waybar
-  # programs.waybar = {
-  #   enable = true;
-  #   settings = {
-  #     mainBar = {
-  #       layer = "top";
-  #       position = "top";
-  #       height = 30;
-  #
-  #       modules-left = [ "hyprland/workspaces" "hyprland/window" ];
-  #       modules-center = [ "clock" ];
-  #       modules-right = [ "pulseaudio" "network" "battery" "tray" ];
-  #
-  #       "hyprland/workspaces" = {
-  #         format = "{name}";
-  #       };
-  #
-  #       "clock" = {
-  #         format = "{:%H:%M}";
-  #         tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
-  #       };
-  #
-  #       "pulseaudio" = {
-  #         format = "{icon} {volume}%";
-  #         format-muted = "🔇";
-  #         format-icons = {
-  #           default = [ "🔈" "🔉" "🔊" ];
-  #         };
-  #         on-click = "pavucontrol";
-  #       };
-  #
-  #       "network" = {
-  #         format-wifi = "📶 {essid}";
-  #         format-ethernet = "🌐 {ifname}";
-  #         format-disconnected = "⚠ Disconnected";
-  #         tooltip-format = "{ifname}: {ipaddr}";
-  #       };
-  #
-  #       "battery" = {
-  #         format = "{icon} {capacity}%";
-  #         format-icons = [ "🪫" "🔋" ];
-  #         format-charging = "⚡ {capacity}%";
-  #       };
-  #
-  #       "tray" = {
-  #         spacing = 10;
-  #       };
-  #     };
-  #   };
-  #   style = ''
-  #     * {
-  #       font-family: "JetBrainsMono Nerd Font";
-  #       font-size: 13px;
-  #     }
-  #
-  #     window#waybar {
-  #       background-color: rgba(26, 27, 38, 0.9);
-  #       color: #ffffff;
-  #     }
-  #
-  #     #workspaces button {
-  #       padding: 0 10px;
-  #       color: #ffffff;
-  #     }
-  #
-  #     #workspaces button.active {
-  #       background-color: rgba(51, 204, 255, 0.3);
-  #     }
-  #
-  #     #clock,
-  #     #battery,
-  #     #pulseaudio,
-  #     #network,
-  #     #tray {
-  #       padding: 0 10px;
-  #     }
-  #   '';
-  # };
+  # Waybar configuration
+  programs.waybar = {
+    enable = true;
+    settings = {
+      mainBar = {
+        layer = "top";
+        position = "top";
+        height = 30;
+  
+        modules-left = [ "hyprland/workspaces" "hyprland/window" ];
+        modules-center = [ "clock" ];
+        modules-right = [ "pulseaudio" "network" "battery" "tray" ];
+  
+        "hyprland/workspaces" = {
+          format = "{name}";
+        };
+  
+        "clock" = {
+          format = "{:%H:%M}";
+          tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
+        };
+  
+        "pulseaudio" = {
+          format = "{icon} {volume}%";
+          format-muted = "🔇";
+          format-icons = {
+            default = [ "🔈" "🔉" "🔊" ];
+          };
+          on-click = "pavucontrol";
+        };
+  
+        "network" = {
+          format-wifi = "📶 {essid}";
+          format-ethernet = "🌐 {ifname}";
+          format-disconnected = "⚠ Disconnected";
+          tooltip-format = "{ifname}: {ipaddr}";
+        };
+  
+        "battery" = {
+          format = "{icon} {capacity}%";
+          format-icons = [ "🪫" "🔋" ];
+          format-charging = "⚡ {capacity}%";
+        };
+  
+        "tray" = {
+          spacing = 10;
+        };
+      };
+    };
+    style = ''
+      * {
+        font-family: "JetBrainsMono Nerd Font";
+        font-size: 13px;
+      }
+  
+      window#waybar {
+        background-color: rgba(26, 27, 38, 0.9);
+        color: #ffffff;
+      }
+  
+      #workspaces button {
+        padding: 0 10px;
+        color: #ffffff;
+      }
+  
+      #workspaces button.active {
+        background-color: rgba(51, 204, 255, 0.3);
+      }
+  
+      #clock,
+      #battery,
+      #pulseaudio,
+      #network,
+      #tray {
+        padding: 0 10px;
+      }
+    '';
+  };
 
   # Mako notification daemon configuration
   services.mako = {

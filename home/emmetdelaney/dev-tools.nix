@@ -191,7 +191,7 @@
     userName = "Emmet Delaney";
     userEmail = "emmetdel@gmail.com";
     
-    extraConfig = {
+    settings = {
       init.defaultBranch = "main";
       pull.rebase = true;
       push.autoSetupRemote = true;

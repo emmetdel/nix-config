@@ -1,5 +1,5 @@
 {
-  description = "Emmet's NixOS configuration with Hyprland and Omarchy";
+  description = "Emmet's NixOS configuration with Hyprland";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -14,13 +14,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     
-    omarchy-nix = {
-      url = "github:henrysipp/omarchy-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
-  outputs = { self, nixpkgs, home-manager, hyprland, omarchy-nix, ... }@inputs: {
+  outputs = { self, nixpkgs, home-manager, hyprland, ... }@inputs: {
     nixosConfigurations = {
       helios = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";

@@ -21,10 +21,10 @@
 
   # Keyboard configuration
   services.xserver.xkb = {
-    layout = "us";
+    layout = "gb";
     variant = "";
   };
 
   # Console keymap
-  console.keyMap = "us";
+  console.keyMap = "uk";
 }

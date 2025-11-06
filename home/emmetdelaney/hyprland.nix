@@ -17,7 +17,9 @@
         "waybar"
         "mako"
         "nm-applet --indicator"
-        "swaybg -i ~/.config/wallpaper.jpg -m fill"
+        "blueman-applet"
+        "/nix/store/$(ls -t /nix/store/ | grep polkit-gnome | head -n1)/libexec/polkit-gnome-authentication-agent-1"
+        "swaybg -c '#1a1b26'"
       ];
 
       # Environment variables

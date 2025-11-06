@@ -33,6 +33,9 @@
     # Network
     networkmanagerapplet
     
+    # Bluetooth
+    blueman
+    
     # Fonts
     jetbrains-mono
     nerd-fonts.jetbrains-mono

@@ -28,6 +28,9 @@
 
   # Essential Wayland packages
   environment.systemPackages = with pkgs; [
+    # Polkit authentication agent
+    polkit_gnome
+    
     # Wayland essentials
     wayland
     xwayland

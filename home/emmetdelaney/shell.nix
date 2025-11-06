@@ -108,29 +108,22 @@
   programs.git = {
     enable = true;
     
-    settings = {
-      user = {
-        name = "Emmet Delaney";
-        email = "emmetdel@gmail.com";
-      };
-      
+    userName = "Emmet Delaney";
+    userEmail = "emmetdel@gmail.com";
+    
+    extraConfig = {
       init.defaultBranch = "main";
       pull.rebase = true;
       push.autoSetupRemote = true;
-      
-      alias = {
-        st = "status";
-        co = "checkout";
-        br = "branch";
-        ci = "commit";
-        unstage = "reset HEAD --";
-        last = "log -1 HEAD";
-      };
-      
-      # Conditional includes based on directory
-      includeIf."gitdir/i:~/code/work/" = {
-        path = "~/.config/git/config-work";
-      };
+    };
+    
+    aliases = {
+      st = "status";
+      co = "checkout";
+      br = "branch";
+      ci = "commit";
+      unstage = "reset HEAD --";
+      last = "log -1 HEAD";
     };
   };
   

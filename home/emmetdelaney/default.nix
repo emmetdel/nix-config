@@ -11,7 +11,7 @@
   # Home Manager settings
   home.username = "emmetdelaney";
   home.homeDirectory = "/home/emmetdelaney";
-  home.stateVersion = "25.05";
+  home.stateVersion = "24.11";
 
   # Let Home Manager manage itself
   programs.home-manager.enable = true;

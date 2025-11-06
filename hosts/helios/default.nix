@@ -10,6 +10,7 @@
     ../../modules/system/networking.nix
     ../../modules/system/locale.nix
     ../../modules/system/sound.nix
+    ../../modules/system/bluetooth.nix
     ../../modules/system/users.nix
     ../../modules/system/secrets.nix
 

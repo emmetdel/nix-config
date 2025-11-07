@@ -4,14 +4,15 @@
   imports = [
     # Hardware configuration
     ./hardware.nix
-    
+
     # System modules
     ../../modules/system/boot.nix
     ../../modules/system/networking.nix
     ../../modules/system/locale.nix
     ../../modules/system/sound.nix
     ../../modules/system/users.nix
-    
+    ../../modules/system/secrets.nix
+
     # Desktop modules
     ../../modules/desktop/hyprland.nix
     ../../modules/desktop/display-manager.nix

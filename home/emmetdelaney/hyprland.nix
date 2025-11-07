@@ -1,8 +1,13 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  inputs,
+  ...
+}: {
   wayland.windowManager.hyprland = {
     enable = true;
+    # Use the flake package for latest features
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
     settings = {
       # Monitor configuration
       monitor = ",preferred,auto,1";
@@ -36,8 +41,8 @@
         gaps_in = 5;
         gaps_out = 10;
         border_size = 2;
-        "col.active_border" = "rgb(7aa2f7) rgb(7dcfff) 45deg";  # Tokyo Night blue/cyan
-        "col.inactive_border" = "rgb(565f89)";  # Tokyo Night dim
+        "col.active_border" = "rgb(7aa2f7) rgb(7dcfff) 45deg"; # Tokyo Night blue/cyan
+        "col.inactive_border" = "rgb(565f89)"; # Tokyo Night dim
         layout = "dwindle";
         allow_tearing = false;
       };
@@ -53,7 +58,7 @@
         drop_shadow = true;
         shadow_range = 4;
         shadow_render_power = 3;
-        "col.shadow" = "rgba(1a1b26ee)";  # Tokyo Night background
+        "col.shadow" = "rgba(1a1b26ee)"; # Tokyo Night background
       };
 
       # Smooth animations
@@ -86,27 +91,27 @@
       bind = [
         # Core applications (Super + Letter)
         "$mod, Return, exec, kitty"
-        "$mod, F, exec, firefox"
-        "$mod, E, exec, code"  # Editor (VSCode/Cursor)
-        "$mod, T, exec, thunar"  # File manager
-        
+        "$mod, B, exec, firefox" # Browser
+        "$mod, C, exec, code" # Editor (VSCode/Cursor)
+        "$mod, F, exec, thunar" # File manager
+
         # Web Apps Launcher (Super + W)
         "$mod, W, exec, web-apps"
-        
+
         # Window management
         "$mod, Q, killactive,"
-        "$mod, M, exit,"
+        # "$mod, M, exit,"
         "$mod SHIFT, F, togglefloating,"
         "$mod SHIFT, M, fullscreen,"
-        
+
         # Application launcher
-        "$mod, D, exec, rofi -show drun"
+        "$mod, SPACE, exec, rofi -show drun"
         "$mod, R, exec, rofi -show run"
-        
+
         # Utilities
-        "$mod, L, exec, swaylock"  # Lock screen
-        ", Print, exec, grim -g \"$(slurp)\" - | wl-copy"  # Screenshot area
-        "SHIFT, Print, exec, grim - | wl-copy"  # Screenshot full screen
+        "$mod, L, exec, swaylock" # Lock screen
+        ", Print, exec, grim -g \"$(slurp)\" - | wl-copy" # Screenshot area
+        "SHIFT, Print, exec, grim - | wl-copy" # Screenshot full screen
 
         # Move focus with vim keys
         "$mod, h, movefocus, l"
@@ -120,11 +125,11 @@
         "$mod, up, movefocus, u"
         "$mod, down, movefocus, d"
 
-        # Switch workspaces (Omarchy-style organization)
-        "$mod, 1, workspace, 1"  # Communication (Gmail, Calendar)
-        "$mod, 2, workspace, 2"  # Development (Code, Terminal)
-        "$mod, 3, workspace, 3"  # Research (Firefox)
-        "$mod, 4, workspace, 4"  # Planning (Linear, Notion)
+        # Switch workspaces
+        "$mod, 1, workspace, 1" # Communication (Gmail, Calendar)
+        "$mod, 2, workspace, 2" # Development (Code, Terminal)
+        "$mod, 3, workspace, 3" # Research (Firefox)
+        "$mod, 4, workspace, 4" # Planning (Linear, Notion)
         "$mod, 5, workspace, 5"
         "$mod, 6, workspace, 6"
         "$mod, 7, workspace, 7"
@@ -147,7 +152,7 @@
         # Scroll through workspaces
         "$mod, mouse_down, workspace, e+1"
         "$mod, mouse_up, workspace, e-1"
-        
+
         # Special workspace (scratchpad)
         "$mod, S, togglespecialworkspace"
         "$mod SHIFT, S, movetoworkspace, special"
@@ -164,24 +169,24 @@
         # Communication workspace (1)
         "workspace 1, class:^(Gmail)$"
         "workspace 1, class:^(Calendar)$"
-        
+
         # Development workspace (2)
         "workspace 2, class:^(code)$"
         "workspace 2, class:^(Code)$"
         "workspace 2, title:^(Visual Studio Code)$"
-        
+
         # Research workspace (3)
         "workspace 3, class:^(firefox)$"
-        
+
         # Planning workspace (4)
         "workspace 4, class:^(Linear)$"
         "workspace 4, class:^(Notion)$"
         "workspace 4, class:^(ChatGPT)$"
-        
+
         # Float certain windows
         "float, class:^(pavucontrol)$"
         "float, class:^(nm-connection-editor)$"
-        
+
         # PWA window styling
         "size 1400 900, class:^(Gmail)$"
         "size 1400 900, class:^(Calendar)$"
@@ -200,11 +205,11 @@
         layer = "top";
         position = "top";
         height = 30;
-  
-        modules-left = [ "hyprland/workspaces" "hyprland/window" ];
-        modules-center = [ "clock" ];
-        modules-right = [ "pulseaudio" "network" "battery" "tray" ];
-  
+
+        modules-left = ["hyprland/workspaces" "hyprland/window"];
+        modules-center = ["clock"];
+        modules-right = ["pulseaudio" "network" "battery" "tray"];
+
         "hyprland/workspaces" = {
           format = "{name}";
           on-click = "activate";
@@ -213,40 +218,40 @@
         "hyprland/window" = {
           max-length = 50;
         };
-  
+
         "clock" = {
           format = "{:%H:%M}";
           tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
         };
-  
+
         "pulseaudio" = {
           format = "{icon} {volume}%";
           format-muted = "🔇";
           format-icons = {
-            default = [ "🔈" "🔉" "🔊" ];
+            default = ["🔈" "🔉" "🔊"];
           };
           on-click = "pavucontrol";
         };
-  
+
         "network" = {
           format-wifi = "📶 {essid}";
           format-ethernet = "🌐 {ifname}";
           format-disconnected = "⚠ Disconnected";
           tooltip-format = "{ifname}: {ipaddr}";
         };
-  
+
         "battery" = {
           format = "{icon} {capacity}%";
-          format-icons = [ "🪫" "🔋" ];
+          format-icons = ["🪫" "🔋"];
           format-charging = "⚡ {capacity}%";
         };
-  
+
         "tray" = {
           spacing = 10;
         };
       };
     };
-    
+
     # Tokyo Night styling for Waybar
     style = ''
       * {
@@ -354,12 +359,12 @@
       bg: #1a1b26;
       bg-alt: #16161e;
       bg-selected: #292e42;
-      
+
       fg: #c0caf5;
       fg-alt: #a9b1d6;
-      
+
       border: #7aa2f7;
-      
+
       background-color: @bg;
       text-color: @fg;
     }
@@ -436,17 +441,17 @@
       indicator-radius = 100;
       line-color = "1a1b26";
       show-failed-attempts = true;
-      
+
       # Ring colors (Tokyo Night)
       ring-color = "565f89";
       ring-ver-color = "7aa2f7";
       ring-wrong-color = "f7768e";
-      
+
       # Inside colors
       inside-color = "1a1b26";
       inside-ver-color = "1a1b26";
       inside-wrong-color = "1a1b26";
-      
+
       # Text colors
       text-color = "c0caf5";
       text-ver-color = "7aa2f7";

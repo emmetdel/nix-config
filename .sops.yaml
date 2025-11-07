@@ -1,0 +1,16 @@
+# SOPS configuration for encrypting secrets
+# This file tells sops which keys to use for encryption
+
+keys:
+  # Add your age public key here after generating it
+  # Format: &user_key age1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  - &host_key age1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+creation_rules:
+  - path_regex: secrets/secrets\.yaml$
+    key_groups:
+      - age:
+          - *host_key
+
+
+

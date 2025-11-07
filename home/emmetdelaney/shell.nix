@@ -126,6 +126,18 @@
         unstage = "reset HEAD --";
         last = "log -1 HEAD";
       };
+      
+      # Conditional includes based on directory
+      includeIf."gitdir/i:~/code/work/" = {
+        path = "~/.config/git/config-work";
+      };
     };
   };
+  
+  # Work git configuration
+  xdg.configFile."git/config-work".text = ''
+    [user]
+      name = Emmet Delaney
+      email = emmet.delaney@sitenna.com
+  '';
 }

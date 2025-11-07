@@ -1,0 +1,25 @@
+# Build results
+result
+result-*
+
+# Secrets - never commit unencrypted
+secrets/*.yaml.dec
+secrets/*.json.dec
+secrets/*.env.dec
+secrets/*_unencrypted*
+
+# But DO commit the encrypted secrets.yaml
+!secrets/secrets.yaml
+
+# Editor files
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+
+.direnv

@@ -1,0 +1,48 @@
+{
+  // Nix Language Server for IntelliSense
+  "nix.enableLanguageServer": true,
+  "nix.serverPath": "nixd",
+
+  // Formatter configuration
+  "[nix]": {
+    "editor.defaultFormatter": "jnoortheen.nix-ide",
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+
+  // nixd LSP configuration
+  "nix.serverSettings": {
+    "nixd": {
+      "formatting": {
+        "command": ["alejandra"]
+      },
+      "nixpkgs": {
+        "expr": "import <nixpkgs> { }"
+      },
+      "options": {
+        "nixos": {
+          "expr": "(builtins.getFlake \"/Users/emmetdelaney/personal-code/nix-config\").nixosConfigurations.helios.options"
+        },
+        "home-manager": {
+          "expr": "(builtins.getFlake \"/Users/emmetdelaney/personal-code/nix-config\").nixosConfigurations.helios.config.home-manager.users.emmetdelaney.options"
+        }
+      }
+    }
+  },
+
+  // Additional editor settings
+  "editor.formatOnSave": true,
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+
+  // Environment selector - tells Nix IDE extension to use this flake
+  "nixEnvSelector.nixFile": "${workspaceFolder}/flake.nix",
+
+  // Direnv integration (if using direnv extension)
+  "direnv.restart.automatic": true,
+
+  // Terminal should inherit the direnv environment
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.inheritEnv": true
+}

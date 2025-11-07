@@ -36,8 +36,8 @@
           # Host configuration
           ./hosts/helios/default.nix
 
-          # Secrets management
-          sops-nix.nixosModules.sops
+          # Secrets management (temporarily disabled)
+          # sops-nix.nixosModules.sops
 
           # Home Manager
           home-manager.nixosModules.home-manager
@@ -53,7 +53,34 @@
       };
     };
 
-    # Development shell for macOS
+    # Development shell for Linux (NixOS)
+    devShells.x86_64-linux.default = let
+      pkgs = import nixpkgs {system = "x86_64-linux";};
+    in
+      pkgs.mkShell {
+        buildInputs = with pkgs; [
+          alejandra # Nix formatter
+          nixd # Nix LSP for IntelliSense
+          statix # Nix linter
+          deadnix # Find dead/unused Nix code
+          sops # Secrets management
+          age # Encryption for sops
+        ];
+
+        shellHook = ''
+          echo "🔧 NixOS Config Development Environment"
+          echo ""
+          echo "Available commands:"
+          echo "  alejandra .          - Format all Nix files"
+          echo "  alejandra -c .       - Check formatting (no changes)"
+          echo "  statix check .       - Lint Nix files"
+          echo "  deadnix .            - Find unused code"
+          echo "  nix flake check      - Validate flake"
+          echo ""
+        '';
+      };
+
+    # Development shell for macOS (Intel)
     devShells.x86_64-darwin.default = let
       pkgs = import nixpkgs {system = "x86_64-darwin";};
     in

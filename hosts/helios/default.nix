@@ -12,7 +12,7 @@
     ../../modules/system/sound.nix
     ../../modules/system/bluetooth.nix
     ../../modules/system/users.nix
-    ../../modules/system/secrets.nix
+    # ../../modules/system/secrets.nix  # Temporarily disabled - no secrets needed yet
 
     # Desktop modules
     ../../modules/desktop/hyprland.nix

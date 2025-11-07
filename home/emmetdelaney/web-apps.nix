@@ -42,7 +42,7 @@ let
   };
 
   # PWA launcher - creates dedicated app windows with chromium
-  launchPWA = pkgs.writeShellScript "launch-pwa" ''
+  launchPWA = pkgs.writeShellScriptBin "launch-pwa" ''
     name="$1"
     url="$2"
     
@@ -62,7 +62,7 @@ let
   '';
 
   # Web app launcher menu (accessible via Super+W)
-  webAppLauncher = pkgs.writeShellScript "web-apps" ''
+  webAppLauncher = pkgs.writeShellScriptBin "web-apps" ''
     #!/usr/bin/env bash
     
     # Build menu with app names
@@ -85,7 +85,7 @@ let
       ''
       if [ "$selection" = "${app.name}" ]; then
         ${if app.usePWA then
-          ''${launchPWA} "${app.name}" "${app.url}"''
+          ''${launchPWA}/bin/launch-pwa "${app.name}" "${app.url}"''
         else
           ''${pkgs.firefox}/bin/firefox --new-window "${app.url}" &''
         }
@@ -99,9 +99,9 @@ let
     let app = webApps.${name}; in
     {
       name = "launch-${name}";
-      value = pkgs.writeShellScript "launch-${name}" ''
+      value = pkgs.writeShellScriptBin "launch-${name}" ''
         ${if app.usePWA then
-          ''${launchPWA} "${app.name}" "${app.url}"''
+          ''${launchPWA}/bin/launch-pwa "${app.name}" "${app.url}"''
         else
           ''${pkgs.firefox}/bin/firefox --new-window "${app.url}" &''
         }
@@ -125,7 +125,7 @@ in
           Version=1.0
           Type=Application
           Name=${app.name}
-          Exec=${launchPWA} "${app.name}" "${app.url}"
+          Exec=${launchPWA}/bin/launch-pwa "${app.name}" "${app.url}"
           Icon=web-browser
           Categories=Network;WebBrowser;
           StartupWMClass=${app.name}

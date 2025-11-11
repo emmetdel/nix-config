@@ -29,22 +29,22 @@
         };
 
         "clock" = {
-          format = " {:%H:%M}";
+          format = "󰃰 {:%H:%M}";
           tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
-          format-alt = " {:%d/%m}";
+          format-alt = "󰃭 {:%d/%m}";
         };
 
         "pulseaudio" = {
           format = "{icon} {volume}%";
-          format-muted = "";
+          format-muted = "󰸈";
           format-icons = {
-            headphone = "";
-            hands-free = "";
-            headset = "";
-            phone = "";
-            portable = "";
-            car = "";
-            default = ["" "" ""];
+            headphone = "󰋋";
+            hands-free = "󰋋";
+            headset = "󰋋";
+            phone = "󰏲";
+            portable = "󰏲";
+            car = "󰄋";
+            default = ["󰖀" "󰕾" "󰕾"];
           };
           on-click = "pavucontrol";
         };
@@ -73,25 +73,25 @@
         };
 
         "cpu" = {
-          format = "󰻠 {usage}%";
+          format = "󰘚 {usage}%";
           tooltip = false;
           on-click = "kitty htop";
         };
 
         "memory" = {
-          format = " {percentage}%";
+          format = "󰍛 {percentage}%";
           tooltip = false;
           on-click = "kitty htop";
         };
 
         "temperature" = {
           format = "{temperatureC}°C";
-          format-icons = [""];
+          format-icons = ["󰔏"];
           tooltip = false;
         };
 
         "disk" = {
-          format = " {percentage_used}%";
+          format = "󰋊 {percentage_used}%";
           path = "/";
           tooltip = false;
           on-click = "kitty df -h";

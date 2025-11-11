@@ -1,11 +1,13 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   imports = [
-    ./packages.nix      # Minimal package list
-    ./hyprland.nix      # Hyprland with Tokyo Night theme
-    ./shell.nix         # Shell configuration
-    ./web-apps.nix      # PWA web apps support
+    ./packages.nix # Minimal package list
+    ./hyprland.nix # Hyprland with Tokyo Night theme
+    ./shell.nix # Shell configuration
+    ./web-apps.nix # PWA web apps support
   ];
 
   # Home Manager settings
@@ -15,6 +17,12 @@
 
   # Let Home Manager manage itself
   programs.home-manager.enable = true;
+
+  # SSH agent service
+  services.ssh-agent = {
+    enable = true;
+    addKeysToAgent = "yes";
+  };
 
   # Basic neovim as minimal editor
   programs.neovim = {

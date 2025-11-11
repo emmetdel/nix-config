@@ -9,7 +9,7 @@
     chromium # PWA engine for web apps
 
     # Editor
-    vscode-fhs # Code editor
+    vscode # Code editor
 
     # Terminal
     kitty

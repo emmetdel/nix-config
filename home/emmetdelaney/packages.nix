@@ -46,6 +46,11 @@
     inter # More readable system font
   ];
 
+  # Brave configuration for Wayland
+  programs.brave = {
+    enable = true;
+  };
+
   # Kitty terminal configuration
   programs.kitty = {
     enable = true;

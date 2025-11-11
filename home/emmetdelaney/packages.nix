@@ -42,12 +42,15 @@
     blueman
 
     # Password manager
-    _1password-cli
 
     # Fonts
     jetbrains-mono
     nerd-fonts.jetbrains-mono
     inter # More readable system font
+
+    # Work
+    slack
+    _1password-gui
   ];
 
   # Brave configuration for Wayland

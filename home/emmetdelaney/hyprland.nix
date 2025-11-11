@@ -93,7 +93,7 @@
       bind = [
         # Core applications (Super + Letter)
         "$mod, Return, exec, kitty"
-        "$mod, B, exec, firefox" # Browser
+        "$mod, B, exec, brave" # Browser
         "$mod, C, exec, code" # Editor (VSCode/Cursor)
         "$mod, F, exec, thunar" # File manager
 
@@ -193,7 +193,7 @@
         "workspace 2, title:^(Visual Studio Code)$"
 
         # Research workspace (3)
-        "workspace 3, class:^(firefox)$"
+        "workspace 3, class:^(Brave-browser)$"
 
         # Planning workspace (4)
         "workspace 4, class:^(Linear)$"

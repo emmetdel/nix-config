@@ -5,7 +5,7 @@
 }: {
   home.packages = with pkgs; [
     # Browsers
-    firefox # Main browser for research
+    brave # Main browser for research
     chromium # PWA engine for web apps
 
     # Editor
@@ -45,11 +45,6 @@
     nerd-fonts.jetbrains-mono
     inter # More readable system font
   ];
-
-  # Firefox configuration for Wayland
-  programs.firefox = {
-    enable = true;
-  };
 
   # Kitty terminal configuration
   programs.kitty = {

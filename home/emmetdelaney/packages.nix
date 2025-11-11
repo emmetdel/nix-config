@@ -31,6 +31,8 @@
     fd # Better find
     ripgrep # Better grep
     eza # Better ls with icons
+    htop # System monitor
+    direnv # Environment switcher
 
     # Network
     networkmanagerapplet
@@ -41,6 +43,7 @@
     # Fonts
     jetbrains-mono
     nerd-fonts.jetbrains-mono
+    inter # More readable system font
   ];
 
   # Firefox configuration for Wayland
@@ -53,7 +56,7 @@
     enable = true;
     font = {
       name = "JetBrainsMono Nerd Font";
-      size = 15;
+      size = 16;
     };
     settings = {
       # Tokyo Night theme colors (inline)
@@ -102,5 +105,11 @@
       background_opacity = "0.95";
       confirm_os_window_close = 0;
     };
+  };
+
+  # Direnv for automatic environment activation
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
   };
 }

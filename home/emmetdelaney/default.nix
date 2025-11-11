@@ -19,7 +19,10 @@
   programs.home-manager.enable = true;
 
   # SSH agent service
-  services.ssh-agent = {
+  services.ssh-agent.enable = true;
+
+  # SSH client configuration
+  programs.ssh = {
     enable = true;
     addKeysToAgent = "yes";
   };
@@ -36,8 +39,8 @@
   gtk = {
     enable = true;
     font = {
-      name = "JetBrainsMono Nerd Font";
-      size = 12;
+      name = "Inter";
+      size = 14;
     };
     theme = {
       name = "Adwaita-dark";

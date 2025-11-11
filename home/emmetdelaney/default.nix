@@ -32,9 +32,13 @@
     vimAlias = true;
   };
 
-  # GTK theme (minimal)
+  # GTK theme with larger font
   gtk = {
     enable = true;
+    font = {
+      name = "JetBrainsMono Nerd Font";
+      size = 12;
+    };
     theme = {
       name = "Adwaita-dark";
       package = pkgs.gnome-themes-extra;

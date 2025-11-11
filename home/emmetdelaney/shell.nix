@@ -60,6 +60,15 @@
       bindkey '^P' up-line-or-search
       bindkey '^N' down-line-or-search
 
+      # Start SSH agent and add personal key
+      if [ -z "$SSH_AUTH_SOCK" ]; then
+        eval "$(ssh-agent -s | head -2)"
+      fi
+
+      # Add personal SSH key if it exists
+      if [ -f ~/.ssh/github_personal ]; then
+        ssh-add ~/.ssh/github_personal 2>/dev/null
+      fi
     '';
   };
 

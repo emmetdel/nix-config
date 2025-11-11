@@ -93,8 +93,8 @@
         "$mod, C, exec, code" # Editor (VSCode/Cursor)
         "$mod, F, exec, thunar" # File manager
 
-        # Web Apps Launcher (Super + W)
-        "$mod, W, exec, web-apps"
+        # Close window (Super + W)
+        "$mod, W, killactive,"
 
         # Window management
         "$mod, Q, killactive,"
@@ -110,6 +110,15 @@
         "$mod, L, exec, swaylock" # Lock screen
         ", Print, exec, grim -g \"$(slurp)\" - | wl-copy" # Screenshot area
         "SHIFT, Print, exec, grim - | wl-copy" # Screenshot full screen
+
+        # Media keys
+        ", XF86AudioRaiseVolume, exec, pamixer -i 5 && notify-send -a \"volume\" -r 999 \"Volume: $(pamixer --get-volume)%\" -t 1000"
+        ", XF86AudioLowerVolume, exec, pamixer -d 5 && notify-send -a \"volume\" -r 999 \"Volume: $(pamixer --get-volume)%\" -t 1000"
+        ", XF86AudioMute, exec, pamixer -t && (pamixer --get-mute | grep -q true && notify-send -a \"volume\" -r 999 \"Volume: Muted\" -t 1000 || notify-send -a \"volume\" -r 999 \"Volume: $(pamixer --get-volume)%\" -t 1000)"
+        ", XF86AudioPlay, exec, playerctl play-pause"
+        ", XF86AudioPause, exec, playerctl play-pause"
+        ", XF86AudioNext, exec, playerctl next"
+        ", XF86AudioPrev, exec, playerctl previous"
 
         # Move focus with vim keys
         "$mod, h, movefocus, l"
@@ -202,7 +211,8 @@
       mainBar = {
         layer = "top";
         position = "top";
-        height = 30;
+        height = 40;
+        spacing = 4;
 
         modules-left = ["hyprland/workspaces" "hyprland/window"];
         modules-center = ["clock"];
@@ -214,34 +224,49 @@
         };
 
         "hyprland/window" = {
+          format = "{title}";
           max-length = 50;
+          separate-outputs = true;
         };
 
         "clock" = {
-          format = "{:%H:%M}";
+          format = " {:%H:%M}";
           tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
+          format-alt = " {:%d/%m}";
         };
 
         "pulseaudio" = {
           format = "{icon} {volume}%";
-          format-muted = "🔇";
+          format-muted = "";
           format-icons = {
-            default = ["🔈" "🔉" "🔊"];
+            headphone = "";
+            hands-free = "";
+            headset = "";
+            phone = "";
+            portable = "";
+            car = "";
+            default = ["" "" ""];
           };
           on-click = "pavucontrol";
         };
 
         "network" = {
-          format-wifi = "📶 {essid}";
-          format-ethernet = "🌐 {ifname}";
-          format-disconnected = "⚠ Disconnected";
+          format-wifi = " {signalStrength}%";
+          format-ethernet = "󰈀 {ifname}";
+          format-disconnected = "󰖪";
           tooltip-format = "{ifname}: {ipaddr}";
         };
 
         "battery" = {
+          states = {
+            warning = 30;
+            critical = 15;
+          };
           format = "{icon} {capacity}%";
-          format-icons = ["🪫" "🔋"];
-          format-charging = "⚡ {capacity}%";
+          format-charging = "󰂄 {capacity}%";
+          format-plugged = "󰂄 {capacity}%";
+          format-icons = ["󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
+          tooltip-format = "{timeTo}";
         };
 
         "tray" = {
@@ -250,71 +275,9 @@
       };
     };
 
-    # Tokyo Night styling for Waybar
-    style = ''
-      * {
-        font-family: "JetBrainsMono Nerd Font";
-        font-size: 13px;
-      }
-
-      window#waybar {
-        background-color: #1a1b26;
-        color: #c0caf5;
-        border-bottom: 2px solid #7aa2f7;
-      }
-
-      #workspaces button {
-        padding: 0 10px;
-        color: #a9b1d6;
-        background-color: transparent;
-        border: none;
-      }
-
-      #workspaces button.active {
-        background-color: #292e42;
-        color: #7aa2f7;
-        border-bottom: 2px solid #7aa2f7;
-      }
-
-      #workspaces button:hover {
-        background-color: #292e42;
-      }
-
-      #window {
-        color: #a9b1d6;
-        font-weight: normal;
-      }
-
-      #clock,
-      #battery,
-      #pulseaudio,
-      #network,
-      #tray {
-        padding: 0 10px;
-        background-color: transparent;
-        color: #c0caf5;
-      }
-
-      #battery.charging {
-        color: #9ece6a;
-      }
-
-      #battery.warning {
-        color: #e0af68;
-      }
-
-      #battery.critical {
-        color: #f7768e;
-      }
-
-      #pulseaudio.muted {
-        color: #565f89;
-      }
-
-      #network.disconnected {
-        color: #f7768e;
-      }
-    '';
+    # Temporarily removed custom styling to ensure waybar displays
+    # style = ''
+    # '';
   };
 
   # Mako notification daemon with Tokyo Night theme
@@ -327,7 +290,7 @@
       border-size = 2;
       border-radius = 10;
       default-timeout = 5000;
-      font = "JetBrainsMono Nerd Font 11";
+      font = "JetBrainsMono Nerd Font 14";
       padding = "10";
     };
   };
@@ -435,7 +398,7 @@
     enable = true;
     settings = {
       color = "1a1b26";
-      font-size = 24;
+      font-size = 28;
       indicator-radius = 100;
       line-color = "1a1b26";
       show-failed-attempts = true;
@@ -455,5 +418,33 @@
       text-ver-color = "7aa2f7";
       text-wrong-color = "f7768e";
     };
+  };
+
+  # Volume control script with notifications
+  home.file.".config/hypr/scripts/volume.sh" = {
+    executable = true;
+    text = ''
+      #!/bin/bash
+      case $1 in
+        up)
+          pamixer -i 5
+          ;;
+        down)
+          pamixer -d 5
+          ;;
+        mute)
+          pamixer -t
+          ;;
+      esac
+
+      volume=$(pamixer --get-volume)
+      muted=$(pamixer --get-mute)
+
+      if [ "$muted" = "true" ]; then
+        notify-send "Volume: Muted" -t 1000
+      else
+        notify-send "Volume: $volume%" -t 1000
+      fi
+    '';
   };
 }

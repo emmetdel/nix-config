@@ -6,6 +6,7 @@
   home.packages = with pkgs; [
     # Browsers
     brave # Main browser for research
+    firefox # Alternative browser
     chromium # PWA engine for web apps
 
     # Editor
@@ -40,6 +41,9 @@
     # Bluetooth
     blueman
 
+    # Password manager
+    _1password-cli
+
     # Fonts
     jetbrains-mono
     nerd-fonts.jetbrains-mono
@@ -48,6 +52,14 @@
 
   # Brave configuration for Wayland
   programs.brave = {
+    enable = true;
+    extensions = [
+      {id = "cjpalhdlnbpafiamejdnhcphjbkeiagm";} # uBlock Origin
+    ];
+  };
+
+  # Firefox configuration
+  programs.firefox = {
     enable = true;
   };
 

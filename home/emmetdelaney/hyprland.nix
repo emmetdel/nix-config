@@ -14,7 +14,7 @@
     package = inputs.hyprland.packages.${pkgs.system}.hyprland;
     settings = {
       # Monitor configuration
-      monitor = ",preferred,auto,1";
+      monitor = "DP-2,3440x1440@100,0x0,1.25";
 
       # Execute at launch
       exec-once = [

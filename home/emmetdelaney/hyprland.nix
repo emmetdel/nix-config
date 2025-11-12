@@ -27,6 +27,7 @@
         "/nix/store/$(ls -t /nix/store/ | grep polkit-gnome | head -n1)/libexec/polkit-gnome-authentication-agent-1"
         "swaybg -c '#1a1b26'"
         "mkdir -p $HOME/.config/chromium/WebApps"
+        "ssh-add ~/.ssh/github-personal"
       ];
 
       # Environment variables
@@ -105,7 +106,7 @@
 
         # Window management
         "$mod, Q, killactive,"
-        # "$mod, M, exit,"
+        "$mod, Escape, exit,"
         "$mod SHIFT, F, togglefloating,"
         "$mod SHIFT, M, fullscreen,"
 

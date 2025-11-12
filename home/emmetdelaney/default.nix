@@ -2,14 +2,15 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   imports = [
     ./packages.nix # Minimal package list
     ./hyprland.nix # Hyprland with Tokyo Night theme
     ./shell.nix # Shell configuration
     ./web-apps.nix # PWA web apps support
     ./neovim.nix # Enhanced Neovim configuration
-    ./vscode.nix # Enhanced VSCode configuration
+    # ./vscode.nix # Enhanced VSCode configuration
   ];
 
   # Home Manager settings

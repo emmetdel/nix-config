@@ -34,6 +34,9 @@
     vim
     wget
     git
+    opencode
+    zed-editor
+    nil
   ];
 
   # System state version

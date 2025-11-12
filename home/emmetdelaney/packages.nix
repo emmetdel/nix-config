@@ -4,6 +4,7 @@
   ...
 }: {
   home.packages = with pkgs; [
+    zed
     # Browsers
     ungoogled-chromium # For web apps only
 

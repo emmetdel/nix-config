@@ -117,8 +117,9 @@
         # Global search (Super + /)
         "$mod, slash, exec, rofi -show combi"
 
-        # Window switcher (Super + Tab)
-        "$mod, Tab, exec, rofi -show window"
+        # Window cycling (Super + Tab)
+        "$mod, Tab, cyclenext,"
+        "$mod SHIFT, Tab, cyclenext, prev"
 
         # Development shortcuts
         "$mod, G, exec, [floating; center] kitty --hold --title git-status -e git status" # Git status

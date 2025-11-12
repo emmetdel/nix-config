@@ -61,6 +61,7 @@
     yarn
     docker
     docker-compose
+    claude-code
 
     # Development servers
     python311Packages.httpserver

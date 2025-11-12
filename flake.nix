@@ -66,7 +66,10 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              extraSpecialArgs = {inherit inputs;};
+              extraSpecialArgs = {
+                inherit inputs userConfig;
+                hostname = hostConfig.helios.hostname;
+              };
               backupFileExtension = "backup";
               users.emmetdelaney = import ./home/emmetdelaney/default.nix;
             };

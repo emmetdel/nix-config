@@ -6,6 +6,8 @@ in
     pkgs,
     ...
   }: {
+    _module.args.theme = theme;
+
     imports = [
       ./packages.nix # Minimal package list
       ./hyprland.nix # Hyprland with Tokyo Night theme

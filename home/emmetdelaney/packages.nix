@@ -55,7 +55,6 @@
     python3
     rustc
     cargo
-    gcc
     clang
     nodejs
     yarn
@@ -63,8 +62,7 @@
     docker-compose
 
     # Development servers
-    python311Packages.http-server
-    live-server
+    python311Packages.httpserver
   ];
 
   # Kitty terminal configuration

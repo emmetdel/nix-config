@@ -7,47 +7,8 @@
   programs.vscode = {
     enable = true;
 
-    # Code-managed extensions
-    extensions = with pkgs.vscode-extensions; [
-      # Theme
-      ms-vscode.vscode-theme-tokyo-night
-
-      # Language support
-      ms-vscode.vscode-typescript-next
-      ms-python.python
-      golang.go
-      rust-lang.rust-analyzer
-      ms-vscode.cpptools
-      jnoortheen.nix-ide
-
-      # Productivity tools
-      ms-vscode.vscode-json
-      redhat.vscode-yaml
-      ms-vscode.vscode-docker
-      ms-vscode-remote.remote-ssh
-
-      # Git integration
-      eamodio.gitlens
-      ms-vscode.vscode-git-graph
-
-      # Editor enhancements
-      ms-vscode.vscode-editorconfig
-      esbenp.prettier-vscode
-      ms-vscode.vscode-eslint
-      bradlc.vscode-tailwindcss
-
-      # Utilities
-      ms-vscode.vscode-terminal
-      formulahendry.code-runner
-      ms-vscode.vscode-live-server
-
-      # Keyboard shortcuts
-      ms-vscode.vscodevim
-
-      # AI assistance
-      github.copilot
-      github.copilot-chat
-    ];
+    # Code-managed extensions (disabled for now - can be added back when availability is confirmed)
+    extensions = [];
 
     # VSCode settings
     userSettings = {

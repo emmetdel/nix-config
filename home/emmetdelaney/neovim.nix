@@ -10,112 +10,109 @@
     viAlias = true;
     vimAlias = true;
 
-    # Configure Neovim with plugins and settings
-    configure = {
-      customRC = ''
-        " Tokyo Night theme
-        set termguicolors
-        colorscheme tokyonight
+    # Neovim plugins
+    plugins = with pkgs.vimPlugins; [
+      # Theme
+      tokyonight-nvim
 
-        " Basic settings
-        set number
-        set relativenumber
-        set tabstop=2
-        set shiftwidth=2
-        set expandtab
-        set smartindent
-        set wrap
-        set linebreak
-        set mouse=a
-        set clipboard=unnamedplus
-        set ignorecase
-        set smartcase
-        set incsearch
-        set hlsearch
-        set showmatch
-        set wildmenu
-        set wildmode=longest:full,full
+      # LSP and completion
+      nvim-lspconfig
+      nvim-cmp
+      cmp-nvim-lsp
+      cmp-buffer
+      cmp-path
+      cmp-cmdline
+      luasnip
+      cmp_luasnip
 
-        " Leader key
-        let mapleader = " "
+      # Treesitter
+      nvim-treesitter.withAllGrammars
 
-        " Better navigation
-        nnoremap j gj
-        nnoremap k gk
-        nnoremap <C-h> <C-w>h
-        nnoremap <C-j> <C-w>j
-        nnoremap <C-k> <C-w>k
-        nnoremap <C-l> <C-w>l
+      # Fuzzy finding
+      telescope-nvim
+      telescope-fzf-native-nvim
 
-        " Quick save/quit
-        nnoremap <leader>w :w<CR>
-        nnoremap <leader>q :q<CR>
-        nnoremap <leader>x :x<CR>
+      # File explorer
+      nvim-tree-lua
 
-        " Clear search highlighting
-        nnoremap <leader>c :nohlsearch<CR>
+      # Git integration
+      gitsigns-nvim
 
-        " Buffer navigation
-        nnoremap <leader>n :bnext<CR>
-        nnoremap <leader>p :bprevious<CR>
-        nnoremap <leader>d :bdelete<CR>
+      # Status line
+      lualine-nvim
 
-        " LSP keybindings (when LSP is available)
-        nnoremap <leader>gd :lua vim.lsp.buf.definition()<CR>
-        nnoremap <leader>gr :lua vim.lsp.buf.references()<CR>
-        nnoremap <leader>gi :lua vim.lsp.buf.implementation()<CR>
-        nnoremap <leader>ca :lua vim.lsp.buf.code_action()<CR>
-        nnoremap <leader>rn :lua vim.lsp.buf.rename()<CR>
-        nnoremap <leader>ff :lua vim.lsp.buf.format()<CR>
-        nnoremap <leader>e :lua vim.diagnostic.open_float()<CR>
-        nnoremap <leader>dn :lua vim.diagnostic.goto_next()<CR>
-        nnoremap <leader>dp :lua vim.diagnostic.goto_prev()<CR>
+      # Essential utilities
+      plenary-nvim
+      popup-nvim
+      which-key-nvim
+    ];
 
-        " Telescope keybindings (when available)
-        nnoremap <leader>tf :lua require('telescope.builtin').find_files()<CR>
-        nnoremap <leader>tg :lua require('telescope.builtin').live_grep()<CR>
-        nnoremap <leader>tb :lua require('telescope.builtin').buffers()<CR>
-        nnoremap <leader>th :lua require('telescope.builtin').help_tags()<CR>
-      '';
+    # Extra configuration
+    extraConfig = ''
+      " Tokyo Night theme
+      set termguicolors
+      colorscheme tokyonight
 
-      packages.myVimPackage = with pkgs.vimPlugins; {
-        start = [
-          # Theme
-          tokyonight-nvim
+      " Basic settings
+      set number
+      set relativenumber
+      set tabstop=2
+      set shiftwidth=2
+      set expandtab
+      set smartindent
+      set wrap
+      set linebreak
+      set mouse=a
+      set clipboard=unnamedplus
+      set ignorecase
+      set smartcase
+      set incsearch
+      set hlsearch
+      set showmatch
+      set wildmenu
+      set wildmode=longest:full,full
 
-          # LSP and completion
-          nvim-lspconfig
-          nvim-cmp
-          cmp-nvim-lsp
-          cmp-buffer
-          cmp-path
-          cmp-cmdline
-          luasnip
-          cmp_luasnip
+      " Leader key
+      let mapleader = " "
 
-          # Treesitter
-          nvim-treesitter.withAllGrammars
+      " Better navigation
+      nnoremap j gj
+      nnoremap k gk
+      nnoremap <C-h> <C-w>h
+      nnoremap <C-j> <C-w>j
+      nnoremap <C-k> <C-w>k
+      nnoremap <C-l> <C-w>l
 
-          # Fuzzy finding
-          telescope-nvim
-          telescope-fzf-native-nvim
+      " Quick save/quit
+      nnoremap <leader>w :w<CR>
+      nnoremap <leader>q :q<CR>
+      nnoremap <leader>x :x<CR>
 
-          # File explorer
-          nvim-tree-lua
+      " Clear search highlighting
+      nnoremap <leader>c :nohlsearch<CR>
 
-          # Git integration
-          gitsigns-nvim
+      " Buffer navigation
+      nnoremap <leader>n :bnext<CR>
+      nnoremap <leader>p :bprevious<CR>
+      nnoremap <leader>d :bdelete<CR>
 
-          # Status line
-          lualine-nvim
+      " LSP keybindings (when LSP is available)
+      nnoremap <leader>gd :lua vim.lsp.buf.definition()<CR>
+      nnoremap <leader>gr :lua vim.lsp.buf.references()<CR>
+      nnoremap <leader>gi :lua vim.lsp.buf.implementation()<CR>
+      nnoremap <leader>ca :lua vim.lsp.buf.code_action()<CR>
+      nnoremap <leader>rn :lua vim.lsp.buf.rename()<CR>
+      nnoremap <leader>ff :lua vim.lsp.buf.format()<CR>
+      nnoremap <leader>e :lua vim.diagnostic.open_float()<CR>
+      nnoremap <leader>dn :lua vim.diagnostic.goto_next()<CR>
+      nnoremap <leader>dp :lua vim.diagnostic.goto_prev()<CR>
 
-          # Essential utilities
-          plenary-nvim
-          popup-nvim
-          which-key-nvim
-        ];
-      };
-    };
+      " Telescope keybindings (when available)
+      nnoremap <leader>tf :lua require('telescope.builtin').find_files()<CR>
+      nnoremap <leader>tg :lua require('telescope.builtin').live_grep()<CR>
+      nnoremap <leader>tb :lua require('telescope.builtin').buffers()<CR>
+      nnoremap <leader>th :lua require('telescope.builtin').help_tags()<CR>
+    '';
 
     # Extra packages for Neovim
     extraPackages = with pkgs; [
@@ -130,7 +127,7 @@
       # Formatters and linters
       alejandra # Nix formatter
       black # Python formatter
-      gofmt # Go formatter
+      # gofmt is included with go package
       rustfmt # Rust formatter
       clang-tools # C/C++ tools
 

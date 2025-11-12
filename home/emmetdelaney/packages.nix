@@ -25,6 +25,10 @@
     swaylock # Screen lock
     swaybg # Wallpaper
 
+    # Media control
+    pamixer # Volume control
+    playerctl # Media playback control
+
     # File manager
     xfce.thunar # GUI file manager
 

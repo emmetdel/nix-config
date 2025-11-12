@@ -135,15 +135,6 @@
         ", Print, exec, grim -g \"$(slurp)\" - | wl-copy" # Screenshot area
         "SHIFT, Print, exec, grim - | wl-copy" # Screenshot full screen
 
-        # Media keys
-        ", XF86AudioRaiseVolume, exec, pamixer -i 5 && notify-send -a \"volume\" -r 999 \"Volume: $(pamixer --get-volume)%\" -t 1000"
-        ", XF86AudioLowerVolume, exec, pamixer -d 5 && notify-send -a \"volume\" -r 999 \"Volume: $(pamixer --get-volume)%\" -t 1000"
-        ", XF86AudioMute, exec, pamixer -t && (pamixer --get-mute | grep -q true && notify-send -a \"volume\" -r 999 \"Volume: Muted\" -t 1000 || notify-send -a \"volume\" -r 999 \"Volume: $(pamixer --get-volume)%\" -t 1000)"
-        ", XF86AudioPlay, exec, playerctl play-pause"
-        ", XF86AudioPause, exec, playerctl play-pause"
-        ", XF86AudioNext, exec, playerctl next"
-        ", XF86AudioPrev, exec, playerctl previous"
-
         # Move focus with vim keys
         "$mod, h, movefocus, l"
         "$mod, l, movefocus, r"
@@ -193,6 +184,21 @@
         # Special workspace (scratchpad)
         "$mod, S, togglespecialworkspace"
         "$mod SHIFT, S, movetoworkspace, special"
+      ];
+
+      # Media keys - bindel allows repeat when held
+      bindel = [
+        ", XF86AudioRaiseVolume, exec, ~/.config/hypr/scripts/volume.sh up"
+        ", XF86AudioLowerVolume, exec, ~/.config/hypr/scripts/volume.sh down"
+      ];
+
+      # Media keys - bindl for single press (works even when locked)
+      bindl = [
+        ", XF86AudioMute, exec, ~/.config/hypr/scripts/volume.sh mute"
+        ", XF86AudioPlay, exec, playerctl play-pause"
+        ", XF86AudioPause, exec, playerctl play-pause"
+        ", XF86AudioNext, exec, playerctl next"
+        ", XF86AudioPrev, exec, playerctl previous"
       ];
 
       # Mouse bindings

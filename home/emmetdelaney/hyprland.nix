@@ -98,7 +98,7 @@
         # Core applications (Super + Letter)
         "$mod, Return, exec, kitty"
         "$mod, B, exec, librewolf" # Main browser (Librewolf)
-        "$mod, C, exec, code" # Editor (VSCode/Cursor)
+        "$mod, C, exec, cursor" # Editor (Cursor AI)
         "$mod, F, exec, thunar" # File manager
 
         # Close window (Super + W)
@@ -211,6 +211,8 @@
         "workspace 2, class:^(code)$"
         "workspace 2, class:^(Code)$"
         "workspace 2, title:^(Visual Studio Code)$"
+        "workspace 2, class:^(cursor)$"
+        "workspace 2, class:^(Cursor)$"
 
         # Research workspace (3)
         "workspace 3, class:^(librewolf|Librewolf)$"

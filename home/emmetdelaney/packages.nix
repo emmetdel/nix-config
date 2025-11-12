@@ -10,6 +10,7 @@
 
     # Editor
     vscode # Code editor
+    code-cursor # Cursor AI code editor
 
     # Terminal
     kitty
@@ -130,7 +131,15 @@
   };
 
   # LibreWolf browser - using default hardened configuration
-  programs.librewolf.enable = true;
+  programs.librewolf = {
+    enable = true;
+
+    # Override AutoConfig to prevent startup errors
+    settings = {
+      "general.config.filename" = "";
+      "general.config.obscure_value" = 0;
+    };
+  };
 
   # Set librewolf as default browser
   xdg.mimeApps = {

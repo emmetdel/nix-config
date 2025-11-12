@@ -1,9 +1,9 @@
 {
   config,
   pkgs,
+  lib,
   inputs,
   theme,
-  lib,
   ...
 }: {
   imports = [

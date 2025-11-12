@@ -27,11 +27,32 @@
     hyprland,
     sops-nix,
     ...
-  } @ inputs: {
+  } @ inputs: let
+    # Centralized user configuration
+    userConfig = {
+      username = "emmetdelaney";
+      fullName = "Emmet Delaney";
+      email = {
+        personal = "emmetdel@gmail.com";
+        work = "emmet.delaney@sitenna.com";
+      };
+    };
+
+    # Centralized host configuration
+    hostConfig = {
+      helios = {
+        hostname = "helios";
+        system = "x86_64-linux";
+      };
+    };
+  in {
     nixosConfigurations = {
       helios = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {inherit inputs;};
+        system = hostConfig.helios.system;
+        specialArgs = {
+          inherit inputs userConfig;
+          hostname = hostConfig.helios.hostname;
+        };
         modules = [
           # Host configuration
           ./hosts/helios/default.nix
@@ -67,10 +88,8 @@
       echo ""
     '';
 
-    # Development shell for Linux (NixOS)
-    devShells.x86_64-linux.default = let
-      pkgs = import nixpkgs {system = "x86_64-linux";};
-    in
+    # Common dev tools for all platforms
+    lib.mkDevShell = pkgs:
       pkgs.mkShell {
         buildInputs = with pkgs; [
           alejandra # Nix formatter
@@ -83,23 +102,18 @@
 
         shellHook = self.lib.mkShellHook;
       };
+
+    # Development shell for Linux (NixOS)
+    devShells.x86_64-linux.default = let
+      pkgs = import nixpkgs {system = "x86_64-linux";};
+    in
+      self.lib.mkDevShell pkgs;
 
     # Development shell for macOS (Intel)
     devShells.x86_64-darwin.default = let
       pkgs = import nixpkgs {system = "x86_64-darwin";};
     in
-      pkgs.mkShell {
-        buildInputs = with pkgs; [
-          alejandra # Nix formatter
-          nixd # Nix LSP for IntelliSense
-          statix # Nix linter
-          deadnix # Find dead/unused Nix code
-          sops # Secrets management
-          age # Encryption for sops
-        ];
-
-        shellHook = self.lib.mkShellHook;
-      };
+      self.lib.mkDevShell pkgs;
 
     # Alias for aarch64-darwin (Apple Silicon)
     devShells.aarch64-darwin.default = self.devShells.x86_64-darwin.default;

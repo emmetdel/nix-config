@@ -1,10 +1,7 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, hostname, ... }:
 
 {
   # Network configuration
-  networking.hostName = "helios";
+  networking.hostName = hostname;
   networking.networkmanager.enable = true;
-
-  # User groups for networking
-  users.users.emmetdelaney.extraGroups = [ "networkmanager" ];
 }

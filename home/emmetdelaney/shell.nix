@@ -1,6 +1,8 @@
 {
   config,
   pkgs,
+  userConfig,
+  hostname,
   ...
 }: {
   # Zsh configuration
@@ -19,7 +21,7 @@
 
     shellAliases = {
       # System management
-      rebuild = "sudo nixos-rebuild switch --flake \"$HOME/code/personal/nix-config#helios\"";
+      rebuild = "sudo nixos-rebuild switch --flake \"$HOME/code/personal/nix-config#${hostname}\"";
       update = "nix flake update \"$HOME/code/personal/nix-config\"";
       cleanup = "sudo nix-collect-garbage -d";
 
@@ -108,8 +110,8 @@
 
     settings = {
       user = {
-        name = "Emmet Delaney";
-        email = "emmetdel@gmail.com";
+        name = userConfig.fullName;
+        email = userConfig.email.personal;
       };
 
       init.defaultBranch = "main";
@@ -124,13 +126,18 @@
         unstage = "reset HEAD --";
         last = "log -1 HEAD";
       };
+
+      # Conditional includes for work repositories
+      includeIf."gitdir:~/code/work/" = {
+        path = "~/.config/git/config-work";
+      };
     };
   };
 
   # Work git configuration
   xdg.configFile."git/config-work".text = ''
     [user]
-      name = Emmet Delaney
-      email = emmet.delaney@sitenna.com
+      name = ${userConfig.fullName}
+      email = ${userConfig.email.work}
   '';
 }

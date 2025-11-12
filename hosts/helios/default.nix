@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, inputs, userConfig, ... }:
 
 {
   imports = [
@@ -20,9 +20,9 @@
   ];
 
   # User account (shell and groups configured in modules/system/users.nix)
-  users.users.emmetdelaney = {
+  users.users.${userConfig.username} = {
     isNormalUser = true;
-    description = "Emmet Delaney";
+    description = userConfig.fullName;
   };
 
   # Allow unfree packages

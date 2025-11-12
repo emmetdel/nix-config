@@ -41,11 +41,6 @@
     qt5.qtwayland
     qt6.qtwayland
 
-    # Screenshot and screen recording tools
-    grim
-    slurp
-    wl-clipboard
-
     # Utilities
     wlr-randr
 

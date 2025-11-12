@@ -15,7 +15,4 @@
 
   # Enable Bluetooth manager
   services.blueman.enable = true;
-
-  # Add user to bluetooth group
-  users.users.emmetdelaney.extraGroups = [ "bluetooth" ];
 }

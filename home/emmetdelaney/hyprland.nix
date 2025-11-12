@@ -111,6 +111,21 @@
         "$mod, SPACE, exec, rofi -show drun"
         "$mod, R, exec, rofi -show run"
 
+        # Terminal dropdown (Super + `)
+        "$mod, grave, exec, [floating; size 80% 60%; center] kitty --class=dropdown"
+
+        # Global search (Super + /)
+        "$mod, slash, exec, rofi -show combi"
+
+        # Window switcher (Super + Tab)
+        "$mod, Tab, exec, rofi -show window"
+
+        # Development shortcuts
+        "$mod, G, exec, [floating; center] kitty --hold --title git-status -e git status" # Git status
+        "$mod SHIFT, B, exec, [floating; center] kitty --hold --title build -e 'echo \"Available build commands:\" && echo \"- make\" && echo \"- npm run build\" && echo \"- go build\" && echo \"- cargo build\" && echo \"- nix-build\" && $SHELL'" # Build menu
+        "$mod SHIFT, T, exec, [floating; center] kitty --hold --title test -e 'echo \"Available test commands:\" && echo \"- make test\" && echo \"- npm test\" && echo \"- go test\" && echo \"- cargo test\" && echo \"- pytest\" && $SHELL'" # Test menu
+        "$mod SHIFT, S, exec, [floating; center] kitty --hold --title server -e 'echo \"Available servers:\" && echo \"- python3 -m http.server\" && echo \"- live-server\" && echo \"- npm start\" && echo \"- go run main.go\" && $SHELL'" # Development server menu
+
         # Utilities
         "$mod, L, exec, swaylock" # Lock screen
         ", Print, exec, grim -g \"$(slurp)\" - | wl-copy" # Screenshot area
@@ -211,6 +226,11 @@
         "size 1200 800, class:^(Linear)$"
         "size 1200 800, class:^(Notion)$"
         "size 1000 700, class:^(ChatGPT)$"
+
+        # Terminal dropdown
+        "float, class:^(dropdown)$"
+        "center, class:^(dropdown)$"
+        "size 80% 60%, class:^(dropdown)$"
       ];
     };
   };

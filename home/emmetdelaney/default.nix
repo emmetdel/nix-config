@@ -8,6 +8,8 @@
     ./hyprland.nix # Hyprland with Tokyo Night theme
     ./shell.nix # Shell configuration
     ./web-apps.nix # PWA web apps support
+    ./neovim.nix # Enhanced Neovim configuration
+    ./vscode.nix # Enhanced VSCode configuration
   ];
 
   # Home Manager settings
@@ -28,14 +30,6 @@
     matchBlocks."*" = {
       addKeysToAgent = "yes";
     };
-  };
-
-  # Basic neovim as minimal editor
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
   };
 
   # GTK theme with larger font

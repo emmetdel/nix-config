@@ -23,11 +23,13 @@
   users.users.emmetdelaney = {
     isNormalUser = true;
     description = "Emmet Delaney";
-    packages = with pkgs; [];
   };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  # Enable experimental features for flakes
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # System packages (minimal, most moved to home-manager)
   environment.systemPackages = with pkgs; [

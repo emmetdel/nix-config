@@ -10,7 +10,6 @@
   # User groups (minimal - removed docker/podman)
   users.users.emmetdelaney.extraGroups = [
     "wheel"           # Sudo access
-    "networkmanager"  # Network management
     "video"           # Video device access
     "audio"           # Audio device access
   ];

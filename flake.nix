@@ -54,6 +54,19 @@
       };
     };
 
+    # Common shell hook for development environments
+    lib.mkShellHook = ''
+      echo "🔧 NixOS Config Development Environment"
+      echo ""
+      echo "Available commands:"
+      echo "  alejandra .          - Format all Nix files"
+      echo "  alejandra -c .       - Check formatting (no changes)"
+      echo "  statix check .       - Lint Nix files"
+      echo "  deadnix .            - Find unused code"
+      echo "  nix flake check      - Validate flake"
+      echo ""
+    '';
+
     # Development shell for Linux (NixOS)
     devShells.x86_64-linux.default = let
       pkgs = import nixpkgs {system = "x86_64-linux";};
@@ -68,17 +81,7 @@
           age # Encryption for sops
         ];
 
-        shellHook = ''
-          echo "🔧 NixOS Config Development Environment"
-          echo ""
-          echo "Available commands:"
-          echo "  alejandra .          - Format all Nix files"
-          echo "  alejandra -c .       - Check formatting (no changes)"
-          echo "  statix check .       - Lint Nix files"
-          echo "  deadnix .            - Find unused code"
-          echo "  nix flake check      - Validate flake"
-          echo ""
-        '';
+        shellHook = self.lib.mkShellHook;
       };
 
     # Development shell for macOS (Intel)
@@ -95,17 +98,7 @@
           age # Encryption for sops
         ];
 
-        shellHook = ''
-          echo "🔧 NixOS Config Development Environment"
-          echo ""
-          echo "Available commands:"
-          echo "  alejandra .          - Format all Nix files"
-          echo "  alejandra -c .       - Check formatting (no changes)"
-          echo "  statix check .       - Lint Nix files"
-          echo "  deadnix .            - Find unused code"
-          echo "  nix flake check      - Validate flake"
-          echo ""
-        '';
+        shellHook = self.lib.mkShellHook;
       };
 
     # Alias for aarch64-darwin (Apple Silicon)

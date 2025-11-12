@@ -19,8 +19,8 @@
 
     shellAliases = {
       # System management
-      rebuild = "sudo nixos-rebuild switch --flake ~/code/personal/nix-config#helios";
-      update = "nix flake update ~/code/personal/nix-config";
+      rebuild = "sudo nixos-rebuild switch --flake \"$HOME/code/personal/nix-config#helios\"";
+      update = "nix flake update \"$HOME/code/personal/nix-config\"";
       cleanup = "sudo nix-collect-garbage -d";
 
       # Navigation
@@ -41,10 +41,6 @@
       ls = "eza --icons";
       ll = "eza -la --icons";
       tree = "eza --tree --icons";
-
-      # Editor
-      vim = "nvim";
-      vi = "nvim";
     };
 
     initContent = ''

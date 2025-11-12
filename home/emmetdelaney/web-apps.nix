@@ -8,7 +8,6 @@
     name="$1"
     url="$2"
     profile="$3"
-
     # Launch as chromium app (looks and feels native!)
     ${pkgs.chromium}/bin/chromium \
       --app="$url" \

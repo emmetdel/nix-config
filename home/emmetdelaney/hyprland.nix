@@ -2,6 +2,8 @@
   config,
   pkgs,
   inputs,
+  theme,
+  lib,
   ...
 }: {
   imports = [
@@ -48,8 +50,8 @@
         gaps_in = 5;
         gaps_out = 10;
         border_size = 2;
-        "col.active_border" = "rgb(7aa2f7) rgb(7dcfff) 45deg"; # Tokyo Night blue/cyan
-        "col.inactive_border" = "rgb(565f89)"; # Tokyo Night dim
+        "col.active_border" = "rgb(${lib.removePrefix "#" theme.palette.color4}) rgb(${lib.removePrefix "#" theme.palette.color6}) 45deg"; # Tokyo Night blue/cyan
+        "col.inactive_border" = "rgb(${lib.removePrefix "#" theme.palette.dim})"; # Tokyo Night dim
         layout = "dwindle";
         allow_tearing = false;
       };
@@ -201,8 +203,8 @@
       # Window rules for PWA auto-organization
       windowrulev2 = [
         # Communication workspace (1)
-        "workspace 1, class:^(Gmail)$"
-        "workspace 1, class:^(Calendar)$"
+        "workspace 1, class:^(Gmail.*)$"
+        "workspace 1, class:^(Calendar.*)$"
 
         # Development workspace (2)
         "workspace 2, class:^(code)$"
@@ -213,9 +215,9 @@
         "workspace 3, class:^(librewolf|Librewolf)$"
 
         # Planning workspace (4)
-        "workspace 4, class:^(Linear)$"
-        "workspace 4, class:^(Notion)$"
-        "workspace 4, class:^(ChatGPT)$"
+        "workspace 4, class:^(Linear.*)$"
+        "workspace 4, class:^(Notion.*)$"
+        "workspace 4, class:^(ChatGPT.*)$"
 
         # Float certain windows
         "float, class:^(pavucontrol)$"
@@ -240,9 +242,9 @@
   services.mako = {
     enable = true;
     settings = {
-      background-color = "#1a1b26";
-      text-color = "#c0caf5";
-      border-color = "#7aa2f7";
+      background-color = theme.palette.background;
+      text-color = theme.palette.foreground;
+      border-color = theme.palette.color4; # Blue
       border-size = 2;
       border-radius = 10;
       default-timeout = 5000;
@@ -258,23 +260,23 @@
       color = "1a1b26";
       font-size = 28;
       indicator-radius = 100;
-      line-color = "1a1b26";
+      line-color = lib.removePrefix "#" theme.palette.background;
       show-failed-attempts = true;
 
       # Ring colors (Tokyo Night)
-      ring-color = "565f89";
-      ring-ver-color = "7aa2f7";
-      ring-wrong-color = "f7768e";
+      ring-color = lib.removePrefix "#" theme.palette.dim;
+      ring-ver-color = lib.removePrefix "#" theme.palette.color4; # Blue
+      ring-wrong-color = lib.removePrefix "#" theme.palette.color1; # Red
 
       # Inside colors
-      inside-color = "1a1b26";
-      inside-ver-color = "1a1b26";
-      inside-wrong-color = "1a1b26";
+      inside-color = lib.removePrefix "#" theme.palette.background;
+      inside-ver-color = lib.removePrefix "#" theme.palette.background;
+      inside-wrong-color = lib.removePrefix "#" theme.palette.background;
 
       # Text colors
-      text-color = "c0caf5";
-      text-ver-color = "7aa2f7";
-      text-wrong-color = "f7768e";
+      text-color = lib.removePrefix "#" theme.palette.foreground;
+      text-ver-color = lib.removePrefix "#" theme.palette.color4; # Blue
+      text-wrong-color = lib.removePrefix "#" theme.palette.color1; # Red
     };
   };
 

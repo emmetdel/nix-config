@@ -19,12 +19,6 @@
     LC_TIME = "en_IE.UTF-8";
   };
 
-  # Keyboard configuration
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
-  };
-
   # Console keymap
   console.keyMap = "us";
 }

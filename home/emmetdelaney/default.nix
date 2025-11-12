@@ -8,7 +8,6 @@
     ./hyprland.nix # Hyprland with Tokyo Night theme
     ./shell.nix # Shell configuration
     ./web-apps.nix # PWA web apps support
-    ./librewolf.nix # LibreWolf browser configuration
   ];
 
   # Home Manager settings

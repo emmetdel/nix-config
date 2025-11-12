@@ -1,6 +1,10 @@
-{ config, lib, pkgs, inputs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}: {
   # Import Hyprland module from flake (latest version)
   imports = [
     inputs.hyprland.nixosModules.default
@@ -20,7 +24,7 @@
   # XDG portal for screen sharing and file pickers
   xdg.portal = {
     enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    wlr.enable = true;
   };
 
   # Polkit for authentication
@@ -30,7 +34,7 @@
   environment.systemPackages = with pkgs; [
     # Polkit authentication agent
     polkit_gnome
-    
+
     # Wayland essentials
     wayland
     xwayland

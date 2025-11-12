@@ -11,7 +11,7 @@
   wayland.windowManager.hyprland = {
     enable = true;
     # Use the flake package for latest features
-    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
     settings = {
       # Monitor configuration
       monitor = "DP-2,3440x1440@100,0x0,1.25";
@@ -24,6 +24,7 @@
         "blueman-applet"
         "/nix/store/$(ls -t /nix/store/ | grep polkit-gnome | head -n1)/libexec/polkit-gnome-authentication-agent-1"
         "swaybg -c '#1a1b26'"
+        "mkdir -p $HOME/.config/chromium/WebApps"
       ];
 
       # Environment variables
@@ -93,8 +94,7 @@
       bind = [
         # Core applications (Super + Letter)
         "$mod, Return, exec, kitty"
-        "$mod, B, exec, chromium --user-data-dir=$HOME/.config/chromium/Personal" # Personal browser profile
-        "$mod SHIFT, B, exec, chromium --user-data-dir=$HOME/.config/chromium/Work" # Work browser profile
+        "$mod, B, exec, librewolf" # Main browser (Librewolf)
         "$mod, C, exec, code" # Editor (VSCode/Cursor)
         "$mod, F, exec, thunar" # File manager
 
@@ -194,7 +194,7 @@
         "workspace 2, title:^(Visual Studio Code)$"
 
         # Research workspace (3)
-        "workspace 3, class:^(chromium)$"
+        "workspace 3, class:^(librewolf|Librewolf)$"
 
         # Planning workspace (4)
         "workspace 4, class:^(Linear)$"

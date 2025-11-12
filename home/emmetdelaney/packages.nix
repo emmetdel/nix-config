@@ -5,7 +5,7 @@
 }: {
   home.packages = with pkgs; [
     # Browsers
-    ungoogled-chromium # Main browser
+    ungoogled-chromium # For web apps only
 
     # Editor
     vscode # Code editor
@@ -113,15 +113,21 @@
     nix-direnv.enable = true;
   };
 
-  # Set ungoogled-chromium as default browser
+  # LibreWolf browser configuration
+  programs.librewolf = {
+    enable = true;
+    profileName = "emmetdelaney";
+  };
+
+  # Set librewolf as default browser
   xdg.mimeApps = {
     enable = true;
     defaultApplications = {
-      "text/html" = ["chromium.desktop"];
-      "x-scheme-handler/http" = ["chromium.desktop"];
-      "x-scheme-handler/https" = ["chromium.desktop"];
-      "x-scheme-handler/about" = ["chromium.desktop"];
-      "x-scheme-handler/unknown" = ["chromium.desktop"];
+      "text/html" = ["librewolf.desktop"];
+      "x-scheme-handler/http" = ["librewolf.desktop"];
+      "x-scheme-handler/https" = ["librewolf.desktop"];
+      "x-scheme-handler/about" = ["librewolf.desktop"];
+      "x-scheme-handler/unknown" = ["librewolf.desktop"];
     };
   };
 }

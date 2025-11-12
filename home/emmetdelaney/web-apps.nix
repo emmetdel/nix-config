@@ -22,55 +22,13 @@
   '';
   # Define web apps with PWA support
   webApps = {
-    gmail = {
-      name = "Gmail";
-      url = "https://mail.google.com";
-      usePWA = true;
-      profile = "Personal";
-      key = "G";
-    };
-    calendar = {
-      name = "Calendar";
-      url = "https://calendar.google.com";
-      usePWA = true;
-      profile = "Personal";
-      key = "C";
-    };
-    github = {
-      name = "GitHub";
-      url = "https://github.com";
-      usePWA = false; # Open in Firefox for better dev tools
-      profile = null;
-      key = "H";
-    };
-    linear = {
-      name = "Linear";
-      url = "https://linear.app";
-      usePWA = true;
-      profile = "Work";
-      key = "L";
-    };
-    notion = {
-      name = "Notion";
-      url = "https://notion.so";
-      usePWA = true;
-      profile = "Work";
-      key = "N";
-    };
-    chatgpt = {
-      name = "ChatGPT";
-      url = "https://chat.openai.com";
-      usePWA = true;
-      profile = "Personal";
-      key = "A"; # A for AI
-    };
-    slack = {
-      name = "Slack";
-      url = "https://slack.com/signin";
-      usePWA = true;
-      profile = "Work";
-      key = "S";
-    };
+    # gmail = {
+    #   name = "Gmail";
+    #   url = "https://mail.google.com";
+    #   usePWA = true;
+    #   profile = "Personal";
+    #   key = "G";
+    # };
   };
 
   # Web app launcher menu (accessible via Super+W)

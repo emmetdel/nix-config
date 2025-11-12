@@ -46,6 +46,7 @@
               useGlobalPkgs = true;
               useUserPackages = true;
               extraSpecialArgs = {inherit inputs;};
+              backupFileExtension = "backup";
               users.emmetdelaney = import ./home/emmetdelaney/default.nix;
             };
           }

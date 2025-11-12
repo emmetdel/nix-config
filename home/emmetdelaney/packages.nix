@@ -5,9 +5,7 @@
 }: {
   home.packages = with pkgs; [
     # Browsers
-    brave # Main browser for research
-    firefox # Alternative browser
-    chromium # PWA engine for web apps
+    ungoogled-chromium # Main browser
 
     # Editor
     vscode # Code editor
@@ -52,19 +50,6 @@
     slack
     _1password-gui
   ];
-
-  # Brave configuration for Wayland
-  programs.brave = {
-    enable = true;
-    extensions = [
-      {id = "cjpalhdlnbpafiamejdnhcphjbkeiagm";} # uBlock Origin
-    ];
-  };
-
-  # Firefox configuration
-  programs.firefox = {
-    enable = true;
-  };
 
   # Kitty terminal configuration
   programs.kitty = {
@@ -126,5 +111,17 @@
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
+  };
+
+  # Set ungoogled-chromium as default browser
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "text/html" = ["chromium.desktop"];
+      "x-scheme-handler/http" = ["chromium.desktop"];
+      "x-scheme-handler/https" = ["chromium.desktop"];
+      "x-scheme-handler/about" = ["chromium.desktop"];
+      "x-scheme-handler/unknown" = ["chromium.desktop"];
+    };
   };
 }
